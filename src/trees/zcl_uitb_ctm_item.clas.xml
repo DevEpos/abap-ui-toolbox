@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+    <VERSION>1</VERSION>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Item of a Node of a tree model</DESCRIPT>
+    <EXPOSURE>2</EXPOSURE>
+    <STATE>1</STATE>
+    <CLSFINAL>X</CLSFINAL>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>CONSTRUCTOR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>CONSTRUCTOR</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>GET_FONT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Gets font property of item</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>GET_IMAGE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Gets image of item</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>GET_STYLE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Gets style property of item</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>GET_TEXT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Gets text property of item</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>IS_CHOSEN</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Gets chosen property of item</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>IS_DISABLED</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Gets disabled of item</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>IS_EDITABLE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Gets editable of item</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>IS_HIDDEN</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Gets hidden property of item</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>MR_MODEL</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Column Tree Control with Data Management at Backend</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>MS_ITEM</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Column Tree Model: Item Table</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>SET_CHOSEN</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Sets chosen property of item</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>SET_DISABLED</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Sets disabled of item</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>SET_EDITABLE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Sets editable of item</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>SET_FONT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Sets font property of item</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>SET_HIDDEN</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Sets hidden property of item</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>SET_IMAGE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Sets image of item</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>SET_STYLE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Sets style property of item</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_ITEM</CLSNAME>
+     <CMPNAME>SET_TEXT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Sets text property of item</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

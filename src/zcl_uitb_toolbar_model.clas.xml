@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_UITB_TOOLBAR_MODEL</CLSNAME>
+    <VERSION>1</VERSION>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Toolbar Model</DESCRIPT>
+    <EXPOSURE>2</EXPOSURE>
+    <STATE>1</STATE>
+    <CLSFINAL>X</CLSFINAL>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <TPOOL>
+    <item>
+     <ID>I</ID>
+     <KEY>001</KEY>
+     <ENTRY>Collapse All</ENTRY>
+     <LENGTH>22</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>002</KEY>
+     <ENTRY>Expand All</ENTRY>
+     <LENGTH>20</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>003</KEY>
+     <ENTRY>Find</ENTRY>
+     <LENGTH>14</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>004</KEY>
+     <ENTRY>Find next</ENTRY>
+     <LENGTH>19</LENGTH>
+    </item>
+   </TPOOL>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_TOOLBAR_MODEL</CLSNAME>
+     <CMPNAME>ADD_BUTTON</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Adds a new toolbar button</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_TOOLBAR_MODEL</CLSNAME>
+     <CMPNAME>ADD_BUTTONS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Add new toolbar buttons</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_TOOLBAR_MODEL</CLSNAME>
+     <CMPNAME>ADD_BUTTON_MENU</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Add button menu</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_TOOLBAR_MODEL</CLSNAME>
+     <CMPNAME>ADD_EXPANDER_BUTTONS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Adds expand/collapse buttons to the toolbar</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_TOOLBAR_MODEL</CLSNAME>
+     <CMPNAME>ADD_SEARCH_BUTTONS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Adds Search buttons to the toolbar</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_TOOLBAR_MODEL</CLSNAME>
+     <CMPNAME>ADD_SEPARATOR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Adds a separator to the toolbar</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_TOOLBAR_MODEL</CLSNAME>
+     <CMPNAME>CONNECT_CONTROL</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Connect the model to a toolbar control</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_TOOLBAR_MODEL</CLSNAME>
+     <CMPNAME>GET_LIST</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get list of all buttons of the toolbar</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_TOOLBAR_MODEL</CLSNAME>
+     <CMPNAME>ON_TOOLBAR_BUTTON</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Handler for GUI Toolbar Button click</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_TOOLBAR_MODEL</CLSNAME>
+     <CMPNAME>ON_TOOLBAR_DROPDOWN</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Handler for GUI Toolbar Dropdown click</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_TOOLBAR_MODEL</CLSNAME>
+     <CMPNAME>REFRESH_UI</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Refreshes the ui -&gt; after connecting</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_TOOLBAR_MODEL</CLSNAME>
+     <CMPNAME>SET_BUTTON_ICON</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Change button icon</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_TOOLBAR_MODEL</CLSNAME>
+     <CMPNAME>SET_BUTTON_MENU</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Update button menu</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_TOOLBAR_MODEL</CLSNAME>
+     <CMPNAME>SET_BUTTON_STATE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Set button state</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_INTF" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOINTERF>
+    <CLSNAME>ZIF_UITB_C_ALV_FUNCTION_TYPE</CLSNAME>
+    <VERSION>1</VERSION>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Type of ALV Function</DESCRIPT>
+    <EXPOSURE>2</EXPOSURE>
+    <STATE>1</STATE>
+    <UNICODE>X</UNICODE>
+   </VSEOINTERF>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_C_ALV_FUNCTION_TYPE</CLSNAME>
+     <CMPNAME>BUTTON</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Button</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_C_ALV_FUNCTION_TYPE</CLSNAME>
+     <CMPNAME>DROPDOWN_BUTTON</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Dropdown Button (Only menu)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_C_ALV_FUNCTION_TYPE</CLSNAME>
+     <CMPNAME>MENU_BUTTON</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Menu Button (Function + Menu)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_C_ALV_FUNCTION_TYPE</CLSNAME>
+     <CMPNAME>SEPARATOR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Separator</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

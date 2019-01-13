@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_UITB_DATA_CACHE</CLSNAME>
+    <VERSION>1</VERSION>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Global data cache</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSFINAL>X</CLSFINAL>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_DATA_CACHE</CLSNAME>
+     <CMPNAME>CLEAR_CACHE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Clears the object cache</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_DATA_CACHE</CLSNAME>
+     <CMPNAME>CLEAR_OBJECT_REF</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Clears object reference</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_DATA_CACHE</CLSNAME>
+     <CMPNAME>GET_DATA_REF</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Retrieve data reference for given name</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_DATA_CACHE</CLSNAME>
+     <CMPNAME>GET_INSTANCE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get current instance of data cache</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_DATA_CACHE</CLSNAME>
+     <CMPNAME>INITIALIZE_CACHE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Initializes the program cache</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_DATA_CACHE</CLSNAME>
+     <CMPNAME>IS_CACHE_INITIALIZED</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Check if cache for report is initialized</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_DATA_CACHE</CLSNAME>
+     <CMPNAME>REGISTER_DATA</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Registers data reference under given name</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_DATA_CACHE</CLSNAME>
+     <CMPNAME>SET_CURRENT_REPID</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Set&apos;s the current report id</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_DATA_CACHE</CLSNAME>
+     <CMPNAME>UPDATE_OBJECT_REF</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Updates value of object reference</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

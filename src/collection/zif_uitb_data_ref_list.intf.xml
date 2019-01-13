@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_INTF" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOINTERF>
+    <CLSNAME>ZIF_UITB_DATA_REF_LIST</CLSNAME>
+    <VERSION>1</VERSION>
+    <LANGU>E</LANGU>
+    <DESCRIPT>List of Data References</DESCRIPT>
+    <EXPOSURE>2</EXPOSURE>
+    <STATE>1</STATE>
+    <UNICODE>X</UNICODE>
+   </VSEOINTERF>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_DATA_REF_LIST</CLSNAME>
+     <CMPNAME>ADD</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Add new entry</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_DATA_REF_LIST</CLSNAME>
+     <CMPNAME>ADD_LIST</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Add Entries from given list (via corresponding)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_DATA_REF_LIST</CLSNAME>
+     <CMPNAME>CLEAR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Delete all entries in the list</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_DATA_REF_LIST</CLSNAME>
+     <CMPNAME>CREATE_NEW_LINE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Creates a new entry in the list and returns reference to it</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_DATA_REF_LIST</CLSNAME>
+     <CMPNAME>GET_ALL</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Retrieve reference to table area</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_DATA_REF_LIST</CLSNAME>
+     <CMPNAME>GET_ELEMENT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get element at certain index</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_DATA_REF_LIST</CLSNAME>
+     <CMPNAME>GET_ITERATOR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Retrieve iterator instance</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_DATA_REF_LIST</CLSNAME>
+     <CMPNAME>HAS_COMPONENT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Checks if component exists in line type</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_DATA_REF_LIST</CLSNAME>
+     <CMPNAME>IS_EMPTY</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Checks if list is empty</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_DATA_REF_LIST</CLSNAME>
+     <CMPNAME>REMOVE_AT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Remove element at index</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_DATA_REF_LIST</CLSNAME>
+     <CMPNAME>SIZE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Count entries</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

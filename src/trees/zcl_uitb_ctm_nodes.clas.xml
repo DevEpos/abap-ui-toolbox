@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+    <VERSION>1</VERSION>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Nodes of Column Tree Model</DESCRIPT>
+    <EXPOSURE>2</EXPOSURE>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>ADD_NODE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Adds a new node to the model</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>ADD_NODES</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Adds multiple new nodes to the model</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>COLLAPSE_ALL_NODES</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Collapses all nodes</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>COLLAPSE_NODE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Collapses a single node</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>DELETE_ALL_NODES</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Deletes all nodes from the model</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>DELETE_NODE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Delete a single node from the model</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>DELETE_NODES</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Deletes multiple nodes from the model</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>EXPAND_NODE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Expands a single node</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>EXPAND_NODES</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Expand given nodes</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>EXPAND_ROOT_NODES</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Expands root nodes</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>GET_EXPANDED_NODES</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Retrieve all nodes that are expanded</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>GET_NODE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Gets a specific node for a key</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>GET_ROOT_NODES</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Retrieves references of the root nodes</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>GET_ROOT_NODE_KEYS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Retrieves keys of the root nodes</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>GET_TOP_NODE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Gets the current top node</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>SET_FIRST_ROOT_NODE_AS_TOP</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Sets the first root node as the new top node</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>SET_TOP_NODE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Set the top node to be selected and in the view box</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>TOGGLE_NODE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Toggles expanded state of given nodes</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

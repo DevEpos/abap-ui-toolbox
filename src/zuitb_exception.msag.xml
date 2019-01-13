@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZUITB_EXCEPTION</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+    <STEXT>Nachrichten für Ausnahmen</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <MSGNR>000</MSGNR>
+     <TEXT>&amp;1&amp;2&amp;3&amp;4</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>General Error in Tree Processing Logic</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Canceled by User</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Error in ALV Logic</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Object: &amp;1; Name: &amp;2 already exits (Class: &amp;3; Method: &amp;4)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Object: &amp;1; Name: &amp;2 not found (Class: &amp;3; Method: &amp;4)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>No Entries found</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>The Field &amp;1 has not been read yet</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>The reading of field values in screen &amp;1 failed</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <MSGNR>009</MSGNR>
+     <TEXT>The change of field values in screen &amp;1 failed</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <MSGNR>010</MSGNR>
+     <TEXT>Screen error in Program &amp;1, Screen &amp;2</TEXT>
+    </T100>
+   </T100>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+   </I18N_LANGS>
+   <T100T>
+    <T100T>
+     <SPRSL>D</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <STEXT>Nachrichten für Ausnahmen</STEXT>
+    </T100T>
+   </T100T>
+  </asx:values>
+ </asx:abap>
+</abapGit>

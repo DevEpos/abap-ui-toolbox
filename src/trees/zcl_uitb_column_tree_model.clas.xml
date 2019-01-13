@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_UITB_COLUMN_TREE_MODEL</CLSNAME>
+    <VERSION>1</VERSION>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Column Tree Model</DESCRIPT>
+    <EXPOSURE>2</EXPOSURE>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_COLUMN_TREE_MODEL</CLSNAME>
+     <CMPNAME>GET_COLUMNS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get columns object for tree</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_COLUMN_TREE_MODEL</CLSNAME>
+     <CMPNAME>GET_EVENTS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get events object for tree</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_COLUMN_TREE_MODEL</CLSNAME>
+     <CMPNAME>GET_NODES</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get nodes object for tree</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_COLUMN_TREE_MODEL</CLSNAME>
+     <CMPNAME>GET_SEARCH</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get Search object for tree</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_COLUMN_TREE_MODEL</CLSNAME>
+     <CMPNAME>GET_SELECTIONS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get selections object for tree</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_COLUMN_TREE_MODEL</CLSNAME>
+     <CMPNAME>GET_TOOLBAR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get toolbar of tree (only bound for if_with_toolbar = &apos;X&apos;)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_COLUMN_TREE_MODEL</CLSNAME>
+     <CMPNAME>MR_SEARCH</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Search functionality for Column Tree Model</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

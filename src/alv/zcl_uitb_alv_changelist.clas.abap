@@ -1,0 +1,75 @@
+CLASS ZCL_UITB_alv_changelist DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PRIVATE.
+
+  PUBLIC SECTION.
+    CLASS-METHODS create
+      IMPORTING
+        it_changelist        TYPE ZIF_UITB_alv_types=>tt_alv_changelist
+      RETURNING
+        VALUE(rr_changelist) TYPE REF TO ZCL_UITB_alv_changelist.
+
+    METHODS is_refresh_requested
+      RETURNING
+        VALUE(result) TYPE abap_bool.
+    METHODS has_metadata_changed
+      RETURNING
+        VALUE(result) TYPE abap_bool.
+    METHODS is_selections_requested
+      RETURNING
+        VALUE(result) TYPE abap_bool.
+    METHODS is_new_data_requested
+      RETURNING
+        VALUE(result) TYPE abap_bool.
+    METHODS is_functions_change_requested
+      RETURNING
+        VALUE(result) TYPE abap_bool.
+    METHODS get_refresh_mode
+      RETURNING
+        VALUE(result) TYPE i.
+    DATA mt_changelist TYPE ZIF_UITB_alv_types=>tt_alv_changelist.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+
+ENDCLASS.
+
+
+
+CLASS ZCL_UITB_alv_changelist IMPLEMENTATION.
+  METHOD create.
+    rr_changelist = NEW #( ).
+    rr_changelist->mt_changelist = it_changelist.
+  ENDMETHOD.
+
+  METHOD is_refresh_requested.
+    result = xsdbool( line_exists( mt_changelist[ flavour = zif_uitb_c_alv_chglist_flavor=>refresh ] ) ).
+  ENDMETHOD.
+
+  METHOD has_metadata_changed.
+    result = xsdbool( line_exists( mt_changelist[ flavour = zif_uitb_c_alv_chglist_flavor=>setter ] ) ).
+  ENDMETHOD.
+
+
+  METHOD is_new_data_requested.
+    result = xsdbool( line_exists( mt_changelist[ flavour = zif_uitb_c_alv_chglist_flavor=>data_set ] ) ).
+  ENDMETHOD.
+
+
+  METHOD is_functions_change_requested.
+    result = xsdbool( line_exists( mt_changelist[ flavour = zif_uitb_c_alv_chglist_flavor=>functions ] ) ).
+  ENDMETHOD.
+
+  METHOD get_refresh_mode.
+    IF line_exists( mt_changelist[ refresh_mode = zif_uitb_c_alv_refresh=>full ] ).
+      result = zif_uitb_c_alv_refresh=>full.
+    ELSEIF line_exists( mt_changelist[ refresh_mode = zif_uitb_c_alv_refresh=>soft ] ).
+      result = zif_uitb_c_alv_refresh=>soft.
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD is_selections_requested.
+    result = xsdbool( line_exists( mt_changelist[ flavour = zif_uitb_c_alv_chglist_flavor=>selections ] ) ).
+  ENDMETHOD.
+
+ENDCLASS.

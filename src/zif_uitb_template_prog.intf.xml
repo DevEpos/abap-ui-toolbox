@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_INTF" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOINTERF>
+    <CLSNAME>ZIF_UITB_TEMPLATE_PROG</CLSNAME>
+    <VERSION>1</VERSION>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Callback for Template Program</DESCRIPT>
+    <EXPOSURE>2</EXPOSURE>
+    <STATE>1</STATE>
+    <UNICODE>X</UNICODE>
+   </VSEOINTERF>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_TEMPLATE_PROG</CLSNAME>
+     <CMPNAME>ADD_CONTROL_TO_LIFECYCLE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Register control to lifecycle of dynpro</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_TEMPLATE_PROG</CLSNAME>
+     <CMPNAME>C_FUNC_F2</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>ABAP System Field: PAI-Triggering Function Code</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_TEMPLATE_PROG</CLSNAME>
+     <CMPNAME>C_FUNC_LEAVE_NO_EXIT_EVENT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>ABAP System Field: PAI-Triggering Function Code</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_TEMPLATE_PROG</CLSNAME>
+     <CMPNAME>LEAVE_PROGRAM</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>The current template program will be terminated</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_TEMPLATE_PROG</CLSNAME>
+     <CMPNAME>SET_FUNCTION_CODE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Sets new function code for PAI</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

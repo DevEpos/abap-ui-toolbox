@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_UITB_ALV_EVENTS</CLSNAME>
+    <VERSION>1</VERSION>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Events for ALV</DESCRIPT>
+    <EXPOSURE>2</EXPOSURE>
+    <STATE>1</STATE>
+    <CLSFINAL>X</CLSFINAL>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_ALV_EVENTS</CLSNAME>
+     <CMPNAME>AFTER_FUNCTION</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>After User function is executed</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_ALV_EVENTS</CLSNAME>
+     <CMPNAME>BEFORE_FUNCTION</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Before user function is executed</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_ALV_EVENTS</CLSNAME>
+     <CMPNAME>CONTEXT_MENU</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Context Menu is triggered by user</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_ALV_EVENTS</CLSNAME>
+     <CMPNAME>DATA_CHANGED</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Data changed in cells</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_ALV_EVENTS</CLSNAME>
+     <CMPNAME>DOUBLE_CLICK</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Double click occurred</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_ALV_EVENTS</CLSNAME>
+     <CMPNAME>DRAG</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Drag started</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_ALV_EVENTS</CLSNAME>
+     <CMPNAME>DROP</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Drop in progress</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_ALV_EVENTS</CLSNAME>
+     <CMPNAME>DROP_COMPLETE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Drop was completed</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_ALV_EVENTS</CLSNAME>
+     <CMPNAME>DROP_GET_FLAVOR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Retrieve Flavor of drop</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_ALV_EVENTS</CLSNAME>
+     <CMPNAME>F4</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Value help request for cell</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_ALV_EVENTS</CLSNAME>
+     <CMPNAME>FUNCTION_CHOSEN</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>User function was chosen</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_ALV_EVENTS</CLSNAME>
+     <CMPNAME>LINK_CLICK</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Hotspot column was clicked</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_ALV_EVENTS</CLSNAME>
+     <CMPNAME>RAISE_CONTEXT_MENU</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Raise context_menu event</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

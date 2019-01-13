@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_UITB_PROTOCOL</CLSNAME>
+    <VERSION>1</VERSION>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Protocol display</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSFINAL>X</CLSFINAL>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_PROTOCOL</CLSNAME>
+     <CMPNAME>ADD_ERROR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Add error message to protocol</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_PROTOCOL</CLSNAME>
+     <CMPNAME>ADD_ERROR_FROM_SY</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Add error message from sy to protocol</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_PROTOCOL</CLSNAME>
+     <CMPNAME>ADD_EXCEPTION_MESSAGE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>add exception message to protocol</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_PROTOCOL</CLSNAME>
+     <CMPNAME>ADD_INFO</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Add information message to protocol</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_PROTOCOL</CLSNAME>
+     <CMPNAME>ADD_INFO_FROM_SY</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Add information message from sy to protocol</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_PROTOCOL</CLSNAME>
+     <CMPNAME>ADD_WARNING</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Add warning message to protocol</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_PROTOCOL</CLSNAME>
+     <CMPNAME>ADD_WARNING_FROM_SY</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Add warning message from sy to protocol</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_PROTOCOL</CLSNAME>
+     <CMPNAME>CLEAR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Clear the protocol</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_PROTOCOL</CLSNAME>
+     <CMPNAME>CLOSE_PROTOCOL</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Close the protocol</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_PROTOCOL</CLSNAME>
+     <CMPNAME>GET_INSTANCE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get instance of protocol</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_PROTOCOL</CLSNAME>
+     <CMPNAME>GET_SY_MESSAGE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get system message</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_PROTOCOL</CLSNAME>
+     <CMPNAME>HAS_MESSAGES</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Checks if protocol holds messages</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_PROTOCOL</CLSNAME>
+     <CMPNAME>SHOW_PROTOCOL</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Show the protocol</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>
