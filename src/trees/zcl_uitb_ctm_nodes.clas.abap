@@ -36,6 +36,13 @@ CLASS zcl_uitb_ctm_nodes DEFINITION
         zcx_uitb_tree_error .
     "! <p class="shorttext synchronized" lang="en">Collapses all nodes</p>
     METHODS collapse_all_nodes .
+    "! <p class="shorttext synchronized" lang="en">Collapse selected nodes</p>
+    "!
+    METHODS collapse_selected_nodes
+      IMPORTING
+        if_collapse_sub_tree TYPE abap_bool DEFAULT abap_true
+      RAISING
+        zcx_uitb_tree_error.
     "! <p class="shorttext synchronized" lang="en">Collapses a single node</p>
     METHODS collapse_node
       IMPORTING
@@ -66,6 +73,13 @@ CLASS zcl_uitb_ctm_nodes DEFINITION
         !if_expand_predecessors TYPE abap_bool OPTIONAL
         !if_expand_subtree      TYPE abap_bool OPTIONAL
         !iv_level_count         TYPE i OPTIONAL .
+    "! <p class="shorttext synchronized" lang="en">Expand the selected_nodes</p>
+    "!
+    METHODS expand_selected_nodes
+      IMPORTING
+        if_expand_sub_tree TYPE abap_bool DEFAULT abap_true
+      RAISING
+        zcx_uitb_tree_error.
     "! <p class="shorttext synchronized" lang="en">Expand given nodes</p>
     METHODS expand_nodes
       IMPORTING
@@ -127,6 +141,12 @@ CLASS zcl_uitb_ctm_nodes DEFINITION
     METHODS get_next_node_key
       RETURNING
         VALUE(rv_new_node_key) TYPE tm_nodekey .
+
+    METHODS get_selected_nodes
+      RETURNING
+        VALUE(rt_node_keys) TYPE treemnotab
+      RAISING
+        zcx_uitb_tree_error.
 ENDCLASS.
 
 
@@ -382,4 +402,51 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
       expand_node( iv_node_key ).
     ENDIF.
   ENDMETHOD.
+
+  METHOD collapse_selected_nodes.
+
+    LOOP AT get_selected_nodes( ) ASSIGNING FIELD-SYMBOL(<lv_node>).
+      mr_model->collapse_node(
+        EXPORTING
+          node_key         = <lv_node>
+          collapse_subtree = if_collapse_sub_tree
+        EXCEPTIONS
+          node_not_found   = 1
+          OTHERS           = 2
+      ).
+      IF sy-subrc <> 0.
+        zcx_uitb_tree_error=>raise_from_sy( ).
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD expand_selected_nodes.
+    LOOP AT get_selected_nodes( ) ASSIGNING FIELD-SYMBOL(<lv_node>).
+      expand_node(
+          iv_node_key        = <lv_node>
+          if_expand_subtree  = if_expand_sub_tree
+      ).
+    ENDLOOP.
+  ENDMETHOD.
+
+
+  METHOD get_selected_nodes.
+
+    mr_model->get_selected_nodes(
+      IMPORTING
+        node_key_table               =      rt_node_keys
+      EXCEPTIONS
+        control_not_existing         = 1
+        control_dead                 = 2
+        cntl_system_error            = 3
+        failed                       = 4
+        multiple_node_selection_only = 5
+        OTHERS                       = 6
+    ).
+    IF sy-subrc <> 0.
+      zcx_uitb_tree_error=>raise_from_sy( ).
+    ENDIF.
+
+  ENDMETHOD.
+
 ENDCLASS.
