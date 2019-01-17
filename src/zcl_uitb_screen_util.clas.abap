@@ -1,41 +1,47 @@
 "! <p class="shorttext synchronized" lang="en">Utilities for Screen Handling</p>
-class ZCL_UITB_SCREEN_UTIL definition
-  public
-  final
-  create public .
+CLASS zcl_uitb_screen_util DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
 
-public section.
+  PUBLIC SECTION.
 
-  "! <p class="shorttext synchronized" lang="en">Calls given screen</p>
-  class-methods CALL_SCREEN
-    importing
-      !IV_SCREEN_ID type DYNNR
-      !IV_REPORT_ID type SY-REPID
-      !IF_SELSCREEN type ABAP_BOOL optional
-      !IT_OBJECT_MAP type ZUITB_GLOBAL_OBJECT_MAP_T optional
-      !IV_START_COLUMN type I optional
-      !IV_START_LINE type I optional
-      !IV_END_COLUMN type I optional
-      !IV_END_LINE type I optional .
-  "! <p class="shorttext synchronized" lang="en">Sets GUI Status for Selection Screen</p>
-  class-methods SET_SELSCREEN_STATUS
-    importing
-      !IV_STATUS type SYST_PFKEY
-      !IV_REPID type REPID optional
-      !IT_EXCLUDING_FUNCTIONS type UI_FUNCTIONS optional .
-  "! <p class="shorttext synchronized" lang="en">Leaves the current screen</p>
-  class-methods LEAVE_SCREEN .
-  "! <p class="shorttext synchronized" lang="en">Sets given function code to trigger PAI</p>
-  class-methods SET_FUNCTION_CODE
-    importing
-      !IV_FUNCTION type UI_FUNC default '=' .
-protected section.
-private section.
+    "! <p class="shorttext synchronized" lang="en">Calls given screen</p>
+    CLASS-METHODS call_screen
+      IMPORTING
+        !iv_screen_id    TYPE dynnr
+        !iv_report_id    TYPE sy-repid
+        !if_selscreen    TYPE abap_bool OPTIONAL
+        !it_object_map   TYPE zuitb_global_object_map_t OPTIONAL
+        !iv_start_column TYPE i OPTIONAL
+        !iv_start_line   TYPE i OPTIONAL
+        !iv_end_column   TYPE i OPTIONAL
+        !iv_end_line     TYPE i OPTIONAL .
+    "! <p class="shorttext synchronized" lang="en">Sets GUI Status for Selection Screen</p>
+    CLASS-METHODS set_selscreen_status
+      IMPORTING
+        !iv_status              TYPE syst_pfkey
+        !iv_repid               TYPE repid OPTIONAL
+        !it_excluding_functions TYPE ui_functions OPTIONAL .
+    "! <p class="shorttext synchronized" lang="en">Leaves the current screen</p>
+    CLASS-METHODS leave_screen .
+    "! <p class="shorttext synchronized" lang="en">Show Progress indicator with text</p>
+    "!
+    CLASS-METHODS show_progress
+      IMPORTING
+        iv_progress TYPE i DEFAULT 0
+        !iv_text    TYPE string .
+    "! <p class="shorttext synchronized" lang="en">Sets given function code to trigger PAI</p>
+    CLASS-METHODS set_function_code
+      IMPORTING
+        !iv_function TYPE ui_func DEFAULT '=' .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_SCREEN_UTIL IMPLEMENTATION.
+CLASS zcl_uitb_screen_util IMPLEMENTATION.
 
 
   METHOD call_screen.
@@ -99,5 +105,16 @@ CLASS ZCL_UITB_SCREEN_UTIL IMPLEMENTATION.
         p_program = iv_repid
       TABLES
         p_exclude = lt_exclude.
+  ENDMETHOD.
+
+  METHOD show_progress.
+    DATA(lv_progress) = COND #( WHEN iv_progress <= 0 THEN 0
+                                WHEN iv_progress > 100 THEN 100
+                                ELSE iv_progress ).
+
+    CALL FUNCTION 'SAPGUI_PROGRESS_INDICATOR'
+      EXPORTING
+        percentage = lv_progress
+        text       = iv_text.
   ENDMETHOD.
 ENDCLASS.

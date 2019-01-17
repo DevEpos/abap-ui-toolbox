@@ -7,9 +7,7 @@
     <VERSION>1</VERSION>
     <LANGU>E</LANGU>
     <DESCRIPT>Utilities for Screen Handling</DESCRIPT>
-    <EXPOSURE>2</EXPOSURE>
     <STATE>1</STATE>
-    <CLSFINAL>X</CLSFINAL>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
@@ -38,6 +36,12 @@
      <CMPNAME>SET_SELSCREEN_STATUS</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Sets GUI Status for Selection Screen</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_SCREEN_UTIL</CLSNAME>
+     <CMPNAME>SHOW_PROGRESS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Show Progress indicator with text</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
   </asx:values>
