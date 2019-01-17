@@ -13,6 +13,7 @@ CLASS zcl_uitb_popup_help_viewer DEFINITION
     CLASS-METHODS create
       IMPORTING
         iv_title        TYPE string OPTIONAL
+        iv_style        TYPE string OPTIONAL
         it_doc_lines    TYPE string_table OPTIONAL
         ir_html_content TYPE REF TO zcl_uitb_html_content OPTIONAL
       RETURNING
@@ -34,12 +35,14 @@ CLASS zcl_uitb_popup_help_viewer DEFINITION
     "! <p class="shorttext synchronized" lang="en">ITS: Table with MIMEs</p>
     DATA mt_html_raw TYPE tt_w3_mime.
     DATA mv_title TYPE string.
+    DATA mv_style TYPE string.
 
     METHODS create_document .
     METHODS constructor
       IMPORTING
         iv_title        TYPE string
-        !it_doc_lines   TYPE string_table
+        iv_style        TYPE string
+        it_doc_lines    TYPE string_table
         ir_html_content TYPE REF TO zcl_uitb_html_content.
     METHODS on_close
         FOR EVENT close OF cl_gui_dialogbox_container .
@@ -83,6 +86,7 @@ CLASS zcl_uitb_popup_help_viewer IMPLEMENTATION.
   METHOD constructor.
     mv_title = iv_title.
     mt_doc_lines = it_doc_lines.
+    mv_style = iv_style.
     mr_html_content = ir_html_content.
   ENDMETHOD.
 
@@ -93,6 +97,7 @@ CLASS zcl_uitb_popup_help_viewer IMPLEMENTATION.
 
     result = NEW #(
       iv_title        = iv_title
+      iv_style        = iv_style
       it_doc_lines    = it_doc_lines
       ir_html_content = ir_html_content
     ).
@@ -194,14 +199,17 @@ CLASS zcl_uitb_popup_help_viewer IMPLEMENTATION.
       ( line = |  background: #fefeee;| )
       ( line = |  border: 0;| )
       ( line = |\}| )
+    ).
+
+    IF mv_style IS NOT INITIAL.
+      mt_html = VALUE #( BASE mt_html
+        ( line = mv_style )
+      ).
+    ENDIF.
+
+    mt_html = VALUE #( BASE mt_html
       ( line = || )
       ( line = |--> </style>| )
-*      ( line = |<style>| )
-*      ( line = |  body \{| )
-*      ( line = |    font-family: 'Verdana',sans-serif;| )
-*      ( line = |    background-color: rgb(255,255,225);| )
-*      ( line = |  \}| )
-*      ( line = |</style>| )
       ( line = |</head>| )
       ( line = |<body>| )
     ).
@@ -233,11 +241,18 @@ CLASS zcl_uitb_popup_help_viewer IMPLEMENTATION.
 
 
   METHOD zif_uitb_view~show.
+    DATA(ls_metrics) = cl_gui_cfw=>get_metric_factors( ).
+
+    data(lv_top) = ( ls_metrics-screen-y - 350 ) / 2.
+    data(lv_left) = ( ls_metrics-screen-x - 900 ) / 2.
+
     mr_dialog_box = NEW cl_gui_dialogbox_container(
         width   = 900
         height  = 350
-        top     = 100
-        left    = 100
+        top     = 120
+        left    = 300
+*        top     = lv_top
+*        left    = lv_left
         caption = |{ COND #( WHEN mv_title IS NOT INITIAL THEN mv_title ELSE 'Help'(001) ) }|
     ).
 

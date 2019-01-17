@@ -13,6 +13,8 @@ CLASS zcl_uitb_html_content DEFINITION
     "! <p class="shorttext synchronized" lang="en">Start new paragraph</p>
     "!
     METHODS start_p
+      IMPORTING
+        iv_style       TYPE w3_html OPTIONAL
       RETURNING
         VALUE(rr_self) TYPE REF TO zcl_uitb_html_content.
     "! <p class="shorttext synchronized" lang="en">End paragraph</p>
@@ -23,6 +25,8 @@ CLASS zcl_uitb_html_content DEFINITION
     "! <p class="shorttext synchronized" lang="en">Start Blockquote</p>
     "!
     METHODS start_quote
+      IMPORTING
+        iv_style       TYPE w3_html OPTIONAL
       RETURNING
         VALUE(rr_self) TYPE REF TO zcl_uitb_html_content.
     "! <p class="shorttext synchronized" lang="en">End blockquote</p>
@@ -35,6 +39,7 @@ CLASS zcl_uitb_html_content DEFINITION
     METHODS add_heading
       IMPORTING
         iv_text        TYPE w3_html
+        iv_style       TYPE w3_html OPTIONAL
         iv_level       TYPE i DEFAULT 3
       RETURNING
         VALUE(rr_self) TYPE REF TO zcl_uitb_html_content.
@@ -61,6 +66,8 @@ CLASS zcl_uitb_html_content DEFINITION
     "! <p class="shorttext synchronized" lang="en">Start new unordered list</p>
     "!
     METHODS start_ul
+      IMPORTING
+        iv_style       TYPE w3_html OPTIONAL
       RETURNING
         VALUE(rr_self) TYPE REF TO zcl_uitb_html_content.
     "! <p class="shorttext synchronized" lang="en">End unordered list</p>
@@ -71,6 +78,8 @@ CLASS zcl_uitb_html_content DEFINITION
     "! <p class="shorttext synchronized" lang="en">Start new ordered list</p>
     "!
     METHODS start_ol
+      IMPORTING
+        iv_style       TYPE w3_html OPTIONAL
       RETURNING
         VALUE(rr_self) TYPE REF TO zcl_uitb_html_content.
     "! <p class="shorttext synchronized" lang="en">End ordered list</p>
@@ -81,6 +90,8 @@ CLASS zcl_uitb_html_content DEFINITION
     "! <p class="shorttext synchronized" lang="en">Start new list item element</p>
     "!
     METHODS start_li
+      IMPORTING
+        iv_style       TYPE w3_html OPTIONAL
       RETURNING
         VALUE(rr_self) TYPE REF TO zcl_uitb_html_content.
     "! <p class="shorttext synchronized" lang="en">Add new list item element</p>
@@ -88,6 +99,7 @@ CLASS zcl_uitb_html_content DEFINITION
     METHODS add_li
       IMPORTING
         iv_list_item_text TYPE w3_html
+        iv_style          TYPE w3_html OPTIONAL
       RETURNING
         VALUE(rr_self)    TYPE REF TO zcl_uitb_html_content.
     "! <p class="shorttext synchronized" lang="en">End list item element</p>
@@ -98,6 +110,8 @@ CLASS zcl_uitb_html_content DEFINITION
     "! <p class="shorttext synchronized" lang="en">Start new html table</p>
     "!
     METHODS start_table
+      IMPORTING
+        iv_style       TYPE w3_html OPTIONAL
       RETURNING
         VALUE(rr_self) TYPE REF TO zcl_uitb_html_content.
     "! <p class="shorttext synchronized" lang="en">Closes HTML table</p>
@@ -107,6 +121,8 @@ CLASS zcl_uitb_html_content DEFINITION
         VALUE(rr_self) TYPE REF TO zcl_uitb_html_content.
     "! <p class="shorttext synchronized" lang="en">Starts new table row</p>
     METHODS start_table_row
+      IMPORTING
+        iv_style       TYPE w3_html OPTIONAL
       RETURNING
         VALUE(rr_self) TYPE REF TO zcl_uitb_html_content.
     "! <p class="shorttext synchronized" lang="en">Ends current table row</p>
@@ -119,6 +135,7 @@ CLASS zcl_uitb_html_content DEFINITION
     METHODS add_table_header_cell
       IMPORTING
         iv_text        TYPE w3_html
+        iv_style       TYPE w3_html OPTIONAL
       RETURNING
         VALUE(rr_self) TYPE REF TO zcl_uitb_html_content.
     "! <p class="shorttext synchronized" lang="en">Adds new table body cell</p>
@@ -126,6 +143,7 @@ CLASS zcl_uitb_html_content DEFINITION
     METHODS add_table_body_cell
       IMPORTING
         iv_text        TYPE w3_html
+        iv_style       TYPE w3_html OPTIONAL
       RETURNING
         VALUE(rr_self) TYPE REF TO zcl_uitb_html_content.
     "! <p class="shorttext synchronized" lang="en">Retrieve complete html content</p>
@@ -141,13 +159,15 @@ CLASS zcl_uitb_html_content DEFINITION
     "!
     METHODS add_with_tag
       IMPORTING
-        iv_text TYPE string
-        iv_tag  TYPE string .
+        iv_text  TYPE string
+        iv_style TYPE string OPTIONAL
+        iv_tag   TYPE string .
     "! <p class="shorttext synchronized" lang="en">Writes a start tag</p>
     "!
     METHODS write_start_tag
       IMPORTING
-        iv_tag TYPE string .
+        iv_tag   TYPE string
+        iv_style TYPE string OPTIONAL.
     "! <p class="shorttext synchronized" lang="en">Writes a closing tag</p>
     METHODS write_end_tag
       IMPORTING
@@ -169,12 +189,12 @@ CLASS zcl_uitb_html_content IMPLEMENTATION.
 
   METHOD add_heading.
     DATA(lv_level) = COND #( WHEN iv_level > 1 AND iv_level < 7 THEN iv_level ELSE 3 ).
-    add_with_tag( iv_text = |{ iv_text }|  iv_tag  = |h{ lv_level }| ).
+    add_with_tag( iv_text = |{ iv_text }|  iv_tag  = |h{ lv_level }| iv_style = |{ iv_style }| ).
     rr_self = me.
   ENDMETHOD.
 
   METHOD add_li.
-    add_with_tag( iv_text = |{ iv_list_item_text }|  iv_tag  = 'li' ).
+    add_with_tag( iv_text = |{ iv_list_item_text }|  iv_tag  = 'li' iv_style = |{ iv_style }| ).
     rr_self = me.
   ENDMETHOD.
 
@@ -209,34 +229,34 @@ CLASS zcl_uitb_html_content IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD start_li.
-    write_start_tag( 'li' ).
+    write_start_tag( iv_tag = 'li' iv_style = |{ iv_style }| ).
     rr_self = me.
   ENDMETHOD.
 
   METHOD start_ol.
-    write_start_tag( 'ol' ).
+    write_start_tag( iv_tag = 'ol' iv_style = |{ iv_style }| ).
     rr_self = me.
   ENDMETHOD.
 
   METHOD start_p.
-    write_start_tag( 'p' ).
+    write_start_tag( iv_tag = 'p' iv_style = |{ iv_style }| ).
     rr_self = me.
   ENDMETHOD.
 
   METHOD start_quote.
-    write_start_tag( 'blockquote' ).
+    write_start_tag( iv_tag = 'blockquote' iv_style = |{ iv_style }| ).
     rr_self = me.
   ENDMETHOD.
 
   METHOD start_ul.
-    write_start_tag( 'ul' ).
+    write_start_tag( iv_tag = 'ul' iv_style = |{ iv_style }| ).
     rr_self = me.
   ENDMETHOD.
 
   METHOD add_with_tag.
     mt_content = VALUE #(
       BASE mt_content
-      ( |<{ iv_tag }>{ iv_text }</{ iv_tag }>| )
+      ( |<{ iv_tag }{ cond #( when iv_style is not initial then |style="{ iv_style }"| ) }>{ iv_text }</{ iv_tag }>| )
     ).
   ENDMETHOD.
 
@@ -248,9 +268,11 @@ CLASS zcl_uitb_html_content IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD write_start_tag.
+    DATA(lv_style) = COND #( WHEN iv_style IS NOT INITIAL THEN |style="{ iv_style }"| ).
+
     mt_content = VALUE #(
       BASE mt_content
-      ( |<{ iv_tag }>| )
+      ( |<{ iv_tag }{ lv_style }>| )
     ).
   ENDMETHOD.
 
@@ -268,16 +290,18 @@ CLASS zcl_uitb_html_content IMPLEMENTATION.
 
   METHOD add_table_body_cell.
     add_with_tag(
-        iv_text = |{ iv_text }|
-        iv_tag  = 'td'
+        iv_text  = |{ iv_text }|
+        iv_style = |{ iv_style }|
+        iv_tag   = 'td'
     ).
     rr_self = me.
   ENDMETHOD.
 
   METHOD add_table_header_cell.
     add_with_tag(
-        iv_text = |{ iv_text }|
-        iv_tag  = 'th'
+        iv_text  = |{ iv_text }|
+        iv_style = |{ iv_style }|
+        iv_tag   = 'th'
     ).
     rr_self = me.
   ENDMETHOD.
@@ -288,7 +312,7 @@ CLASS zcl_uitb_html_content IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD start_table.
-    write_start_tag( iv_tag = 'table' ).
+    write_start_tag( iv_tag = 'table' iv_style = |{ iv_style }| ).
     rr_self = me.
   ENDMETHOD.
 
@@ -298,7 +322,7 @@ CLASS zcl_uitb_html_content IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD start_table_row.
-    write_start_tag( iv_tag = 'tr' ).
+    write_start_tag( iv_tag = 'tr' iv_style = |{ iv_style }| ).
     rr_self = me.
   ENDMETHOD.
 
