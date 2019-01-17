@@ -1,3 +1,4 @@
+"! <p class="shorttext synchronized" lang="en">Column Tree Model</p>
 CLASS zcl_uitb_column_tree_model DEFINITION
   PUBLIC
   CREATE PUBLIC .
@@ -22,28 +23,38 @@ CLASS zcl_uitb_column_tree_model DEFINITION
         !if_with_toolbar     TYPE abap_bool OPTIONAL
         if_auto_node_key     TYPE abap_bool OPTIONAL
         !iv_selection_mode   TYPE i DEFAULT c_single_selection .
+    "! <p class="shorttext synchronized" lang="en">Scroll to position in tree</p>
+    METHODS scroll_to
+      IMPORTING
+        iv_position TYPE i DEFAULT cl_tree_model=>scroll_home.
     METHODS create_tree_control .
     METHODS has_focus
       RETURNING
         VALUE(result) TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Get toolbar of tree (only bound for if_with_toolbar = 'X')</p>
     METHODS get_toolbar
       RETURNING
         VALUE(result) TYPE REF TO zcl_uitb_toolbar_model .
     METHODS update_view
       RAISING
         zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Get nodes object for tree</p>
     METHODS get_nodes
       RETURNING
         VALUE(result) TYPE REF TO zcl_uitb_ctm_nodes .
+    "! <p class="shorttext synchronized" lang="en">Get selections object for tree</p>
     METHODS get_selections
       RETURNING
         VALUE(result) TYPE REF TO zcl_uitb_ctm_selections .
+    "! <p class="shorttext synchronized" lang="en">Get events object for tree</p>
     METHODS get_events
       RETURNING
         VALUE(result) TYPE REF TO zcl_uitb_ctm_events .
+    "! <p class="shorttext synchronized" lang="en">Get columns object for tree</p>
     METHODS get_columns
       RETURNING
         VALUE(result) TYPE REF TO zcl_uitb_ctm_columns .
+    "! <p class="shorttext synchronized" lang="en">Get Search object for tree</p>
     METHODS get_search
       RETURNING
         VALUE(result) TYPE REF TO zcl_uitb_ctm_search .
@@ -63,6 +74,7 @@ CLASS zcl_uitb_column_tree_model DEFINITION
     DATA mr_selections TYPE REF TO zcl_uitb_ctm_selections .
     DATA mr_columns TYPE REF TO zcl_uitb_ctm_columns .
     DATA mr_nodes TYPE REF TO zcl_uitb_ctm_nodes .
+    "! <p class="shorttext synchronized" lang="en">Search functionality for Column Tree Model</p>
     DATA mr_search TYPE REF TO zcl_uitb_ctm_search .
     DATA mr_events TYPE REF TO zcl_uitb_ctm_events .
     DATA mr_temp_control TYPE REF TO cl_gui_control .
@@ -266,4 +278,23 @@ CLASS zcl_uitb_column_tree_model IMPLEMENTATION.
       ENDIF.
     ENDIF.
   ENDMETHOD.
+
+  METHOD scroll_to.
+    mr_tree_model->scroll(
+      EXPORTING
+        scroll_command         = iv_position
+*      EXCEPTIONS
+*        control_not_existing   = 1
+*        control_dead           = 2
+*        cntl_system_error      = 3
+*        failed                 = 4
+*        illegal_scroll_command = 5
+*        others                 = 6
+    ).
+    IF SY-SUBRC <> 0.
+*     MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
+*       WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
+    ENDIF.
+  ENDMETHOD.
+
 ENDCLASS.
