@@ -22,7 +22,6 @@ CLASS zcl_uitb_popup_help_viewer DEFINITION
   PRIVATE SECTION.
     TYPES: tt_w3_mime TYPE STANDARD TABLE OF w3_mime WITH DEFAULT KEY.
     DATA mr_dialog_box TYPE REF TO cl_gui_dialogbox_container .
-    DATA mr_dd_doc TYPE REF TO cl_dd_document .
     DATA mt_doc_lines TYPE string_table .
     DATA mr_html_content TYPE REF TO zcl_uitb_html_content.
     "! <p class="shorttext synchronized" lang="en">HTML Control Proxy Class</p>
@@ -59,9 +58,7 @@ CLASS zcl_uitb_popup_help_viewer IMPLEMENTATION.
 
     CONCATENATE LINES OF mt_html INTO lv_string SEPARATED BY cl_abap_char_utilities=>newline.
 
-    DATA: lv_xstr  TYPE xstring,
-          lt_xdata TYPE TABLE OF w3_mime, " RAW255
-          lv_size  TYPE int4.
+    DATA: lv_xstr  TYPE xstring.
 
 
     CALL FUNCTION 'SCMS_STRING_TO_XSTRING'
