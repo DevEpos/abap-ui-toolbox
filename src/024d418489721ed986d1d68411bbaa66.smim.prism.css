@@ -1,0 +1,187 @@
+.prism-default code[class*=language-],.prism-default pre[class*=language-] {
+    color: #000;
+    background: none;
+    text-shadow: 0 1px #fff;
+    font-family: Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;
+    text-align: left;
+    white-space: pre-wrap;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.0;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -webkit-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none
+}
+
+.prism-default code[class*=language-]::selection,.prism-default code[class*=language-] ::selection,.prism-default pre[class*=language-]::selection,.prism-default pre[class*=language-] ::selection {
+    text-shadow: none;
+    background: #b3d4fc
+}
+
+@media print {
+    .prism-default code[class*=language-],.prism-default pre[class*=language-] {
+        text-shadow: none
+    }
+}
+
+.prism-default pre[class*=language-] {
+    padding: 1em;
+    margin: .5em 0;
+    overflow: auto
+}
+
+.prism-default :not(pre)>code[class*=language-],.prism-default pre[class*=language-] {
+    background: #f5f2f0
+}
+
+.prism-default :not(pre)>code[class*=language-] {
+    padding: .1em;
+    border-radius: .3em;
+    white-space: normal
+}
+
+.prism-default .token.cdata,.prism-default .token.comment,.prism-default .token.doctype,.prism-default .token.prolog {
+    color: #708090
+}
+
+.prism-default .token.punctuation {
+    color: #999
+}
+
+.prism-default .namespace {
+    opacity: .7
+}
+
+.prism-default .token.boolean,.prism-default .token.constant,.prism-default .token.deleted,.prism-default .token.number,.prism-default .token.property,.prism-default .token.symbol,.prism-default .token.tag {
+    color: #905
+}
+
+.prism-default .token.attr-name,.prism-default .token.builtin,.prism-default .token.char,.prism-default .token.inserted,.prism-default .token.selector,.prism-default .token.string {
+    color: #690
+}
+
+.prism-default .language-css .token.string,.prism-default .style .token.string,.prism-default .token.entity,.prism-default .token.operator,.prism-default .token.url {
+    color: #a67f59;
+    background: hsla(0,0%,100%,.5)
+}
+
+.prism-default .token.atrule,.prism-default .token.attr-value,.prism-default .token.keyword {
+    color: #07a
+}
+
+.prism-default .token.annotation,.prism-default .token.function {
+    color: #dd4a68
+}
+
+.prism-default .token.important,.prism-default .token.regex,.prism-default .token.variable {
+    color: #e90
+}
+
+.prism-default .token.bold,.prism-default .token.important {
+    font-weight: 700
+}
+
+.prism-default .token.italic {
+    font-style: italic
+}
+
+.prism-default .token.entity {
+    cursor: help
+}
+
+.prism-default pre.line-numbers {
+    position: relative;
+    padding-left: 3.8em;
+    counter-reset: a
+}
+
+.prism-default pre.line-numbers>code {
+    position: relative;
+    white-space: inherit
+}
+
+.prism-default .line-numbers .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    font-size: 100%;
+    left: -3.8em;
+    width: 3em;
+    letter-spacing: -1px;
+    border-right: 1px solid #999;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+}
+
+.prism-default .line-numbers-rows>span {
+    pointer-events: none;
+    display: block;
+    counter-increment: a
+}
+
+.prism-default .line-numbers-rows>span:before {
+    content: counter(a);
+    color: #999;
+    display: block;
+    padding-right: .8em;
+    text-align: right
+}
+
+.prism-default pre.code-toolbar {
+    position: relative
+}
+
+.prism-default pre.code-toolbar>.toolbar {
+    position: absolute;
+    top: .3em;
+    right: .2em;
+    transition: opacity .3s ease-in-out;
+    opacity: 0
+}
+
+.prism-default pre.code-toolbar:hover>.toolbar {
+    opacity: 1
+}
+
+.prism-default pre.code-toolbar>.toolbar .toolbar-item {
+    display: inline-block
+}
+
+.prism-default pre.code-toolbar>.toolbar a {
+    cursor: pointer
+}
+
+.prism-default pre.code-toolbar>.toolbar button {
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    overflow: visible;
+    padding: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+}
+
+.prism-default pre.code-toolbar>.toolbar a,.prism-default pre.code-toolbar>.toolbar button,.prism-default pre.code-toolbar>.toolbar span {
+    color: #bbb;
+    font-size: .8em;
+    padding: 0 .5em;
+    background: #f5f2f0;
+    background: hsla(0,0%,88%,.2);
+    box-shadow: 0 2px 0 0 rgba(0,0,0,.2);
+    border-radius: .5em
+}
+
+.prism-default pre.code-toolbar>.toolbar a:focus,.prism-default pre.code-toolbar>.toolbar a:hover,.prism-default pre.code-toolbar>.toolbar button:focus,.prism-default pre.code-toolbar>.toolbar button:hover,.prism-default pre.code-toolbar>.toolbar span:focus,.prism-default pre.code-toolbar>.toolbar span:hover {
+    color: inherit;
+    text-decoration: none
+}
