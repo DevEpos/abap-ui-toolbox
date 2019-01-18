@@ -35,6 +35,12 @@ CLASS zcl_uitb_screen_util DEFINITION
     CLASS-METHODS set_function_code
       IMPORTING
         !iv_function TYPE ui_func DEFAULT '=' .
+
+    "! <p class="shorttext synchronized" lang="en">Remove Screen toolbar</p>
+    CLASS-METHODS remove_screen_toolbar
+      IMPORTING
+        iv_program   TYPE sy-repid
+        iv_screen_id TYPE sy-dynnr.
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -67,6 +73,7 @@ CLASS zcl_uitb_screen_util IMPLEMENTATION.
         iv_end_column       = iv_end_column.
 
 *... free resources
+    lr_data_cache = zcl_uitb_data_cache=>get_instance( iv_report_id ).
     LOOP AT it_object_map ASSIGNING <ls_global_object>.
       TRY .
           DATA(lr_screen_controller) = CAST zif_uitb_screen_controller( <ls_global_object>-global_ref ).
@@ -117,4 +124,60 @@ CLASS zcl_uitb_screen_util IMPLEMENTATION.
         percentage = lv_progress
         text       = iv_text.
   ENDMETHOD.
+
+  METHOD remove_screen_toolbar.
+    DATA: ls_header               TYPE rpy_dyhead,
+          lt_containers           TYPE dycatt_tab,
+          lt_fields_to_containers TYPE dyfatc_tab,
+          lt_flow_logic           TYPE swydyflow.
+
+    CALL FUNCTION 'RPY_DYNPRO_READ'
+      EXPORTING
+        progname             = iv_program
+        dynnr                = iv_screen_id
+      importing
+        header               = ls_header
+      TABLES
+        containers           = lt_containers
+        fields_to_containers = lt_fields_to_containers
+        flow_logic           = lt_flow_logic
+      EXCEPTIONS
+        cancelled            = 1
+        not_found            = 2
+        permission_error     = 3
+        OTHERS               = 4.
+    IF sy-subrc IS NOT INITIAL.
+      RETURN. " Ignore errors, just exit
+    ENDIF.
+
+    IF ls_header-no_toolbar = abap_true.
+      RETURN. " No change required
+    ENDIF.
+
+    ls_header-no_toolbar = abap_true.
+
+    CALL FUNCTION 'RPY_DYNPRO_INSERT'
+      EXPORTING
+        header                 = ls_header
+        suppress_exist_checks  = abap_true
+      TABLES
+        containers             = lt_containers
+        fields_to_containers   = lt_fields_to_containers
+        flow_logic             = lt_flow_logic
+      EXCEPTIONS
+        cancelled              = 1
+        already_exists         = 2
+        program_not_exists     = 3
+        not_executed           = 4
+        missing_required_field = 5
+        illegal_field_value    = 6
+        field_not_allowed      = 7
+        not_generated          = 8
+        illegal_field_position = 9
+        OTHERS                 = 10.
+    IF sy-subrc <> 2 AND sy-subrc <> 0.
+      RETURN. " Ignore errors, just exit
+    ENDIF.
+  ENDMETHOD.
+
 ENDCLASS.
