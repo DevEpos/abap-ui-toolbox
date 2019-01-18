@@ -17,20 +17,6 @@ CLASS zcl_uitb_data_cache DEFINITION
         !iv_repid          TYPE sy-repid
       RETURNING
         VALUE(rr_instance) TYPE REF TO zcl_uitb_data_cache .
-    "! <p class="shorttext synchronized" lang="en">Check if cache for report is initialized</p>
-    "!
-    "! @parameter rf_cache_is_filled | <p class="shorttext synchronized" lang="en"></p>
-    METHODS is_cache_initialized
-      RETURNING
-        VALUE(rf_cache_is_filled) TYPE abap_bool .
-    "! <p class="shorttext synchronized" lang="en">Registers data reference under given name</p>
-    "!
-    "! @parameter ir_variable_ref | <p class="shorttext synchronized" lang="en"></p>
-    "! @parameter iv_variable_name | <p class="shorttext synchronized" lang="en"></p>
-    METHODS register_data
-      IMPORTING
-        !ir_variable_ref  TYPE any
-        !iv_variable_name TYPE string .
     "! <p class="shorttext synchronized" lang="en">Retrieve data reference for given name</p>
     "!
     "! @parameter iv_registered_name | <p class="shorttext synchronized" lang="en"></p>
@@ -52,22 +38,13 @@ CLASS zcl_uitb_data_cache DEFINITION
     METHODS clear_object_ref
       IMPORTING
         !iv_registered_name TYPE string .
-    "! <p class="shorttext synchronized" lang="en">Clears the object cache</p>
-    "!
-    METHODS clear_cache .
+
   PROTECTED SECTION.
   PRIVATE SECTION.
-    TYPES: BEGIN OF lty_cache_map,
-             cache_id  TYPE sy-repid,
-             cache     TYPE HASHED TABLE OF zuitb_global_data_ref WITH UNIQUE KEY field_name,
-             screen_id TYPE sy-dynnr,
-           END OF lty_cache_map.
-    TYPES: ltt_cache_map TYPE HASHED TABLE OF lty_cache_map WITH UNIQUE KEY cache_id.
     CLASS-DATA gr_instance TYPE REF TO zcl_uitb_data_cache .
     DATA:
-      mt_global_data   TYPE HASHED TABLE OF zuitb_global_data_ref WITH UNIQUE KEY field_name repid,
-      mt_cache_map     TYPE ltt_cache_map,
-      mv_current_repid TYPE sy-repid.
+      mv_current_repid         TYPE sy-repid,
+      mf_initializing_progpool TYPE abap_bool.
 
     "! <p class="shorttext synchronized" lang="en">Initializes the program cache</p>
     "!
@@ -77,40 +54,40 @@ CLASS zcl_uitb_data_cache DEFINITION
     "! @parameter iv_repid | <p class="shorttext synchronized" lang="en"></p>
     METHODS set_current_repid
       IMPORTING
-         iv_repid TYPE sy-repid .
+        iv_repid TYPE sy-repid .
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_DATA_CACHE IMPLEMENTATION.
-
-
-  METHOD clear_cache.
-    FREE mt_global_data.
-  ENDMETHOD.
-
+CLASS zcl_uitb_data_cache IMPLEMENTATION.
 
   METHOD clear_object_ref.
-    FIELD-SYMBOLS: <lr_object_ref> TYPE any.
-
-    ASSIGN mt_global_data[ field_name = iv_registered_name ] TO FIELD-SYMBOL(<ls_global_data_ref>).
+    DATA(lr_object_ref) = get_data_ref( iv_registered_name ).
+    ASSIGN lr_object_ref->* TO FIELD-SYMBOL(<lr_object_ref>).
     IF sy-subrc = 0.
-      ASSIGN <ls_global_data_ref>-field_ref->* TO <lr_object_ref>.
-      IF sy-subrc = 0.
-        CLEAR: <lr_object_ref>.
-      ENDIF.
+      clear: <lr_object_ref>.
     ENDIF.
   ENDMETHOD.
 
 
   METHOD get_data_ref.
-    IF line_exists( mt_global_data[ field_name = iv_registered_name ] ).
-      DATA(lr_data_ref) = REF #( mt_global_data[ field_name = iv_registered_name
-                                                 repid      = mv_current_repid   ] ).
-      rr_data_ref = lr_data_ref->field_ref.
+    DATA(lv_prog_variable) = |({ mv_current_repid }){ iv_registered_name }|.
+
+    ASSIGN (lv_prog_variable) TO FIELD-SYMBOL(<l_prog_variable>).
+    IF sy-subrc = 0.
+      CLEAR mf_initializing_progpool.
+      rr_data_ref = REF #( <l_prog_variable> ).
     ELSE.
-      MESSAGE |Variable { iv_registered_name } is not registered in the global data cache| TYPE 'A'.
+*.... If the variable was still not found, there seems to be a programming error
+      IF mf_initializing_progpool = abap_true.
+        MESSAGE |Variable { iv_registered_name } does not exist in the Program { mv_current_repid }| TYPE 'A'.
+      ENDIF.
+*.... Try to initialize program pool
+      initialize_cache( ).
+      mf_initializing_progpool = abap_true.
+      rr_data_ref = get_data_ref( iv_registered_name ).
     ENDIF.
+
   ENDMETHOD.
 
 
@@ -120,31 +97,12 @@ CLASS ZCL_UITB_DATA_CACHE IMPLEMENTATION.
     ENDIF.
 
     gr_instance->set_current_repid( iv_repid ).
-    gr_instance->initialize_cache( ).
-
     rr_instance = gr_instance.
   ENDMETHOD.
 
 
   METHOD initialize_cache.
-    " check if the cache is initialized
-    CHECK NOT line_exists( mt_global_data[ repid = mv_current_repid ] ).
-
-    PERFORM ('INIT_PROG_DATA_CACHE') IN PROGRAM (mv_current_repid) USING me.
-  ENDMETHOD.
-
-
-  METHOD is_cache_initialized.
-    IF mt_global_data IS NOT INITIAL.
-      rf_cache_is_filled = abap_true.
-    ENDIF.
-  ENDMETHOD.
-
-
-  METHOD register_data.
-    INSERT VALUE #( field_name = iv_variable_name
-                    repid      = mv_current_repid
-                    field_ref  = ir_variable_ref ) INTO TABLE mt_global_data.
+    PERFORM ('INIT') IN PROGRAM (mv_current_repid).
   ENDMETHOD.
 
 
@@ -154,14 +112,10 @@ CLASS ZCL_UITB_DATA_CACHE IMPLEMENTATION.
 
 
   METHOD update_object_ref.
-    FIELD-SYMBOLS: <lr_object_ref> TYPE any.
-
-    ASSIGN mt_global_data[ field_name = iv_registered_name ] TO FIELD-SYMBOL(<ls_global_data_ref>).
+    DATA(lr_object_ref) = get_data_ref( iv_registered_name ).
+    ASSIGN lr_object_ref->* TO FIELD-SYMBOL(<lr_object_ref>).
     IF sy-subrc = 0.
-      ASSIGN <ls_global_data_ref>-field_ref->* TO <lr_object_ref>.
-      IF sy-subrc = 0.
-        <lr_object_ref> ?= ir_new_object_ref.
-      ENDIF.
+      <lr_object_ref> ?= ir_new_object_ref.
     ENDIF.
   ENDMETHOD.
 ENDCLASS.
