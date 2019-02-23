@@ -258,7 +258,6 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
     IF sy-subrc <> 0.
     ENDIF.
 
-    mo_editor->register_line_markers( ).
     mo_editor->init_completer( ).
 
     mo_editor->set_tabbar_mode( tabbar_mode = cl_gui_abapedit=>false ).
