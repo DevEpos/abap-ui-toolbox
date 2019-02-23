@@ -1,6 +1,6 @@
-FUNCTION zuitb_call_template_screen.
+FUNCTION ZUITB_CALL_TEMPLATE_SCREEN.
 *"----------------------------------------------------------------------
-*"*"Lokale Schnittstelle:
+*"*"Local Interface:
 *"  IMPORTING
 *"     REFERENCE(IV_PROGRAM_TITLE) TYPE  CUA_TIT_TX
 *"     REFERENCE(IR_CALLBACK) TYPE REF TO

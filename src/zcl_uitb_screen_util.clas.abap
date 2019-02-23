@@ -5,6 +5,28 @@ CLASS zcl_uitb_screen_util DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
+    TYPES: ty_metric TYPE c LENGTH 1.
+    TYPES:
+      BEGIN OF ty_s_size,
+        metric TYPE ty_metric,
+        width  TYPE i,
+        height TYPE i,
+      END OF ty_s_size.
+    TYPES:
+      BEGIN OF ty_s_area ,
+        metric TYPE ty_metric,
+        left   TYPE i,
+        top    TYPE i,
+        right  TYPE i,
+        bottom TYPE i,
+      END   OF ty_s_area .
+    CONSTANTS:
+      BEGIN  OF c_metrics,
+        dynpro     TYPE ty_metric VALUE '1',
+        pixel      TYPE ty_metric VALUE '2',
+        millimeter TYPE ty_metric VALUE '3',
+        relative   TYPE ty_metric VALUE '4',
+      END OF c_metrics.
 
     "! <p class="shorttext synchronized" lang="en">Calls given screen</p>
     CLASS-METHODS call_screen
@@ -32,17 +54,55 @@ CLASS zcl_uitb_screen_util DEFINITION
         iv_progress TYPE i DEFAULT 0
         !iv_text    TYPE string .
     "! <p class="shorttext synchronized" lang="en">Sets given function code to trigger PAI</p>
+    "!
     CLASS-METHODS set_function_code
       IMPORTING
         !iv_function TYPE ui_func DEFAULT '=' .
 
     "! <p class="shorttext synchronized" lang="en">Remove Screen toolbar</p>
+    "!
     CLASS-METHODS remove_screen_toolbar
       IMPORTING
         iv_program   TYPE sy-repid
         iv_screen_id TYPE sy-dynnr.
+
+    "! <p class="shorttext synchronized" lang="en">Retrieves the area for the given size</p>
+    "!
+    CLASS-METHODS get_screen_area_for_size
+      IMPORTING
+        is_size        TYPE ty_s_size
+        iv_metric      TYPE ty_metric
+      RETURNING
+        VALUE(rs_area) TYPE ty_s_area.
+    "! <p class="shorttext synchronized" lang="en">Convert to the given size to the given metric</p>
+    "!
+    CLASS-METHODS convert_size_metric
+      IMPORTING
+        !is_size       TYPE ty_s_size
+        !iv_metric     TYPE ty_metric
+      RETURNING
+        VALUE(rs_size) TYPE ty_s_size.
+    "! <p class="shorttext synchronized" lang="en">Set new current gui command object</p>
+    "!
+    CLASS-METHODS set_current_command
+      IMPORTING
+        io_command TYPE REF TO zif_uitb_gui_command_exec OPTIONAL.
+    "! <p class="shorttext synchronized" lang="en">Get current gui command object</p>
+    "!
+    CLASS-METHODS get_current_command
+      RETURNING
+        VALUE(ro_command) TYPE REF TO zif_uitb_gui_command_exec.
+    "! <p class="shorttext synchronized" lang="en">Executes possible GUI command</p>
+    "!
+    CLASS-METHODS handle_gui_command
+      CHANGING
+        cv_ok_code TYPE sy-ucomm.
+    "! <p class="shorttext synchronized" lang="en">Trigger new PAI to handle GUI command</p>
+    "!
+    CLASS-METHODS raise_gui_command.
   PROTECTED SECTION.
   PRIVATE SECTION.
+    CLASS-DATA go_current_command TYPE REF TO zif_uitb_gui_command_exec.
 ENDCLASS.
 
 
@@ -135,7 +195,7 @@ CLASS zcl_uitb_screen_util IMPLEMENTATION.
       EXPORTING
         progname             = iv_program
         dynnr                = iv_screen_id
-      importing
+      IMPORTING
         header               = ls_header
       TABLES
         containers           = lt_containers
@@ -177,6 +237,158 @@ CLASS zcl_uitb_screen_util IMPLEMENTATION.
         OTHERS                 = 10.
     IF sy-subrc <> 2 AND sy-subrc <> 0.
       RETURN. " Ignore errors, just exit
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD convert_size_metric.
+    DATA: ls_factors TYPE cntl_metric_factors.
+
+    IF iv_metric IS INITIAL.
+      rs_size = is_size.
+    ELSE.
+      CASE is_size-metric.
+
+        WHEN space.
+          CLEAR rs_size.
+
+        WHEN iv_metric.
+          rs_size = is_size.
+
+        WHEN c_metrics-pixel.
+          CASE iv_metric.
+            WHEN c_metrics-dynpro.
+              rs_size-metric = c_metrics-dynpro.
+              rs_size-width  = cl_gui_cfw=>compute_dynp_from_pixels( x_or_y = 'X' in = is_size-width  ).
+              rs_size-height = cl_gui_cfw=>compute_dynp_from_pixels( x_or_y = 'Y' in = is_size-height ).
+            WHEN c_metrics-millimeter.
+              rs_size-metric = c_metrics-millimeter.
+              rs_size-width  = cl_gui_cfw=>compute_dynp_from_pixels( x_or_y = 'X' in = is_size-width  ).
+              rs_size-height = cl_gui_cfw=>compute_dynp_from_pixels( x_or_y = 'Y' in = is_size-height ).
+              rs_size-width  = cl_gui_cfw=>compute_metric_from_dynp( metric = cl_gui_control=>metric_mm x_or_y = 'X' in = rs_size-width  ).
+              rs_size-height = cl_gui_cfw=>compute_metric_from_dynp( metric = cl_gui_control=>metric_mm x_or_y = 'Y' in = rs_size-height ).
+            WHEN OTHERS.
+              CLEAR rs_size.
+          ENDCASE.
+
+        WHEN c_metrics-dynpro.
+          CASE iv_metric.
+            WHEN c_metrics-pixel.
+              rs_size-metric = c_metrics-pixel.
+              rs_size-width  = cl_gui_cfw=>compute_metric_from_dynp( metric = cl_gui_control=>metric_pixel x_or_y = 'X' in = is_size-width  ).
+              rs_size-height = cl_gui_cfw=>compute_metric_from_dynp( metric = cl_gui_control=>metric_pixel x_or_y = 'Y' in = is_size-height ).
+            WHEN c_metrics-millimeter.
+              rs_size-metric = c_metrics-millimeter.
+              rs_size-width  = cl_gui_cfw=>compute_metric_from_dynp( metric = cl_gui_control=>metric_mm x_or_y = 'X' in = is_size-width  ).
+              rs_size-height = cl_gui_cfw=>compute_metric_from_dynp( metric = cl_gui_control=>metric_mm x_or_y = 'Y' in = is_size-height ).
+            WHEN OTHERS.
+              CLEAR rs_size.
+          ENDCASE.
+
+        WHEN c_metrics-millimeter.
+          CASE iv_metric.
+            WHEN c_metrics-dynpro.
+              rs_size-metric = c_metrics-dynpro.
+              rs_size-width  = cl_gui_cfw=>compute_pixel_from_metric( metric = cl_gui_control=>metric_mm x_or_y = 'X' in = is_size-width  ).
+              rs_size-height = cl_gui_cfw=>compute_pixel_from_metric( metric = cl_gui_control=>metric_mm x_or_y = 'Y' in = is_size-height ).
+              rs_size-width  = cl_gui_cfw=>compute_dynp_from_pixels( x_or_y = 'X' in = rs_size-width  ).
+              rs_size-height = cl_gui_cfw=>compute_dynp_from_pixels( x_or_y = 'Y' in = rs_size-height ).
+            WHEN c_metrics-pixel.
+              rs_size-metric = c_metrics-pixel.
+              rs_size-width  = cl_gui_cfw=>compute_pixel_from_metric( metric = cl_gui_control=>metric_mm x_or_y = 'X' in = is_size-width  ).
+              rs_size-height = cl_gui_cfw=>compute_pixel_from_metric( metric = cl_gui_control=>metric_mm x_or_y = 'Y' in = is_size-height ).
+            WHEN OTHERS.
+              CLEAR rs_size.
+          ENDCASE.
+
+        WHEN c_metrics-relative.
+          rs_size-metric = c_metrics-relative.
+          ls_factors = cl_gui_cfw=>get_metric_factors( ).
+          IF ls_factors-screen-x IS INITIAL.
+            ls_factors-screen-x = 1280.
+          ENDIF.
+          IF ls_factors-screen-y IS INITIAL.
+            ls_factors-screen-y = 1024.
+          ENDIF.
+          IF is_size-width > 100.
+            rs_size-width  = ls_factors-screen-x.
+          ELSE.
+            rs_size-width  = ls_factors-screen-x * is_size-width  / 100.
+          ENDIF.
+          IF is_size-height > 100.
+            rs_size-height = ls_factors-screen-y.
+          ELSE.
+            rs_size-height = ls_factors-screen-y * is_size-height / 100.
+          ENDIF.
+          CASE iv_metric.
+            WHEN c_metrics-pixel.
+              RETURN.
+            WHEN c_metrics-dynpro.
+              rs_size-metric = c_metrics-dynpro.
+              rs_size-width  = cl_gui_cfw=>compute_dynp_from_pixels( x_or_y = 'X' in = rs_size-width  ).
+              rs_size-height = cl_gui_cfw=>compute_dynp_from_pixels( x_or_y = 'Y' in = rs_size-height ).
+            WHEN c_metrics-millimeter.
+              rs_size-metric = c_metrics-millimeter.
+              rs_size-width  = cl_gui_cfw=>compute_dynp_from_pixels( x_or_y = 'X' in = rs_size-width  ).
+              rs_size-height = cl_gui_cfw=>compute_dynp_from_pixels( x_or_y = 'Y' in = rs_size-height ).
+              rs_size-width  = cl_gui_cfw=>compute_metric_from_dynp( metric = cl_gui_control=>metric_mm x_or_y = 'X' in = rs_size-width  ).
+              rs_size-height = cl_gui_cfw=>compute_metric_from_dynp( metric = cl_gui_control=>metric_mm x_or_y = 'Y' in = rs_size-height ).
+            WHEN OTHERS.
+              CLEAR rs_size.
+          ENDCASE.
+        WHEN OTHERS.
+          CLEAR rs_size.
+      ENDCASE.
+    ENDIF.
+
+  ENDMETHOD.
+
+  METHOD get_screen_area_for_size.
+    DATA(ls_window_metrics) = cl_gui_cfw=>get_metric_factors( ).
+
+    DATA(ls_window_size) = COND #( WHEN iv_metric = c_metrics-dynpro THEN
+                                      VALUE ty_s_size( width = 254 height = 200 )
+                                   ELSE
+                                        convert_size_metric( is_size   = VALUE #(
+                                                                metric = c_metrics-pixel
+                                                                width = ls_window_metrics-screen-x
+                                                                height = ls_window_metrics-screen-y )
+                                                             iv_metric = iv_metric )
+    ).
+    DATA(ls_screen_size) = convert_size_metric(
+       is_size   = is_size
+       iv_metric = iv_metric
+    ).
+
+    DATA(lv_top) = ( ls_window_size-height - ls_screen_size-height ) / 2.
+    DATA(lv_left) = ( ls_window_size-width  - ls_screen_size-width ) / 2.
+    rs_area = VALUE #(
+      top    = lv_top
+      left   = lv_left
+      right  = lv_left + ls_screen_size-width
+      bottom = lv_top + ls_screen_size-height
+    ).
+  ENDMETHOD.
+
+  METHOD get_current_command.
+    ro_command = go_current_command.
+  ENDMETHOD.
+
+  METHOD set_current_command.
+    go_current_command = io_command.
+  ENDMETHOD.
+
+  METHOD raise_gui_command.
+    cl_gui_cfw=>set_new_ok_code( EXPORTING new_code = zif_uitb_gui_command_exec=>c_ucomm_prefix
+                                 IMPORTING rc       = DATA(lv_subrc) ).
+*.. Remove command if rc <> 0 ???
+  ENDMETHOD.
+
+  METHOD handle_gui_command.
+    IF go_current_command IS BOUND.
+      CLEAR cv_ok_code.
+      DATA(lo_command) = go_current_command.
+      CLEAR go_current_command.
+      lo_command->execute( ).
     ENDIF.
   ENDMETHOD.
 

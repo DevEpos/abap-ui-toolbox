@@ -1,58 +1,69 @@
-class ZCL_UITB_TEMPLT_PROG_CALLBACK definition
-  public
-  final
-  create private .
+"! <p class="shorttext synchronized" lang="en">Callback for Template Program</p>
+CLASS zcl_uitb_templt_prog_callback DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PRIVATE .
 
-public section.
+  PUBLIC SECTION.
 
-  interfaces ZIF_UITB_VIEW .
-  interfaces ZIF_UITB_VIEW_CALLBACK .
-  interfaces ZIF_UITB_TEMPLATE_PROG .
+    INTERFACES zif_uitb_view .
+    INTERFACES zif_uitb_view_callback .
+    INTERFACES zif_uitb_template_prog .
 
-  types:
-    tt_controls TYPE STANDARD TABLE OF REF TO cl_gui_control with EMPTY KEY .
-  types:
-    BEGIN OF ty_dynamic_function,
+    TYPES:
+      tt_controls TYPE STANDARD TABLE OF REF TO cl_gui_control WITH EMPTY KEY .
+    TYPES:
+      BEGIN OF ty_dynamic_function,
         function_id   TYPE fieldname,
         function_info TYPE smp_dyntxt,
       END OF ty_dynamic_function .
-  types:
-    tt_dynamic_functions TYPE STANDARD TABLE OF ty_dynamic_function WITH DEFAULT KEY .
+    TYPES:
+      tt_dynamic_functions TYPE STANDARD TABLE OF ty_dynamic_function WITH DEFAULT KEY .
 
-  class-methods CREATE_TEMPLATE_PROGRAM
-    importing
-      !IV_TITLE type CUA_TIT_TX
-    returning
-      value(RR_CALLBACK) type ref to ZIF_UITB_TEMPLATE_PROG .
-  methods FREE_RESOURCES .
-  methods RAISE_BEFORE_OUTPUT
-    importing
-      !IR_CALLBACK type ref to ZIF_UITB_PBO_CALLBACK .
-  methods RAISE_EXIT
-    importing
-      !IR_CALLBACK type ref to ZIF_UITB_EXIT_CALLBACK .
-  methods RAISE_USER_COMMAND
-    importing
-      !IV_FUNCTION type SY-UCOMM
-      !IR_CALLBACK type ref to ZIF_UITB_PAI_CALLBACK .
+    "! <p class="shorttext synchronized" lang="en">Creates new template program</p>
+    "!
+    "! @parameter iv_title | <p class="shorttext synchronized" lang="en">Screen Title</p>
+    "! @parameter rr_callback | <p class="shorttext synchronized" lang="en">Reference to the created template View</p>
+    CLASS-METHODS create_template_program
+      IMPORTING
+        !iv_title          TYPE cua_tit_tx
+      RETURNING
+        VALUE(rr_callback) TYPE REF TO zif_uitb_template_prog .
+    "! <p class="shorttext synchronized" lang="en">Frees allocated resources</p>
+    METHODS free_resources .
+    "! <p class="shorttext synchronized" lang="en">Raises the PBO event</p>
+    METHODS raise_before_output
+      IMPORTING
+        !ir_callback TYPE REF TO zif_uitb_pbo_callback .
+    "! <p class="shorttext synchronized" lang="en">Raises the exit event</p>
+    METHODS raise_exit
+      IMPORTING
+        !ir_callback TYPE REF TO zif_uitb_exit_callback .
+    "! <p class="shorttext synchronized" lang="en">Raises the PAI event</p>
+    METHODS raise_user_command
+      IMPORTING
+        !iv_function TYPE sy-ucomm
+        !ir_callback TYPE REF TO zif_uitb_pai_callback .
   PROTECTED SECTION.
     DATA: mv_program_title     TYPE cua_tit_tx,
           mt_dynamic_functions TYPE tt_dynamic_functions.
 
-private section.
+  PRIVATE SECTION.
 
-  data MR_CONTAINER type ref to CL_GUI_CUSTOM_CONTAINER .
-  data MF_AS_DIALOG type ABAP_BOOL .
-  data MT_REGISTERED_CONTROLS type TT_CONTROLS .
+    "! <p class="shorttext synchronized" lang="en">Custom container with special free logic for children</p>
+    DATA mr_container TYPE REF TO cl_gui_custom_container .
+    DATA mf_as_dialog TYPE abap_bool .
+    DATA mt_registered_controls TYPE tt_controls .
 
-  methods CONSTRUCTOR
-    importing
-      !IV_TITLE type CUA_TIT_TX .
+    "! <p class="shorttext synchronized" lang="en">CONSTRUCTOR</p>
+    METHODS constructor
+      IMPORTING
+        !iv_title     TYPE cua_tit_tx.
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_TEMPLT_PROG_CALLBACK IMPLEMENTATION.
+CLASS zcl_uitb_templt_prog_callback IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -61,7 +72,9 @@ CLASS ZCL_UITB_TEMPLT_PROG_CALLBACK IMPLEMENTATION.
 
 
   METHOD create_template_program.
-    rr_callback = NEW zcl_uitb_templt_prog_callback( iv_title ).
+    rr_callback = NEW zcl_uitb_templt_prog_callback(
+        iv_title      = iv_title
+    ).
   ENDMETHOD.
 
 
@@ -145,7 +158,7 @@ CLASS ZCL_UITB_TEMPLT_PROG_CALLBACK IMPLEMENTATION.
 
 
   METHOD zif_uitb_template_prog~leave_program.
-    data(lv_function) = zif_uitb_template_prog=>c_func_leave.
+    DATA(lv_function) = zif_uitb_template_prog=>c_func_leave.
 
     IF if_prevent_exit_event = abap_true.
       lv_function = zif_uitb_template_prog=>c_func_leave_no_exit_event.
@@ -164,8 +177,8 @@ CLASS ZCL_UITB_TEMPLT_PROG_CALLBACK IMPLEMENTATION.
   ENDMETHOD.
 
 
-  method ZIF_UITB_VIEW~IS_VISIBLE.
-  endmethod.
+  METHOD zif_uitb_view~is_visible.
+  ENDMETHOD.
 
 
   METHOD zif_uitb_view~show.

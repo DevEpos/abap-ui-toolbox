@@ -74,6 +74,12 @@
      <MSGNR>010</MSGNR>
      <TEXT>Screen error in Program &amp;1, Screen &amp;2</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <MSGNR>011</MSGNR>
+     <TEXT>Error in GUI Framework</TEXT>
+    </T100>
    </T100>
    <I18N_LANGS>
     <LANGU>D</LANGU>

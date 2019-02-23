@@ -8,8 +8,8 @@ CLASS zcl_uitb_column_tree_model DEFINITION
     INTERFACES zif_uitb_content_searcher .
     INTERFACES zif_uitb_gui_control .
 
-    CONSTANTS c_single_selection TYPE i VALUE cl_item_tree_model=>node_sel_mode_single ##NO_TEXT.
-    CONSTANTS c_multiple_selection TYPE i VALUE cl_item_tree_model=>node_sel_mode_multiple ##NO_TEXT.
+    CONSTANTS c_single_selection TYPE i VALUE cl_tree_model=>node_sel_mode_single ##NO_TEXT.
+    CONSTANTS c_multiple_selection TYPE i VALUE cl_tree_model=>node_sel_mode_multiple ##NO_TEXT.
     CONSTANTS c_dnd_move TYPE i VALUE cl_dragdrop=>move ##NO_TEXT.
     CONSTANTS c_dnd_copy TYPE i VALUE cl_dragdrop=>copy ##NO_TEXT.
     CONSTANTS c_dnd_none TYPE i VALUE cl_dragdrop=>none ##NO_TEXT.
@@ -283,15 +283,15 @@ CLASS zcl_uitb_column_tree_model IMPLEMENTATION.
     mr_tree_model->scroll(
       EXPORTING
         scroll_command         = iv_position
-*      EXCEPTIONS
-*        control_not_existing   = 1
-*        control_dead           = 2
-*        cntl_system_error      = 3
-*        failed                 = 4
-*        illegal_scroll_command = 5
-*        others                 = 6
+      EXCEPTIONS
+        control_not_existing   = 1
+        control_dead           = 2
+        cntl_system_error      = 3
+        failed                 = 4
+        illegal_scroll_command = 5
+        OTHERS                 = 6
     ).
-    IF SY-SUBRC <> 0.
+    IF sy-subrc <> 0.
 *     MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
 *       WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
     ENDIF.

@@ -313,6 +313,12 @@ CLASS ZCL_UITB_ALV_FUNCTIONS IMPLEMENTATION.
     set_function( iv_name = zif_uitb_c_alv_functions=>layout_save if_enable = value ).
     set_function( iv_name = zif_uitb_c_alv_functions=>layout_change if_enable = value ).
     set_function( iv_name = zif_uitb_c_alv_functions=>local_copy if_enable = value ).
+    set_function( iv_name = zif_uitb_c_alv_functions=>local_cut if_enable = value ).
+    set_function( iv_name = zif_uitb_c_alv_functions=>local_paste_menu if_enable = value ).
+    set_function( iv_name = zif_uitb_c_alv_functions=>local_paste_new_row if_enable = value ).
+    set_function( iv_name = zif_uitb_c_alv_functions=>local_append_row if_enable = value ).
+    set_function( iv_name = zif_uitb_c_alv_functions=>local_insert_row if_enable = value ).
+    set_function( iv_name = zif_uitb_c_alv_functions=>local_delete_row if_enable = value ).
   ENDMETHOD.
 
 

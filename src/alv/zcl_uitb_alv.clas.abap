@@ -1,138 +1,169 @@
-class ZCL_UITB_ALV definition
-  public
-  final
-  create private
+"! <p class="shorttext synchronized" lang="en">GUI ALV Grid (OO)</p>
+CLASS zcl_uitb_alv DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PRIVATE
 
-  global friends ZCL_UITB_ALV_GRID_ADAPTER
-                 ZCL_UITB_ALV_METADATA_UTIL .
+  GLOBAL FRIENDS zcl_uitb_alv_grid_adapter
+                 zcl_uitb_alv_metadata_util .
 
-public section.
+  PUBLIC SECTION.
 
-  interfaces ZIF_UITB_GUI_CONTROL .
+    INTERFACES zif_uitb_gui_control .
 
-  class-methods CREATE_ALV
-    importing
-      !IR_DATA type ref to DATA
-      !IV_DESCRIPTION_LANGUAGE type LANGU default SY-LANGU
-      !IR_CONTAINER type ref to CL_GUI_CONTAINER
-      !IF_EDITABLE type ABAP_BOOL optional
-    returning
-      value(RR_ALV) type ref to ZCL_UITB_ALV .
-  methods GET_DATA
-    returning
-      value(RR_DATA) type ref to DATA .
-  methods SET_FUNCTION
-    importing
-      !IV_FUNCTION type UI_FUNC .
-  methods GET_METADATA .
-  methods GET_FILTERS
-    returning
-      value(RESULT) type ref to ZCL_UITB_ALV_FILTERS .
-  methods SET_SORTING
-    importing
-      !IT_SORTING type LVC_T_SORT .
-  methods SET_EDITABLE
-    importing
-      !VALUE type ABAP_BOOL .
-  methods DISPLAY
-    raising
-      ZCX_UITB_ALV_ERROR .
-  methods GET_COLUMNS
-    returning
-      value(RESULT) type ref to ZCL_UITB_ALV_COLUMNS .
-  methods REGISTER_EDIT_FOR_MODIFIED
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE .
-  methods REFRESH
-    importing
-      !IF_SOFT type ABAP_BOOL optional
-      !IS_STABLE type LVC_S_STBL optional
-      !IF_KEEP_SCROLL_POSITION type ABAP_BOOL optional .
-  methods GET_SORTING
-    returning
-      value(RESULT) type ref to ZCL_UITB_ALV_SORTS .
-  methods GET_LAYOUT
-    returning
-      value(RESULT) type ref to ZCL_UITB_ALV_LAYOUT .
-  methods GET_EVENTS
-    returning
-      value(RESULT) type ref to ZCL_UITB_ALV_EVENTS .
-  methods GET_FUNCTIONS
-    returning
-      value(RESULT) type ref to ZCL_UITB_ALV_FUNCTIONS .
-  methods GET_SELECTIONS
-    returning
-      value(RESULT) type ref to ZCL_UITB_ALV_SELECTIONS .
-  methods GET_DATA_CHANGES
-    returning
-      value(RESULT) type ref to ZCL_UITB_ALV_DATA .
-  methods GET_FUNCTIONAL_SETTINGS
-    returning
-      value(RESULT) type ref to ZCL_UITB_ALV_FUNC_SETTINGS .
-  methods GET_DISPLAY_SETTINGS
-    returning
-      value(RESULT) type ref to ZCL_UITB_ALV_DISPLAY_SETTINGS .
-  methods SET_DATA
-    importing
-      !IR_DATA type ref to DATA .
-protected section.
+    "! <p class="shorttext synchronized" lang="en">Creates new ALV instance</p>
+    "!
+    CLASS-METHODS create_alv
+      IMPORTING
+        !ir_data                 TYPE REF TO data
+        iv_display_type          TYPE i DEFAULT zif_uitb_c_alv_display_types=>embedded
+        !iv_description_language TYPE langu DEFAULT sy-langu
+        !ir_container            TYPE REF TO cl_gui_container OPTIONAL
+        !if_editable             TYPE abap_bool OPTIONAL
+      RETURNING
+        VALUE(rr_alv)            TYPE REF TO zcl_uitb_alv .
+    "! <p class="shorttext synchronized" lang="en">Get current data of alv</p>
+    "!
+    METHODS get_data
+      RETURNING
+        VALUE(rr_data) TYPE REF TO data .
+    "! <p class="shorttext synchronized" lang="en">Trigger given function in ALV</p>
+    "!
+    METHODS set_function
+      IMPORTING
+        !iv_function TYPE ui_func .
+    "! <p class="shorttext synchronized" lang="en">Set dimensions for popup</p>
+    "!
+    METHODS set_popup_dimensions
+      IMPORTING
+        iv_top    TYPE i
+        iv_left   TYPE i
+        iv_right  TYPE i
+        iv_bottom TYPE i.
+    METHODS get_metadata .
+    METHODS get_filters
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_alv_filters .
+    METHODS set_sorting
+      IMPORTING
+        !it_sorting TYPE lvc_t_sort .
+    METHODS set_editable
+      IMPORTING
+        !value TYPE abap_bool .
+    METHODS display
+      RAISING
+        zcx_uitb_alv_error .
+    METHODS get_columns
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_alv_columns .
+    METHODS register_edit_for_modified
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true .
+    METHODS refresh
+      IMPORTING
+        !if_soft                 TYPE abap_bool OPTIONAL
+        !is_stable               TYPE lvc_s_stbl OPTIONAL
+        !if_keep_scroll_position TYPE abap_bool OPTIONAL .
+    METHODS get_sorting
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_alv_sorts .
+    "! <p class="shorttext synchronized" lang="en">Retrieve Layout for ALV</p>
+    METHODS get_layout
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_alv_layout .
+    METHODS get_events
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_alv_events .
+    METHODS get_functions
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_alv_functions .
+    METHODS get_selections
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_alv_selections .
+    METHODS get_data_changes
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_alv_data .
+    METHODS get_functional_settings
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_alv_func_settings .
+    METHODS get_display_settings
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_alv_display_settings .
+    METHODS set_data
+      IMPORTING
+        !ir_data TYPE REF TO data .
+  PROTECTED SECTION.
 
-  methods PERFORM_QUICK_FILTER
-    importing
-      !IF_EXCLUDE type ABAP_BOOL optional .
-private section.
+    "! <p class="shorttext synchronized" lang="en">Perform Quick filter</p>
+    METHODS perform_quick_filter
+      IMPORTING
+        !if_exclude TYPE abap_bool OPTIONAL .
+  PRIVATE SECTION.
 
-  constants:
-    BEGIN OF c_change_character,
+    CONSTANTS:
+      BEGIN OF c_change_character,
         sorting TYPE char1 VALUE 'S',
         layout  TYPE char1 VALUE 'L',
         columns TYPE char1 VALUE 'C',
       END OF c_change_character .
-  constants C_DELETE_ROW_CUSTOM type STRING value 'DELETE_ROW' ##NO_TEXT.
-  data:
-    mt_changes TYPE HASHED TABLE OF char1 WITH UNIQUE KEY table_line .
-  data MR_CONTROLLER type ref to ZCL_UITB_ALV_CONTROLLER .
-  data MR_ALV_DATA_WRAPPER type ref to ZCL_UITB_ALV_DATA .
-  data MR_FUNCTIONS type ref to ZCL_UITB_ALV_FUNCTIONS .
-  data MR_FUNCTIONAL_SETTINGS type ref to ZCL_UITB_ALV_FUNC_SETTINGS .
-  data MR_FILTERS type ref to ZCL_UITB_ALV_FILTERS .
-  data MR_DISPLAY_SETTINGS type ref to ZCL_UITB_ALV_DISPLAY_SETTINGS .
-  data MR_DATA type ref to DATA .
-  data MR_COLUMNS type ref to ZCL_UITB_ALV_COLUMNS .
-  data MR_EVENTS type ref to ZCL_UITB_ALV_EVENTS .
-  data MT_EXCLUDE_TOOLBAR type UI_FUNCTIONS .
-  data MF_REGISTER_MODIFIED type ABAP_BOOL .
-  data MR_SELECTIONS type ref to ZCL_UITB_ALV_SELECTIONS .
-  data MT_SORTING type LVC_T_SORT .
-  data MR_CONTAINER type ref to CL_GUI_CONTAINER .
-  data MR_SORTING type ref to ZCL_UITB_ALV_SORTS .
-  data MR_LAYOUT type ref to ZCL_UITB_ALV_LAYOUT .
-
-  methods INIT
-    importing
-      !IF_EDITABLE type ABAP_BOOL
-      !IV_DESCRIPTION_LANGUAGE type LANGU .
-  methods CONSTRUCTOR
-    importing
-      !IR_DATA type ref to DATA
-      !IR_CONTAINER type ref to CL_GUI_CONTAINER .
+    CONSTANTS c_delete_row_custom TYPE string VALUE 'DELETE_ROW' ##NO_TEXT.
+    DATA:
+      mt_changes TYPE HASHED TABLE OF char1 WITH UNIQUE KEY table_line .
+    DATA mr_controller TYPE REF TO zcl_uitb_alv_controller .
+    DATA mr_alv_data_wrapper TYPE REF TO zcl_uitb_alv_data .
+    DATA mr_functions TYPE REF TO zcl_uitb_alv_functions .
+    DATA mr_functional_settings TYPE REF TO zcl_uitb_alv_func_settings .
+    DATA mr_filters TYPE REF TO zcl_uitb_alv_filters .
+    DATA mr_display_settings TYPE REF TO zcl_uitb_alv_display_settings .
+    DATA mr_data TYPE REF TO data .
+    DATA mr_columns TYPE REF TO zcl_uitb_alv_columns .
+    DATA mr_events TYPE REF TO zcl_uitb_alv_events .
+    DATA mt_exclude_toolbar TYPE ui_functions .
+    DATA mf_register_modified TYPE abap_bool .
+    DATA mr_selections TYPE REF TO zcl_uitb_alv_selections .
+    DATA mt_sorting TYPE lvc_t_sort .
+    DATA mr_container TYPE REF TO cl_gui_container .
+    DATA mr_sorting TYPE REF TO zcl_uitb_alv_sorts .
+    "! <p class="shorttext synchronized" lang="en">Layout for ALV Grid</p>
+    DATA mr_layout TYPE REF TO zcl_uitb_alv_layout .
+    DATA:
+      BEGIN OF ms_popup_dimensions,
+        top    TYPE i,
+        left   TYPE i,
+        right  TYPE i,
+        bottom TYPE i,
+        width  TYPE i,
+        height TYPE i,
+      END OF ms_popup_dimensions.
+    DATA mv_display_type TYPE i.
+    METHODS init
+      IMPORTING
+        !if_editable             TYPE abap_bool
+        !iv_description_language TYPE langu .
+    METHODS constructor
+      IMPORTING
+        !ir_data        TYPE REF TO data
+        iv_display_type TYPE i
+        !ir_container   TYPE REF TO cl_gui_container .
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_ALV IMPLEMENTATION.
+CLASS zcl_uitb_alv IMPLEMENTATION.
 
 
   METHOD constructor.
     mr_data = ir_data.
     mr_container = ir_container.
+    mv_display_type = iv_display_type.
   ENDMETHOD.
 
 
   METHOD create_alv.
     rr_alv = NEW #(
-      ir_data      = ir_data
-      ir_container = ir_container
+      ir_data         = ir_data
+      iv_display_type = iv_display_type
+      ir_container    = ir_container
     ).
 
     rr_alv->init(
@@ -378,7 +409,7 @@ CLASS ZCL_UITB_ALV IMPLEMENTATION.
   METHOD set_data.
 
 *.. @TODO: Check if new data is allowed
-    check ir_data is not INITIAL.
+    CHECK ir_data IS NOT INITIAL.
 
     DATA(lr_columns) = get_columns( ).
     mr_data = ir_data.
@@ -404,6 +435,15 @@ CLASS ZCL_UITB_ALV IMPLEMENTATION.
     " @TODO: maybe this is needed if grid can be switched into read only mode
   ENDMETHOD.
 
+  METHOD set_popup_dimensions.
+    ms_popup_dimensions = VALUE #(
+      top    = iv_top
+      left   = iv_left
+      right  = iv_right
+      width  = iv_right - iv_left
+      height = iv_bottom - iv_top
+    ).
+  ENDMETHOD.
 
   METHOD set_function.
     CHECK mr_controller IS BOUND.
@@ -417,6 +457,9 @@ CLASS ZCL_UITB_ALV IMPLEMENTATION.
     INSERT c_change_character-sorting INTO TABLE mt_changes.
   ENDMETHOD.
 
+  METHOD zif_uitb_gui_control~has_focus.
+    RETURN.
+  ENDMETHOD.
 
   METHOD zif_uitb_gui_control~focus.
     CHECK mr_controller IS BOUND.

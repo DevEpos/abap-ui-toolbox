@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_UITB_GUI_CODE_EDITOR</CLSNAME>
+    <VERSION>1</VERSION>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Code Editor for Formula</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_CODE_EDITOR</CLSNAME>
+     <CMPNAME>CONSTRUCTOR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Creates new instance of code editor</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_CODE_EDITOR</CLSNAME>
+     <CMPNAME>FORMAT_SOURCE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Format the source code of the editor</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_CODE_EDITOR</CLSNAME>
+     <CMPNAME>GET_SELECTED_TEXT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Retrieve the selected text in the editor</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_CODE_EDITOR</CLSNAME>
+     <CMPNAME>GET_TEXT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get the current text in the editor</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_CODE_EDITOR</CLSNAME>
+     <CMPNAME>IS_MODIFIED</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Returns the modified state of the editor</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_CODE_EDITOR</CLSNAME>
+     <CMPNAME>SELECT_ROW</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Select the given row in the editor</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_CODE_EDITOR</CLSNAME>
+     <CMPNAME>SET_EDITABLE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Sets the editor to editable</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_CODE_EDITOR</CLSNAME>
+     <CMPNAME>SET_SELECTED_TEXT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Replace the selected text with the given text</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_CODE_EDITOR</CLSNAME>
+     <CMPNAME>SET_TEXT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Sets the text of the editor</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_CODE_EDITOR</CLSNAME>
+     <CMPNAME>SET_UNMODIFIED</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Remove modified state from editor</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_CODE_EDITOR</CLSNAME>
+     <CMPNAME>TOGGLE_VIEW_EDIT_MODE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Togge view/edit mode of editor</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

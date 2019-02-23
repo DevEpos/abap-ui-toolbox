@@ -17,14 +17,15 @@ CLASS zcl_uitb_protocol_alv DEFINITION
       get_title REDEFINITION,
       adjust_columns REDEFINITION,
       adjust_functions REDEFINITION,
-      get_table_reference REDEFINITION.
+      get_table_reference REDEFINITION,
+      adjust_display_settings REDEFINITION.
   PRIVATE SECTION.
     DATA mt_protocol TYPE STANDARD TABLE OF zuitb_protocol_info.
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_PROTOCOL_ALV IMPLEMENTATION.
+CLASS zcl_uitb_protocol_alv IMPLEMENTATION.
 
 
   METHOD adjust_columns.
@@ -52,7 +53,7 @@ CLASS ZCL_UITB_PROTOCOL_ALV IMPLEMENTATION.
       ir_functions->add_function(
          name     = 'CLOSE'
          icon     = '@3X@'
-         tooltip  = 'Schließen'
+         tooltip  = 'Close'
          position =  if_salv_c_function_position=>right_of_salv_functions   " Funktion Positionierung
       ).
     ENDIF.
@@ -96,4 +97,9 @@ CLASS ZCL_UITB_PROTOCOL_ALV IMPLEMENTATION.
   METHOD select_data ##needed.
     " nothing to select
   ENDMETHOD.
+
+  METHOD adjust_display_settings.
+    ir_display_settings->set_list_header_size( value = cl_salv_display_settings=>c_header_size_small ).
+  ENDMETHOD.
+
 ENDCLASS.

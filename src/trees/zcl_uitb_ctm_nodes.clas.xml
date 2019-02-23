@@ -117,6 +117,12 @@
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>NODE_HAS_USER_DATA</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Checks if the given node has user data</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
      <CMPNAME>SET_FIRST_ROOT_NODE_AS_TOP</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Sets the first root node as the new top node</DESCRIPT>
@@ -132,6 +138,12 @@
      <CMPNAME>TOGGLE_NODE</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Toggles expanded state of given nodes</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_CTM_NODES</CLSNAME>
+     <CMPNAME>UPDATE_NODE_USER_DATA</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Updates user data of node</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
   </asx:values>

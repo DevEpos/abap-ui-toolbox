@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_UITB_GUI_SPLITTER_CONT</CLSNAME>
+    <VERSION>1</VERSION>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Wrapper for CL_GUI_SPLITTER_CONTAINER</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_SPLITTER_CONT</CLSNAME>
+     <CMPNAME>CONSTRUCTOR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Creates new GUI Splitter Container</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_SPLITTER_CONT</CLSNAME>
+     <CMPNAME>C_MODE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Mode for splitter container</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_SPLITTER_CONT</CLSNAME>
+     <CMPNAME>GET_CONTAINER</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Retrieve container at specific index</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_SPLITTER_CONT</CLSNAME>
+     <CMPNAME>SET_ELEMENT_VISIBILITY</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Show/hide element</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_SPLITTER_CONT</CLSNAME>
+     <CMPNAME>SET_SASH_PROPERTIES</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Sets the sash properties for a given element</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_SPLITTER_CONT</CLSNAME>
+     <CMPNAME>SET_SIZE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Set size of a given Cell</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_SPLITTER_CONT</CLSNAME>
+     <CMPNAME>UPDATE_SIZE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Update cell sizes</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

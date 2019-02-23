@@ -62,10 +62,7 @@ CLASS ZCL_UITB_ALV_DATA_DESCR IMPLEMENTATION.
 
   METHOD fill_column.
 
-    DATA:
-      ls_dfies       TYPE dfies,
-      lr_column      TYPE REF TO cl_salv_column,
-      lr_column_list TYPE REF TO cl_salv_column_list.
+    DATA: ls_dfies       TYPE dfies.
 
     LOOP AT it_dfies INTO ls_dfies.
       DATA(ls_fieldcat) = VALUE lvc_s_fcat(

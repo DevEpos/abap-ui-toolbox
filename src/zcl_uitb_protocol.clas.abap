@@ -1,48 +1,61 @@
-class ZCL_UITB_PROTOCOL definition
-  public
-  final
-  create private .
+"! <p class="shorttext synchronized" lang="en">Protocol display</p>
+CLASS zcl_uitb_protocol DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PRIVATE .
 
-public section.
+  PUBLIC SECTION.
 
-  class-methods GET_INSTANCE
-    returning
-      value(RR_INSTANCE) type ref to ZCL_UITB_PROTOCOL .
-  methods ADD_INFO
-    importing
-      !IV_MESSAGE type STRING
-      !IV_LINE_NUMBER type ZUITB_LINE_NUMBER optional .
-  methods ADD_INFO_FROM_SY
-    importing
-      !IV_LINE_NUMBER type ZUITB_LINE_NUMBER optional .
-  methods ADD_EXCEPTION_MESSAGE
-    importing
-      !IR_EXCEPTION_MSG type ref to ZIF_UITB_EXCEPTION_MESSAGE
-      !IV_LINE_NUMBER type ZUITB_LINE_NUMBER optional .
-  methods ADD_WARNING_FROM_SY
-    importing
-      !IV_LINE_NUMBER type ZUITB_LINE_NUMBER optional .
-  methods ADD_ERROR_FROM_SY
-    importing
-      !IV_LINE_NUMBER type ZUITB_LINE_NUMBER optional .
-  methods ADD_WARNING
-    importing
-      !IV_MESSAGE type STRING
-      !IV_LINE_NUMBER type ZUITB_LINE_NUMBER optional .
-  methods ADD_ERROR
-    importing
-      !IV_MESSAGE type STRING
-      !IV_LINE_NUMBER type ZUITB_LINE_NUMBER optional .
-  methods SHOW_PROTOCOL
-    importing
-      !IF_SHOW_FULLSCREEN type ABAP_BOOL optional
-      !IF_SHOW_AS_DIALOG type ABAP_BOOL optional
-      !IR_CONTAINER type ref to CL_GUI_CONTAINER optional .
-  methods CLOSE_PROTOCOL .
-  methods CLEAR .
-  methods HAS_MESSAGES
-    returning
-      value(RF_HAS_MESSAGES) type ABAP_BOOL .
+    "! <p class="shorttext synchronized" lang="en">Get instance of protocol</p>
+    CLASS-METHODS get_instance
+      RETURNING
+        VALUE(rr_instance) TYPE REF TO zcl_uitb_protocol .
+    "! <p class="shorttext synchronized" lang="en">Add information message to protocol</p>
+    METHODS add_info
+      IMPORTING
+        !iv_message     TYPE string
+        !iv_line_number TYPE zuitb_line_number OPTIONAL .
+    "! <p class="shorttext synchronized" lang="en">Add information message from sy to protocol</p>
+    METHODS add_info_from_sy
+      IMPORTING
+        !iv_line_number TYPE zuitb_line_number OPTIONAL .
+    "! <p class="shorttext synchronized" lang="en">add exception message to protocol</p>
+    METHODS add_exception_message
+      IMPORTING
+        !ir_exception_msg TYPE REF TO zif_uitb_exception_message
+        !iv_line_number   TYPE zuitb_line_number OPTIONAL .
+    "! <p class="shorttext synchronized" lang="en">Add warning message from sy to protocol</p>
+    METHODS add_warning_from_sy
+      IMPORTING
+        !iv_line_number TYPE zuitb_line_number OPTIONAL .
+    "! <p class="shorttext synchronized" lang="en">Add error message from sy to protocol</p>
+    METHODS add_error_from_sy
+      IMPORTING
+        !iv_line_number TYPE zuitb_line_number OPTIONAL .
+    "! <p class="shorttext synchronized" lang="en">Add warning message to protocol</p>
+    METHODS add_warning
+      IMPORTING
+        !iv_message     TYPE string
+        !iv_line_number TYPE zuitb_line_number OPTIONAL .
+    "! <p class="shorttext synchronized" lang="en">Add error message to protocol</p>
+    METHODS add_error
+      IMPORTING
+        !iv_message     TYPE string
+        !iv_line_number TYPE zuitb_line_number OPTIONAL .
+    "! <p class="shorttext synchronized" lang="en">Show the protocol</p>
+    METHODS show_protocol
+      IMPORTING
+        !if_show_fullscreen TYPE abap_bool OPTIONAL
+        !if_show_as_dialog  TYPE abap_bool OPTIONAL
+        !ir_container       TYPE REF TO cl_gui_container OPTIONAL .
+    "! <p class="shorttext synchronized" lang="en">Close the protocol</p>
+    METHODS close_protocol .
+    "! <p class="shorttext synchronized" lang="en">Clear the protocol</p>
+    METHODS clear .
+    "! <p class="shorttext synchronized" lang="en">Checks if protocol holds messages</p>
+    METHODS has_messages
+      RETURNING
+        VALUE(rf_has_messages) TYPE abap_bool .
   PROTECTED SECTION.
   PRIVATE SECTION.
 
@@ -51,6 +64,7 @@ public section.
       mt_messages TYPE STANDARD TABLE OF zuitb_protocol_info .
     DATA mr_alv TYPE REF TO zcl_uitb_protocol_alv .
 
+    "! <p class="shorttext synchronized" lang="en">Get system message</p>
     METHODS get_sy_message
       RETURNING
         VALUE(rv_message) TYPE string .
@@ -58,7 +72,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_UITB_PROTOCOL IMPLEMENTATION.
+CLASS zcl_uitb_protocol IMPLEMENTATION.
 
 
   METHOD add_error.
@@ -186,7 +200,7 @@ CLASS ZCL_UITB_PROTOCOL IMPLEMENTATION.
       ).
     ELSE.
       mr_alv->show_docked( iv_dock_at    = cl_gui_docking_container=>dock_at_bottom
-                           iv_dock_ratio = 20 ).
+                           iv_dock_ratio = 100 ).
     ENDIF.
 
     clear( ).

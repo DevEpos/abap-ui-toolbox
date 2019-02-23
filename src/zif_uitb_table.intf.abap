@@ -1,34 +1,48 @@
-interface ZIF_UITB_TABLE
-  public .
+"! <p class="shorttext synchronized" lang="en">Table</p>
+INTERFACE zif_uitb_table
+  PUBLIC .
 
 
-  methods ADD_LINE
-    importing
-      !IF_INSERT type BOOLEAN optional
-    returning
-      value(RV_NEW_INDEX) type SY-TABIX .
-  methods UPDATE_FIELDS
-    importing
-      !IV_FUNCTION_CODE type SY-UCOMM optional .
-  methods UPDATE_SCREEN_ATTRIBUTES .
-  methods DETERMINE_LINE_COUNT .
-  methods DETERMINE_CURRENT_LINE .
-  methods GET_CURRENT_LINE_INDEX
-    returning
-      value(RV_INDEX) type SY-TABIX .
-  methods DELETE_CURRENT_LINE .
-  methods GET_CURRENT_LINE_VALUE default ignore
-    exporting
-      !ES_LINE type ANY .
-  methods GET_CURRENT_LINE_REF default ignore
-    returning
-      value(RR_LINE) type ref to DATA .
-  methods DELETE_ALL .
-  methods GET_CURRENT_LOOP_LINE default ignore
-    returning
-      value(RV_CURRENT_LOOP_LINE) type SY-TABIX .
-  methods GET_TABLE_DATA default ignore
-    returning
-      value(RR_TABLE_DATA_ITAB) type ref to DATA .
-  methods PBO default ignore .
-endinterface.
+  "! <p class="shorttext synchronized" lang="en">Adds new line to the table</p>
+  METHODS add_line
+    IMPORTING
+      !if_insert          TYPE boolean OPTIONAL
+    RETURNING
+      VALUE(rv_new_index) TYPE sy-tabix .
+  "! <p class="shorttext synchronized" lang="en">Updates the values of the current line in the table</p>
+  METHODS update_fields
+    IMPORTING
+      !iv_function_code TYPE sy-ucomm OPTIONAL .
+  "! <p class="shorttext synchronized" lang="en">Update the screen attributes of the line</p>
+  METHODS update_screen_attributes .
+  "! <p class="shorttext synchronized" lang="en">Determines the line count</p>
+  METHODS determine_line_count .
+  "! <p class="shorttext synchronized" lang="en">Determines the current line</p>
+  METHODS determine_current_line .
+  "! <p class="shorttext synchronized" lang="en">Retrieves the current line index</p>
+  METHODS get_current_line_index
+    RETURNING
+      VALUE(rv_index) TYPE sy-tabix .
+  "! <p class="shorttext synchronized" lang="en">Deletes the current line</p>
+  METHODS delete_current_line .
+  "! <p class="shorttext synchronized" lang="en">Gets the value of the current line</p>
+  METHODS get_current_line_value DEFAULT IGNORE
+    EXPORTING
+      !es_line TYPE any .
+  "! <p class="shorttext synchronized" lang="en">Gets a reference to the current line</p>
+  METHODS get_current_line_ref DEFAULT IGNORE
+    RETURNING
+      VALUE(rr_line) TYPE REF TO data .
+  "! <p class="shorttext synchronized" lang="en">Deletes all rows</p>
+  METHODS delete_all .
+  "! <p class="shorttext synchronized" lang="en">Gets the current loop line</p>
+  METHODS get_current_loop_line DEFAULT IGNORE
+    RETURNING
+      VALUE(rv_current_loop_line) TYPE sy-tabix .
+  "! <p class="shorttext synchronized" lang="en">Get all table data</p>
+  METHODS get_table_data DEFAULT IGNORE
+    RETURNING
+      VALUE(rr_table_data_itab) TYPE REF TO data .
+  "! <p class="shorttext synchronized" lang="en">PBO for each line of the table</p>
+  METHODS pbo DEFAULT IGNORE .
+ENDINTERFACE.

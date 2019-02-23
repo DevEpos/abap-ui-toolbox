@@ -195,7 +195,7 @@ CLASS ZCL_UITB_FULLSCREEN_ALV_TABLE IMPLEMENTATION.
 
   METHOD create_docking_container.
     mr_dock = NEW cl_gui_docking_container( side   = mv_dock_at
-                                            ratio  = mv_dock_ratio ).
+                                            extension  = mv_dock_ratio ).
     rr_container = mr_dock.
   ENDMETHOD.
 

@@ -4,6 +4,15 @@ CLASS zcl_uitb_ctm_nodes DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
+    TYPES:
+      BEGIN OF ty_s_node_data,
+        node_key TYPE tm_nodekey,
+        data     TYPE REF TO data,
+      END OF ty_s_node_data.
+
+    TYPES: ty_t_node_data TYPE STANDARD TABLE OF ty_s_node_data WITH KEY node_key.
+
+    DATA mt_node_data TYPE ty_t_node_data READ-ONLY.
 
     "! <p class="shorttext synchronized" lang="en">Adds a new node to the model</p>
     METHODS add_node
@@ -21,6 +30,7 @@ CLASS zcl_uitb_ctm_nodes DEFINITION
         !iv_image             TYPE tv_image OPTIONAL
         !iv_expanded_image    TYPE tv_image OPTIONAL
         !ir_user_object       TYPE REF TO object OPTIONAL
+        ir_user_data          TYPE REF TO data OPTIONAL
         !if_items_incomplete  TYPE as4flag OPTIONAL
         !it_item_table        TYPE treemcitab
       RETURNING
@@ -131,9 +141,20 @@ CLASS zcl_uitb_ctm_nodes DEFINITION
     METHODS toggle_node
       IMPORTING
         !iv_node_key TYPE tm_nodekey .
+    "! <p class="shorttext synchronized" lang="en">Updates user data of node</p>
+    METHODS update_node_user_data
+      IMPORTING
+        iv_node_key  TYPE tm_nodekey
+        ir_user_data TYPE REF TO data.
+    "! <p class="shorttext synchronized" lang="en">Checks if the given node has user data</p>
+    "!
+    METHODS node_has_user_data
+      IMPORTING
+        iv_node_key             TYPE tm_nodekey
+      RETURNING
+        VALUE(rf_has_user_data) TYPE abap_bool.
   PROTECTED SECTION.
   PRIVATE SECTION.
-
     DATA mr_model TYPE REF TO cl_column_tree_model .
     DATA mf_auto_node_key TYPE abap_bool .
     CLASS-DATA mv_last_node_key TYPE i .
@@ -192,6 +213,9 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
       zcx_uitb_tree_error=>raise_from_sy( ).
     ELSE.
       rr_node = get_node( lv_node_key ).
+      IF ir_user_data IS SUPPLIED.
+        rr_node->set_user_data( ir_user_data ).
+      ENDIF.
     ENDIF.
   ENDMETHOD.
 
@@ -243,6 +267,7 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
 
   METHOD delete_all_nodes.
     mr_model->delete_all_nodes( ).
+    CLEAR mt_node_data.
   ENDMETHOD.
 
 
@@ -255,13 +280,16 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
         OTHERS         = 2
     ).
     IF sy-subrc <> 0.
-*     MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
-*                WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+      zcx_uitb_tree_error=>raise_from_sy( ).
+    ELSE.
+      DELETE mt_node_data WHERE node_key = iv_node_key.
     ENDIF.
   ENDMETHOD.
 
 
   METHOD delete_nodes.
+    DATA: lt_node_range TYPE RANGE OF tm_nodekey.
+
     mr_model->delete_nodes(
       EXPORTING
         node_key_table          = it_node_key_table    " Tabelle mit Knotenschlüsseln
@@ -271,6 +299,9 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
     ).
     IF sy-subrc <> 0.
       zcx_uitb_tree_error=>raise_from_sy( ).
+    ELSE.
+      lt_node_range = VALUE #( LET i = 'I' eq = 'EQ' IN FOR node IN it_node_key_table ( sign = i option = eq low = node ) ).
+      DELETE mt_node_data WHERE node_key IN lt_node_range.
     ENDIF.
   ENDMETHOD.
 
@@ -447,6 +478,19 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
       zcx_uitb_tree_error=>raise_from_sy( ).
     ENDIF.
 
+  ENDMETHOD.
+
+  METHOD update_node_user_data.
+    ASSIGN mt_node_data[ node_key = iv_node_key ] TO FIELD-SYMBOL(<ls_node_data>).
+    IF sy-subrc = 0.
+      <ls_node_data>-data = ir_user_data.
+    ELSE.
+      mt_node_data = VALUE #( BASE mt_node_data ( node_key = iv_node_key data = ir_user_data ) ).
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD node_has_user_data.
+    rf_has_user_data = xsdbool( line_exists( mt_node_data[ node_key = iv_node_key ] ) ).
   ENDMETHOD.
 
 ENDCLASS.

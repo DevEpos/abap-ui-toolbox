@@ -1,169 +1,218 @@
-class ZCL_UITB_CTM_NODE definition
-  public
-  final
-  create public .
+"! <p class="shorttext synchronized" lang="en">Node of a column tree model</p>
+CLASS zcl_uitb_ctm_node DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
 
-public section.
+  PUBLIC SECTION.
 
-  data MV_NODE_KEY type TM_NODEKEY read-only .
+    "! <p class="shorttext synchronized" lang="en">Tree Control: Node Key</p>
+    DATA mv_node_key TYPE tm_nodekey READ-ONLY .
 
-  methods CONSTRUCTOR
-    importing
-      !IV_NODE_KEY type TM_NODEKEY
-      !IS_PROPERTIES type TREEMSNOD optional
-      !IR_MODEL type ref to CL_COLUMN_TREE_MODEL
-      !IR_NODES type ref to ZCL_UITB_CTM_NODES .
-  methods DELETE_CHILDREN
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods GET_CHILDREN
-    returning
-      value(RT_CHILDREN) type ZUITB_CTM_NODE_RT
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods GET_EXPANDED_IMAGE
-    returning
-      value(RESULT) type TV_IMAGE .
-  methods GET_FIRST_CHILD
-    returning
-      value(RESULT) type ref to ZCL_UITB_CTM_NODE
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods GET_IMAGE
-    returning
-      value(RESULT) type TV_IMAGE .
-  methods GET_ITEM
-    importing
-      !IV_ITEM_NAME type TV_ITMNAME
-    returning
-      value(RR_ITEM) type ref to ZCL_UITB_CTM_ITEM
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods GET_ITEMS
-    returning
-      value(RESULT) type ZUITB_CTM_ITEM_RT
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods GET_LAST_CHILD
-    returning
-      value(RESULT) type ref to ZCL_UITB_CTM_NODE
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods GET_NEXT_SIBLING
-    returning
-      value(RESULT) type ref to ZCL_UITB_CTM_NODE
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods GET_NR_OF_CHILDREN
-    returning
-      value(RESULT) type I
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods GET_PARENT
-    returning
-      value(RESULT) type ref to ZCL_UITB_CTM_NODE
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods GET_PREVIOUS_SIBLING
-    returning
-      value(RESULT) type ref to ZCL_UITB_CTM_NODE
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods GET_PROPERTIES
-    returning
-      value(RESULT) type TREEMSNOD
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods GET_USER_OBJECT
-    returning
-      value(RESULT) type ref to OBJECT
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods HAS_CHILDREN
-    returning
-      value(RESULT) type ABAP_BOOL
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods HAS_EXPANDER
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods IS_EXPANDED
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods IS_DISABLED
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods IS_FIRST_CHILD
-    returning
-      value(RF_IS_FIRST_CHILD) type ABAP_BOOL
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods IS_FOLDER
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods IS_LAST_CHILD
-    returning
-      value(RF_IS_LAST_CHILD) type ABAP_BOOL
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods MOVE_NODE_TO
-    importing
-      !IV_RELATIVE_NODE type TM_NODEKEY
-      !IV_RELATIONSHIP type I
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods SET_DISABLED
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods SET_EXPANDED_IMAGE
-    importing
-      !VALUE type TV_IMAGE
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods SET_EXPANDER
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods SET_FOLDER
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods SET_IMAGE
-    importing
-      !VALUE type TV_IMAGE
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods SET_STYLE
-    importing
-      !IV_STYLE type I
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods SET_USER_OBJECT
-    importing
-      !VALUE type ref to OBJECT
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods TOGGLE .
-  methods GET_NEXT_RELAT_NODE
-    exporting
-      !EF_IS_SIBLING type ABAP_BOOL
-    returning
-      value(RR_NODE) type ref to ZCL_UITB_CTM_NODE .
+    "! <p class="shorttext synchronized" lang="en">CONSTRUCTOR</p>
+    METHODS constructor
+      IMPORTING
+        !iv_node_key   TYPE tm_nodekey
+        !is_properties TYPE treemsnod OPTIONAL
+        ir_user_data   TYPE REF TO data OPTIONAL
+        !ir_model      TYPE REF TO cl_column_tree_model
+        !ir_nodes      TYPE REF TO zcl_uitb_ctm_nodes .
+    "! <p class="shorttext synchronized" lang="en">Deletes all child nodes</p>
+    METHODS delete_children
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Get all child nodes</p>
+    METHODS get_children
+      RETURNING
+        VALUE(rt_children) TYPE zuitb_ctm_node_rt
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Gets expanded image property of node</p>
+    METHODS get_expanded_image
+      RETURNING
+        VALUE(result) TYPE tv_image .
+    "! <p class="shorttext synchronized" lang="en">Gets the first child of a node</p>
+    METHODS get_first_child
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_ctm_node
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Gets image property of node</p>
+    METHODS get_image
+      RETURNING
+        VALUE(result) TYPE tv_image .
+    "! <p class="shorttext synchronized" lang="en">Get a specific item of this node</p>
+    METHODS get_item
+      IMPORTING
+        !iv_item_name  TYPE tv_itmname
+      RETURNING
+        VALUE(rr_item) TYPE REF TO zcl_uitb_ctm_item
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Get all items of this node</p>
+    METHODS get_items
+      RETURNING
+        VALUE(result) TYPE zuitb_ctm_item_rt
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">gets the last child of a node</p>
+    METHODS get_last_child
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_ctm_node
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Gets the next sibling of the node</p>
+    METHODS get_next_sibling
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_ctm_node
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Get number of children property</p>
+    METHODS get_nr_of_children
+      RETURNING
+        VALUE(result) TYPE i
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Gets parent node</p>
+    METHODS get_parent
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_ctm_node
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Gets the previous sibling of a node</p>
+    METHODS get_previous_sibling
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_ctm_node
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Gets properties of node</p>
+    METHODS get_properties
+      RETURNING
+        VALUE(result) TYPE treemsnod
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Gets user object property of node</p>
+    METHODS get_user_object
+      RETURNING
+        VALUE(result) TYPE REF TO object
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Checks if this node has child nodes</p>
+    METHODS has_children
+      RETURNING
+        VALUE(result) TYPE abap_bool
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Gets expander property of node</p>
+    METHODS has_expander
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Is this node expanded?</p>
+    METHODS is_expanded
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Gets disabled property of node</p>
+    METHODS is_disabled
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Checks if this node is its parent's first child</p>
+    METHODS is_first_child
+      RETURNING
+        VALUE(rf_is_first_child) TYPE abap_bool
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Gets "is folder" property of node</p>
+    METHODS is_folder
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Checks if this node is its parent's last child</p>
+    METHODS is_last_child
+      RETURNING
+        VALUE(rf_is_last_child) TYPE abap_bool
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Moves node to another node</p>
+    METHODS move_node_to
+      IMPORTING
+        !iv_relative_node TYPE tm_nodekey
+        !iv_relationship  TYPE i
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Sets disabled property of node</p>
+    METHODS set_disabled
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Sets expanded image property of node</p>
+    METHODS set_expanded_image
+      IMPORTING
+        !value TYPE tv_image
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Sets expander property of node</p>
+    METHODS set_expander
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Sets folder property of node</p>
+    METHODS set_folder
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Sets image property of node</p>
+    METHODS set_image
+      IMPORTING
+        !value TYPE tv_image
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Sets style property of node</p>
+    METHODS set_style
+      IMPORTING
+        !iv_style TYPE i
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Sets user object property of node</p>
+    METHODS set_user_object
+      IMPORTING
+        !value TYPE REF TO object
+      RAISING
+        zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Either expands or colllapse node if it is a folder</p>
+    METHODS toggle .
+    "! <p class="shorttext synchronized" lang="en">Gets next node (siblings first then parent)</p>
+    METHODS get_next_relat_node
+      EXPORTING
+        !ef_is_sibling TYPE abap_bool
+      RETURNING
+        VALUE(rr_node) TYPE REF TO zcl_uitb_ctm_node .
+    "! <p class="shorttext synchronized" lang="en">Retrieve user data of node</p>
+    "!
+    METHODS get_user_data
+      RETURNING
+        VALUE(result) TYPE REF TO data.
+    "! <p class="shorttext synchronized" lang="en">Set user data of node</p>
+    "!
+    METHODS set_user_data
+      IMPORTING
+        value TYPE REF TO data.
   PROTECTED SECTION.
-private section.
-
-  data MR_MODEL type ref to CL_COLUMN_TREE_MODEL .
-  data MR_NODES type ref to ZCL_UITB_CTM_NODES .
-  data MS_PROPERTIES type TREEMSNOD .
+  PRIVATE SECTION.
+    "! <p class="shorttext synchronized" lang="en">User data</p>
+    DATA mr_user_data TYPE REF TO data.
+    "! <p class="shorttext synchronized" lang="en">Column Tree Control with Data Management at Backend</p>
+    DATA mr_model TYPE REF TO cl_column_tree_model .
+    "! <p class="shorttext synchronized" lang="en">Nodes of Column Tree Model</p>
+    DATA mr_nodes TYPE REF TO zcl_uitb_ctm_nodes .
+    "! <p class="shorttext synchronized" lang="en">Tree Model: Attributes of a Node</p>
+    DATA ms_properties TYPE treemsnod .
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_CTM_NODE IMPLEMENTATION.
+CLASS zcl_uitb_ctm_node IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -679,4 +728,20 @@ CLASS ZCL_UITB_CTM_NODE IMPLEMENTATION.
       ).
     ENDIF.
   ENDMETHOD.
+
+  METHOD get_user_data.
+    IF mr_user_data IS NOT BOUND.
+      mr_user_data = VALUE #( mr_nodes->mt_node_data[ node_key = mv_node_key ]-data OPTIONAL ).
+    ENDIF.
+    result = mr_user_data.
+  ENDMETHOD.
+
+  METHOD set_user_data.
+    mr_nodes->update_node_user_data(
+        iv_node_key  = mv_node_key
+        ir_user_data = value
+    ).
+    mr_user_data = value.
+  ENDMETHOD.
+
 ENDCLASS.

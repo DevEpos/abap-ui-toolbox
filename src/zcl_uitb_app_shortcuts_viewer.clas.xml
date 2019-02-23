@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_UITB_APP_SHORTCUTS_VIEWER</CLSNAME>
+    <VERSION>1</VERSION>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Shows all registered Shortcuts of current Application/view</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <TPOOL>
+    <item>
+     <ID>I</ID>
+     <KEY>001</KEY>
+     <ENTRY>Shortcut</ENTRY>
+     <LENGTH>18</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>002</KEY>
+     <ENTRY>Defined User function</ENTRY>
+     <LENGTH>42</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>003</KEY>
+     <ENTRY>Available Shortcuts on this Screen</ENTRY>
+     <LENGTH>68</LENGTH>
+    </item>
+   </TPOOL>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_APP_SHORTCUTS_VIEWER</CLSNAME>
+     <CMPNAME>CREATE_DOCUMENT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Create HTML document for displaying the code</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_APP_SHORTCUTS_VIEWER</CLSNAME>
+     <CMPNAME>DISPLAY_SHORTCUTS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Display dialog with all registered F-Key in the screen</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_APP_SHORTCUTS_VIEWER</CLSNAME>
+     <CMPNAME>MR_HTML_VIEWER</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>HTML Control Proxy Class</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_APP_SHORTCUTS_VIEWER</CLSNAME>
+     <CMPNAME>MT_HTML_RAW</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>ITS: Table with MIMEs</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_APP_SHORTCUTS_VIEWER</CLSNAME>
+     <CMPNAME>MV_HTML_URL</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Text (80 Characters)</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

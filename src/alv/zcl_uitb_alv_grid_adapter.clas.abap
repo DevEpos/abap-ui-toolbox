@@ -17,7 +17,7 @@ CLASS zcl_uitb_alv_grid_adapter DEFINITION
       IMPORTING
         is_stable               TYPE lvc_s_stbl OPTIONAL
         if_keep_scroll_position TYPE abap_bool OPTIONAL
-        ir_changelist           TYPE REF TO zcl_uitb_alv_changelist
+        ir_changelist           TYPE REF TO zcl_uitb_alv_changelist OPTIONAL
       RAISING
         zcx_uitb_alv_error.
     METHODS get_grid
@@ -33,6 +33,8 @@ CLASS zcl_uitb_alv_grid_adapter DEFINITION
   PROTECTED SECTION.
   PRIVATE SECTION.
     DATA mr_grid TYPE REF TO cl_gui_alv_grid.
+    DATA mo_current_changelist TYPE REF TO zcl_uitb_alv_changelist.
+    DATA mo_dialog TYPE REF TO if_alv_dialog.
     DATA ms_stable TYPE lvc_s_stbl.
     DATA mf_keep_scroll_position TYPE abap_bool.
     DATA mr_controller TYPE REF TO zcl_uitb_alv_controller.
@@ -140,7 +142,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_UITB_ALV_GRID_ADAPTER IMPLEMENTATION.
+CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -150,6 +152,15 @@ CLASS ZCL_UITB_ALV_GRID_ADAPTER IMPLEMENTATION.
         fcode = zif_uitb_c_alv_functions=>quickfilter_exclude
         text  = 'Exclude value'
     ).
+
+*...... initialize dialog for alv display
+    IF mr_controller->mr_model->mv_display_type = zif_uitb_c_alv_display_types=>dialog.
+      mo_dialog = NEW cl_dialog( iv_title        = mr_controller->mr_model->get_display_settings( )->get_title( )
+                                 io_grid_adapter = me ).
+    ELSEIF mr_controller->mr_model->mv_display_type = zif_uitb_c_alv_display_types=>modal_dialog.
+      mo_dialog = NEW cl_modal_dialog( iv_title = mr_controller->mr_model->get_display_settings( )->get_title( )
+                                       io_grid_adapter = me ).
+    ENDIF.
   ENDMETHOD.
 
 
@@ -428,10 +439,10 @@ CLASS ZCL_UITB_ALV_GRID_ADAPTER IMPLEMENTATION.
       ( LINES OF CORRESPONDING #( lr_functions->mt_buttons ) )
     ).
 
-    IF lr_functions->mt_menus is not INITIAL.
-      e_object->mt_btnmnu = value #(
-        base e_object->mt_btnmnu
-        ( lines of CORRESPONDING #( lr_functions->mt_menus ) )
+    IF lr_functions->mt_menus IS NOT INITIAL.
+      e_object->mt_btnmnu = VALUE #(
+        BASE e_object->mt_btnmnu
+        ( LINES OF CORRESPONDING #( lr_functions->mt_menus ) )
       ).
     ENDIF.
 
@@ -477,7 +488,7 @@ CLASS ZCL_UITB_ALV_GRID_ADAPTER IMPLEMENTATION.
 
 *.. Catch quick filter event
     IF e_ucomm = zif_uitb_c_alv_functions=>quickfilter_exclude OR
-       e_ucomm = zif_uitb_c_alv_functions=>quickfilter_menu or
+       e_ucomm = zif_uitb_c_alv_functions=>quickfilter_menu OR
        e_ucomm = zif_uitb_c_alv_functions=>quickfilter.
 
       mr_controller->mr_model->perform_quick_filter(
@@ -546,9 +557,9 @@ CLASS ZCL_UITB_ALV_GRID_ADAPTER IMPLEMENTATION.
 
 
   METHOD set_metadata.
-    DATA: ls_layout TYPE lvc_s_layo,
-          lt_excluded type ui_functions,
-          ls_variant type disvariant.
+    DATA: ls_layout   TYPE lvc_s_layo,
+          lt_excluded TYPE ui_functions,
+          ls_variant  TYPE disvariant.
 
     FIELD-SYMBOLS: <lt_data> TYPE STANDARD TABLE.
 
@@ -556,21 +567,40 @@ CLASS ZCL_UITB_ALV_GRID_ADAPTER IMPLEMENTATION.
 
     ms_stable = is_stable.
     mf_keep_scroll_position = if_keep_scroll_position.
+    IF ir_changelist IS SUPPLIED.
+      mo_current_changelist = ir_changelist.
+    ENDIF.
 
     IF mr_grid IS INITIAL.
-      " initialize grid
-      mr_grid = NEW cl_gui_alv_grid(
-          i_parent        = lr_model->mr_container
-          i_lifetime      = lr_model->mr_container->lifetime
-          i_fcat_complete = abap_true
-          i_appl_events   = abap_true
-      ).
+      IF mo_dialog IS BOUND.
+
+        IF mo_dialog->mf_visible = abap_false.
+          mo_dialog->show(
+              iv_top    = lr_model->ms_popup_dimensions-top
+              iv_left   = lr_model->ms_popup_dimensions-left
+              iv_width  = lr_model->ms_popup_dimensions-width
+              iv_height = lr_model->ms_popup_dimensions-height
+          ).
+          IF mo_dialog->mf_modal = abap_true.
+            RETURN.
+          ENDIF.
+        ENDIF.
+
+        mr_grid = mo_dialog->mo_gui_alv_grid.
+      ELSE.
+        " initialize grid
+        mr_grid = NEW cl_gui_alv_grid(
+            i_parent        = lr_model->mr_container
+            i_lifetime      = lr_model->mr_container->lifetime
+            i_fcat_complete = abap_true
+            i_appl_events   = abap_true
+        ).
+
+      ENDIF.
 
       " register event handlers
       set_event_handlers( ).
     ENDIF.
-
-    " @TODO: determine refresh mode
 
     DATA(lr_columns) = lr_model->get_columns( ).
     DATA(lr_functional_settings) = lr_model->get_functional_settings( ).
@@ -580,11 +610,11 @@ CLASS ZCL_UITB_ALV_GRID_ADAPTER IMPLEMENTATION.
     DATA(lr_layout) = lr_model->get_layout( ).
     DATA(lr_filters) = lr_model->get_filters( ).
     DATA(lr_sorting) = lr_model->get_sorting( ).
-    data(lr_data_changes) = lr_model->get_data_changes( ).
+    DATA(lr_data_changes) = lr_model->get_data_changes( ).
     DATA(lr_selections) = lr_model->get_selections( ).
 
-    IF ir_changelist->has_metadata_changed( ) OR
-       ir_changelist->is_new_data_requested( ).
+    IF mo_current_changelist->has_metadata_changed( ) OR
+       mo_current_changelist->is_new_data_requested( ).
 
 
       " get grid metadata for both new data and changed metadata
@@ -615,11 +645,11 @@ CLASS ZCL_UITB_ALV_GRID_ADAPTER IMPLEMENTATION.
     ENDIF.
 
 
-    CASE ir_changelist->is_new_data_requested( ).
+    CASE mo_current_changelist->is_new_data_requested( ).
 
       WHEN abap_false.
 
-        IF ir_changelist->has_metadata_changed( ).
+        IF mo_current_changelist->has_metadata_changed( ).
           mr_grid->set_frontend_fieldcatalog( lt_fieldcat ).
           mr_grid->set_filter_criteria( lt_filters ).
           mr_grid->set_frontend_layout( ls_layout ).
@@ -631,7 +661,7 @@ CLASS ZCL_UITB_ALV_GRID_ADAPTER IMPLEMENTATION.
           mr_grid->register_edit_event( lr_data_changes->mv_edit_event ).
         ENDIF.
 
-        IF ir_changelist->get_refresh_mode( ) <> zif_uitb_c_alv_refresh=>none.
+        IF mo_current_changelist->get_refresh_mode( ) <> zif_uitb_c_alv_refresh=>none.
           IF mf_keep_scroll_position = abap_true.
             DATA(lf_update_scroll_position) = abap_true.
             mr_grid->get_scroll_info_via_id(
@@ -641,7 +671,7 @@ CLASS ZCL_UITB_ALV_GRID_ADAPTER IMPLEMENTATION.
           ENDIF.
         ENDIF.
 
-        CASE ir_changelist->get_refresh_mode( ).
+        CASE mo_current_changelist->get_refresh_mode( ).
 
           WHEN zif_uitb_c_alv_refresh=>full.
             mr_grid->refresh_table_display(
