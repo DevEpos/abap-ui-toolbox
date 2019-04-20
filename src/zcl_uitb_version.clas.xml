@@ -12,20 +12,6 @@
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
    </VSEOCLASS>
-   <DESCRIPTIONS>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_VERSION</CLSNAME>
-     <CMPNAME>GV_VERSION</CMPNAME>
-     <LANGU>E</LANGU>
-     <DESCRIPT>Current version of DB Browser</DESCRIPT>
-    </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_VERSION</CLSNAME>
-     <CMPNAME>SHOW_VERSION</CMPNAME>
-     <LANGU>E</LANGU>
-     <DESCRIPT>Displays the current version of DB Browser</DESCRIPT>
-    </SEOCOMPOTX>
-   </DESCRIPTIONS>
   </asx:values>
  </asx:abap>
 </abapGit>
