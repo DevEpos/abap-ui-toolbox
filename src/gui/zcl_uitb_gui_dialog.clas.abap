@@ -61,6 +61,7 @@ CLASS zcl_uitb_gui_dialog IMPLEMENTATION.
         left    = ls_dialog_area-left
         metric  = cl_gui_control=>metric_pixel
         caption = |{ mv_title }|
+        lifetime = cl_gui_control=>lifetime_dynpro
         style   =  cl_gui_control=>ws_thickframe +
                    cl_gui_control=>ws_minimizebox +
                    cl_gui_control=>ws_maximizebox +

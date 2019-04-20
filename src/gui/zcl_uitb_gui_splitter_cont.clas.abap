@@ -57,6 +57,13 @@ CLASS zcl_uitb_gui_splitter_cont DEFINITION
       IMPORTING
         iv_element TYPE i
         if_visible TYPE abap_bool OPTIONAL.
+
+    "! <p class="shorttext synchronized" lang="en">Returns true if the element at given index is visible</p>
+    METHODS is_element_visible
+      IMPORTING
+        iv_element           TYPE i
+      RETURNING
+        VALUE(rf_is_visible) TYPE abap_bool.
   PROTECTED SECTION.
   PRIVATE SECTION.
     CONSTANTS c_true TYPE i VALUE cl_gui_splitter_container=>true.
@@ -370,6 +377,10 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
       ENDTRY.
     ENDIF.
 
+  ENDMETHOD.
+
+  METHOD is_element_visible.
+    rf_is_visible = VALUE #( mt_elements[ iv_element ]-visible OPTIONAL ).
   ENDMETHOD.
 
   METHOD update_size.

@@ -1,51 +1,47 @@
-class ZCL_UITB_CTM_SELECTIONS definition
-  public
-  final
-  create public .
+CLASS zcl_uitb_ctm_selections DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
 
-public section.
+  PUBLIC SECTION.
 
-  methods CONSTRUCTOR
-    importing
-      !IR_MODEL type ref to CL_COLUMN_TREE_MODEL
-      !IR_NODES type ref to ZCL_UITB_CTM_NODES
-      !IF_ITEM_SELECTION type ABAP_BOOL
-      !IV_SELECTION_MODE type I .
-  methods GET_SELECTED_NODES
-    returning
-      value(RESULT) type ZUITB_CTM_NODE_RT
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods GET_SELECTED_NODE
-    returning
-      value(RESULT) type ref to ZCL_UITB_CTM_NODE
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods IS_SINGLE_SELECTION
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods HAS_ITEM_SELECTION
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods SELECT_NODES
-    importing
-      !IT_NODES type TREEMNOTAB .
-  methods UNSELECT_NODES
-    importing
-      !IT_NODES type TREEMNOTAB .
-  methods UNSELECT_ALL_NODES .
+    METHODS constructor
+      IMPORTING
+        !ir_model          TYPE REF TO cl_column_tree_model
+        !ir_nodes          TYPE REF TO zcl_uitb_ctm_nodes
+        !if_item_selection TYPE abap_bool
+        !iv_selection_mode TYPE i .
+    METHODS get_selected_nodes
+      RETURNING
+        VALUE(result) TYPE zuitb_ctm_node_rt.
+    METHODS get_selected_node
+      RETURNING
+        VALUE(result) TYPE REF TO zcl_uitb_ctm_node.
+    METHODS is_single_selection
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    METHODS has_item_selection
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    METHODS select_nodes
+      IMPORTING
+        !it_nodes TYPE treemnotab .
+    METHODS unselect_nodes
+      IMPORTING
+        !it_nodes TYPE treemnotab .
+    METHODS unselect_all_nodes .
   PROTECTED SECTION.
-private section.
+  PRIVATE SECTION.
 
-  data MR_MODEL type ref to CL_COLUMN_TREE_MODEL .
-  data MV_SELECTION_MODE type I .
-  data MF_ITEM_SELECTION type ABAP_BOOL .
-  data MR_NODES type ref to ZCL_UITB_CTM_NODES .
+    DATA mr_model TYPE REF TO cl_column_tree_model .
+    DATA mv_selection_mode TYPE i .
+    DATA mf_item_selection TYPE abap_bool .
+    DATA mr_nodes TYPE REF TO zcl_uitb_ctm_nodes .
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_CTM_SELECTIONS IMPLEMENTATION.
+CLASS zcl_uitb_ctm_selections IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -68,21 +64,23 @@ CLASS ZCL_UITB_CTM_SELECTIONS IMPLEMENTATION.
     CLEAR result.
 
     IF mv_selection_mode = zif_uitb_c_tree_selection=>single_selection.
-      mr_model->get_selected_node( IMPORTING node_key = lv_selected_node ).
+      mr_model->get_selected_node( IMPORTING node_key = lv_selected_node EXCEPTIONS OTHERS = 1 ).
       IF lv_selected_node IS NOT INITIAL.
         result = VALUE #( ( mr_nodes->get_node( lv_selected_node ) ) ).
       ENDIF.
     ELSE.
-      mr_model->get_selected_nodes( IMPORTING node_key_table = data(lt_selected_nodes) ).
+      mr_model->get_selected_nodes( IMPORTING node_key_table = DATA(lt_selected_nodes) EXCEPTIONS OTHERS = 1 ).
       LOOP AT lt_selected_nodes ASSIGNING FIELD-SYMBOL(<lv_selected_node>).
-        result = VALUE #( base result ( mr_nodes->get_node( <lv_selected_node> ) ) ).
+        result = VALUE #( BASE result ( mr_nodes->get_node( <lv_selected_node> ) ) ).
       ENDLOOP.
     ENDIF.
 
     " check if there is a selected item of a node
     IF result IS INITIAL AND mf_item_selection = abap_true.
-      mr_model->get_selected_item( IMPORTING node_key = lv_selected_node ).
-      result = VALUE #( ( mr_nodes->get_node( lv_selected_node ) ) ).
+      mr_model->get_selected_item( IMPORTING node_key = lv_selected_node EXCEPTIONS OTHERS = 1 ).
+      IF lv_selected_node IS NOT INITIAL.
+        result = VALUE #( ( mr_nodes->get_node( lv_selected_node ) ) ).
+      ENDIF.
     ENDIF.
   ENDMETHOD.
 

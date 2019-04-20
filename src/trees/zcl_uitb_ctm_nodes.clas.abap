@@ -27,6 +27,7 @@ CLASS zcl_uitb_ctm_nodes DEFINITION
         !iv_style             TYPE int4 OPTIONAL
         !if_no_branch         TYPE as4flag OPTIONAL
         !if_expander          TYPE as4flag OPTIONAL
+        if_use_prop_font      TYPE abap_bool OPTIONAL
         !iv_image             TYPE tv_image OPTIONAL
         !iv_expanded_image    TYPE tv_image OPTIONAL
         !ir_user_object       TYPE REF TO object OPTIONAL
@@ -110,9 +111,7 @@ CLASS zcl_uitb_ctm_nodes DEFINITION
       IMPORTING
         !iv_node_key   TYPE tm_nodekey
       RETURNING
-        VALUE(rr_node) TYPE REF TO zcl_uitb_ctm_node
-      RAISING
-        zcx_uitb_tree_error .
+        VALUE(rr_node) TYPE REF TO zcl_uitb_ctm_node.
     "! <p class="shorttext synchronized" lang="en">Retrieves references of the root nodes</p>
     "!
     "! @parameter rt_root_nodes | <p class="shorttext synchronized" lang="en">References List of the root nodes</p>
@@ -128,9 +127,7 @@ CLASS zcl_uitb_ctm_nodes DEFINITION
     "! <p class="shorttext synchronized" lang="en">Gets the current top node</p>
     METHODS get_top_node
       RETURNING
-        VALUE(rr_node) TYPE REF TO zcl_uitb_ctm_node
-      RAISING
-        zcx_uitb_tree_error .
+        VALUE(rr_node) TYPE REF TO zcl_uitb_ctm_node.
     "! <p class="shorttext synchronized" lang="en">Sets the first root node as the new top node</p>
     METHODS set_first_root_node_as_top .
     "! <p class="shorttext synchronized" lang="en">Set the top node to be selected and in the view box</p>
@@ -184,6 +181,18 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
       lv_node_key = get_next_node_key( ).
     ENDIF.
 
+    DATA(lt_items) = it_item_table.
+
+    LOOP AT lt_items ASSIGNING FIELD-SYMBOL(<ls_item>).
+      IF <ls_item>-class IS INITIAL.
+        <ls_item>-class = cl_item_tree_model=>item_class_text.
+      ENDIF.
+
+      IF if_use_prop_font = abap_true.
+        <ls_item>-font = cl_item_tree_model=>item_font_prop.
+      ENDIF.
+    ENDLOOP.
+
     mr_model->add_node(
       EXPORTING
         node_key                = lv_node_key             " Schlüssel des Knotens
@@ -200,7 +209,7 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
         expanded_image          = iv_expanded_image       " siehe Methodendokumentation
         user_object             = ir_user_object          " User Objekt
         items_incomplete        = if_items_incomplete     " siehe Methodendokumentation
-        item_table              = it_item_table           " Items des Knotens
+        item_table              = lt_items           " Items des Knotens
       EXCEPTIONS
         node_key_exists         = 1
         node_key_empty          = 2
@@ -308,25 +317,34 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
 
   METHOD expand_node.
     mr_model->expand_node(
+      EXPORTING
         node_key            = iv_node_key    " Schlüssel des Knotens
         expand_predecessors = if_expand_predecessors    " 'X': Vorgänger des Knotens expandieren
         expand_subtree      = if_expand_subtree    " 'X': alle Nachfahren expandieren
         level_count         = iv_level_count    " Anzahl zu expandierende Nachfolgeebenen
+      EXCEPTIONS
+        OTHERS              = 1
     ).
   ENDMETHOD.
 
 
   METHOD expand_nodes.
     mr_model->expand_nodes(
+      EXPORTING
         node_key_table = it_node_key
+      EXCEPTIONS
+        OTHERS              = 1
     ).
   ENDMETHOD.
 
 
   METHOD expand_root_nodes.
     mr_model->expand_root_nodes(
+      EXPORTING
         expand_subtree      = if_expand_subtree
         level_count         = iv_level_count
+      EXCEPTIONS
+        OTHERS              = 1
     ).
   ENDMETHOD.
 
@@ -335,6 +353,7 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
     mr_model->get_expanded_nodes(
       EXPORTING no_hidden_nodes = if_no_hidden_nodes
       IMPORTING node_key_table  = result
+      exceptions others         = 1
     ).
   ENDMETHOD.
 
@@ -364,9 +383,7 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
         node_not_found = 1
         OTHERS         = 2
     ).
-    IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
-    ELSE.
+    IF sy-subrc = 0.
       rr_node = NEW #(
         ir_model    = mr_model
         iv_node_key = iv_node_key
@@ -402,9 +419,7 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
         failed               = 4
         OTHERS               = 5
     ).
-    IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
-    ELSE.
+    IF sy-subrc = 0.
       CHECK lv_top_node IS NOT INITIAL.
       rr_node = get_node( lv_top_node ).
     ENDIF.

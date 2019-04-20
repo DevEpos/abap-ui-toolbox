@@ -25,8 +25,9 @@ CLASS zcl_uitb_gui_code_editor DEFINITION
     "!
     METHODS constructor
       IMPORTING
-        io_parent     TYPE REF TO cl_gui_container
-        iv_line_width TYPE i DEFAULT 72.
+        io_parent      TYPE REF TO cl_gui_container
+        iv_source_type TYPE string DEFAULT 'ABAP'
+        iv_line_width  TYPE i DEFAULT 72.
     "! <p class="shorttext synchronized" lang="en">Format the source code of the editor</p>
     "!
     METHODS format_source.
@@ -72,6 +73,27 @@ CLASS zcl_uitb_gui_code_editor DEFINITION
     METHODS is_modified
       RETURNING
         VALUE(rf_modified) TYPE abap_bool.
+    "! <p class="shorttext synchronized" lang="en">Protect the given lines</p>
+    METHODS protect_lines
+      IMPORTING
+        it_lines TYPE cl_gui_sourceedit=>linetabs.
+    "! <p class="shorttext synchronized" lang="en">Set cursor position to given line and column</p>
+    METHODS set_sel_position
+      IMPORTING
+        iv_line TYPE i
+        iv_pos  TYPE i DEFAULT 0.
+    "! <p class="shorttext synchronized" lang="en">Gets the current cursor position</p>
+    METHODS get_sel_position
+      EXPORTING
+        ev_line TYPE i
+        ev_pos  TYPE i.
+
+    "! <p class="shorttext synchronized" lang="en">Shows the given completion results</p>
+    METHODS show_completion_results.
+    "! <p class="shorttext synchronized" lang="en">Shows the given quick info</p>
+    METHODS show_quick_info
+      IMPORTING
+        iv_info TYPE string.
   PROTECTED SECTION.
     METHODS on_drop
           FOR EVENT on_drop OF cl_gui_abapedit
@@ -107,7 +129,8 @@ CLASS zcl_uitb_gui_code_editor DEFINITION
     DATA mo_dragdrop TYPE REF TO cl_dragdrop.
     METHODS init_control
       IMPORTING
-        io_container TYPE REF TO cl_gui_container.
+        io_container   TYPE REF TO cl_gui_container
+        iv_source_type TYPE string.
     METHODS register_events.
 ENDCLASS.
 
@@ -118,7 +141,10 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
     DATA: lt_text TYPE STANDARD TABLE OF char140.
 
     mv_line_width = iv_line_width.
-    init_control( io_parent ).
+    init_control(
+        io_container   = io_parent
+        iv_source_type = iv_source_type
+    ).
     register_events( ).
 
     mo_editor->set_text(
@@ -157,6 +183,12 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
       CATCH cx_sedi_pretty_printer.
     ENDTRY.
 
+  ENDMETHOD.
+
+  METHOD protect_lines.
+    CHECK mo_editor IS BOUND.
+
+    mo_editor->protect_lines( protected_lines = it_lines ).
   ENDMETHOD.
 
   METHOD set_text.
@@ -217,15 +249,15 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
     rf_has_focus = xsdbool( mo_editor = mr_control ).
   ENDMETHOD.
 
+
   METHOD register_events.
     mo_editor->register_event_dblclick( EXPORTING navigate_on_dblclick = 1 EXCEPTIONS OTHERS = 1 ).
 
-
     DATA(lo_parser) = mo_editor->get_completer( ).
     IF lo_parser IS NOT INITIAL.
-      mo_editor->register_event_completion( EXPORTING appl_event = abap_false EXCEPTIONS OTHERS = 1 ).
+      mo_editor->register_event_completion( EXPORTING appl_event = abap_true EXCEPTIONS OTHERS = 1 ).
       IF sy-subrc = 0.
-        SET HANDLER lo_parser->handle_completion_request FOR mo_editor.
+        SET HANDLER lo_parser->handle_completion_request for mo_editor.
 
         mo_editor->register_event_quick_info( EXPORTING appl_event = abap_false EXCEPTIONS OTHERS = 1 ).
         SET HANDLER lo_parser->handle_quickinfo_request FOR mo_editor.
@@ -249,15 +281,15 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD init_control.
+
     mo_editor = NEW #(
         parent           = io_container
+        source_type      = iv_source_type
         max_number_chars = mv_line_width
     ).
 
+    mo_editor->create_document( EXCEPTIONS OTHERS = 1 ).
     mo_editor->upload_properties( EXCEPTIONS OTHERS = 1 ).
-    IF sy-subrc <> 0.
-    ENDIF.
-
     mo_editor->init_completer( ).
 
     mo_editor->set_tabbar_mode( tabbar_mode = cl_gui_abapedit=>false ).
@@ -364,6 +396,49 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
   METHOD is_modified.
     mo_editor->get_textmodified_status( IMPORTING status = DATA(lv_status) EXCEPTIONS OTHERS = 1 ).
     rf_modified = xsdbool( lv_status = cl_gui_abapedit=>true ).
+  ENDMETHOD.
+
+
+
+
+  METHOD get_sel_position.
+    mo_editor->get_selection_pos( IMPORTING from_line = ev_line
+                                            from_pos  = ev_pos
+                                  EXCEPTIONS OTHERS = 1 ).
+  ENDMETHOD.
+
+  METHOD set_sel_position.
+    mo_editor->set_selection_pos_in_line(
+      EXPORTING
+        line    = iv_line
+        pos     = iv_pos
+      EXCEPTIONS
+        OTHERS  = 1
+    ).
+  ENDMETHOD.
+
+  METHOD show_completion_results.
+    DATA: lt_source TYPE string_table.
+
+    get_sel_position(
+      IMPORTING
+        ev_line = DATA(lv_line)
+        ev_pos  = DATA(lv_pos)
+    ).
+    mo_editor->get_text( IMPORTING table = lt_source EXCEPTIONS OTHERS = 1 ).
+
+    DATA(lt_completion_results) = zcl_uitb_code_completer=>get_completion_results(
+      it_source = lt_source
+      iv_pos_x  = lv_pos - 1
+      iv_pos_y  = lv_line
+    ).
+    mo_editor->show_completion_results(
+        completion_results = lt_completion_results
+    ).
+  ENDMETHOD.
+
+  METHOD show_quick_info.
+    mo_editor->show_quick_info( iv_info ).
   ENDMETHOD.
 
 ENDCLASS.
