@@ -4,7 +4,6 @@
   <asx:values>
    <VSEOINTERF>
     <CLSNAME>ZIF_UITB_C_ALV_DISPLAY_TYPES</CLSNAME>
-    <VERSION>1</VERSION>
     <LANGU>E</LANGU>
     <DESCRIPT>Display types for alv</DESCRIPT>
     <EXPOSURE>2</EXPOSURE>

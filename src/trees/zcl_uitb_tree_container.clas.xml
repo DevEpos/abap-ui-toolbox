@@ -4,7 +4,6 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_UITB_TREE_CONTAINER</CLSNAME>
-    <VERSION>1</VERSION>
     <LANGU>E</LANGU>
     <DESCRIPT>Container with Tree and optional Toolbar</DESCRIPT>
     <STATE>1</STATE>

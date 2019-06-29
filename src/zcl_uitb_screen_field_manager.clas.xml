@@ -4,7 +4,6 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_UITB_SCREEN_FIELD_MANAGER</CLSNAME>
-    <VERSION>1</VERSION>
     <LANGU>E</LANGU>
     <DESCRIPT>Manage values for screen fields</DESCRIPT>
     <STATE>1</STATE>

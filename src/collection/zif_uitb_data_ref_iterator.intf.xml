@@ -4,7 +4,6 @@
   <asx:values>
    <VSEOINTERF>
     <CLSNAME>ZIF_UITB_DATA_REF_ITERATOR</CLSNAME>
-    <VERSION>1</VERSION>
     <LANGU>E</LANGU>
     <DESCRIPT>Iterator for Data References</DESCRIPT>
     <EXPOSURE>2</EXPOSURE>

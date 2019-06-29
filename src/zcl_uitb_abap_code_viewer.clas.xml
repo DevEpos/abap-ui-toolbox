@@ -4,7 +4,6 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_UITB_ABAP_CODE_VIEWER</CLSNAME>
-    <VERSION>1</VERSION>
     <LANGU>E</LANGU>
     <DESCRIPT>Show ABAP Code with correct syntax highligting</DESCRIPT>
     <STATE>1</STATE>

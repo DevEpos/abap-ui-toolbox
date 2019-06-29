@@ -4,7 +4,6 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_UITB_APP_SHORTCUTS_VIEWER</CLSNAME>
-    <VERSION>1</VERSION>
     <LANGU>E</LANGU>
     <DESCRIPT>Shows all registered Shortcuts of current Application/view</DESCRIPT>
     <STATE>1</STATE>
