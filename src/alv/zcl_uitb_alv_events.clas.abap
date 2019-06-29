@@ -1,148 +1,154 @@
-class ZCL_UITB_ALV_EVENTS definition
-  public
-  inheriting from ZCL_UITB_ALV_METADATA
-  final
-  create public
+CLASS zcl_uitb_alv_events DEFINITION
+  PUBLIC
+  INHERITING FROM zcl_uitb_alv_metadata
+  FINAL
+  CREATE PUBLIC
 
-  global friends ZCL_UITB_ALV_EVT_CONTROLLER .
+  GLOBAL FRIENDS zcl_uitb_alv_evt_controller .
 
-public section.
+  PUBLIC SECTION.
 
-  events DATA_CHANGED
-    exporting
-      value(ER_CHANGE_PROTOCOL) type ref to CL_ALV_CHANGED_DATA_PROTOCOL optional
-      value(EF_ONF4) type ABAP_BOOL optional
-      value(EF_ONF4_BEFORE) type ABAP_BOOL optional
-      value(EF_ONF4_AFTER) type ABAP_BOOL optional
-      value(EV_FUNCTION) type SY-UCOMM optional .
-  events F4
-    exporting
-      value(EV_FIELDNAME) type LVC_FNAME optional
-      value(EV_FIELDVALUE) type LVC_VALUE optional
-      value(ES_ROW_NO) type LVC_S_ROID optional
-      value(ER_EVENT_DATA) type ref to CL_ALV_EVENT_DATA optional
-      value(ET_BAD_CELLS) type LVC_T_MODI optional
-      value(EF_DISPLAY) type ABAP_BOOL optional .
-  events BEFORE_FUNCTION
-    exporting
-      value(EV_FUNCTION) type UI_FUNC optional .
-  events AFTER_FUNCTION
-    exporting
-      value(EV_FUNCTION) type UI_FUNC optional .
+    EVENTS data_changed
+      EXPORTING
+        VALUE(er_change_protocol) TYPE REF TO cl_alv_changed_data_protocol OPTIONAL
+        VALUE(ef_onf4) TYPE abap_bool OPTIONAL
+        VALUE(ef_onf4_before) TYPE abap_bool OPTIONAL
+        VALUE(ef_onf4_after) TYPE abap_bool OPTIONAL
+        VALUE(ev_function) TYPE sy-ucomm OPTIONAL .
+    EVENTS f4
+      EXPORTING
+        VALUE(ev_fieldname) TYPE lvc_fname OPTIONAL
+        VALUE(ev_fieldvalue) TYPE lvc_value OPTIONAL
+        VALUE(es_row_no) TYPE lvc_s_roid OPTIONAL
+        VALUE(er_event_data) TYPE REF TO cl_alv_event_data OPTIONAL
+        VALUE(et_bad_cells) TYPE lvc_t_modi OPTIONAL
+        VALUE(ef_display) TYPE abap_bool OPTIONAL .
+    EVENTS before_function
+      EXPORTING
+        VALUE(ev_function) TYPE ui_func OPTIONAL .
+    EVENTS after_function
+      EXPORTING
+        VALUE(ev_function) TYPE ui_func OPTIONAL .
     "! Event for chosen ALV function e.g. toolbar button clicked
     "!
     "! @parameter ev_function | the function code
     "! @parameter ev_tag      | the tag of the function
-  events FUNCTION_CHOSEN
-    exporting
-      value(EV_FUNCTION) type UI_FUNC optional
-      value(EV_TAG) type STRING optional .
-  events DOUBLE_CLICK
-    exporting
-      value(EV_ROW) type LVC_ROID
-      value(EV_COLUMN) type LVC_FNAME .
-  events LINK_CLICK
-    exporting
-      value(EV_ROW) type I
-      value(EV_COLUMN) type LVC_FNAME .
-  events DROP_GET_FLAVOR
-    exporting
-      value(EV_ROW) type I
-      value(EV_COLUMN) type LVC_FNAME
-      value(ES_ROW_NO) type LVC_S_ROID
-      value(ER_DRAGDROPOBJ) type ref to CL_DRAGDROPOBJECT
-      value(ET_FLAVORS) type CNDD_FLAVORS .
-  events DRAG
-    exporting
-      value(EV_ROW) type I
-      value(EV_COLUMN) type LVC_FNAME
-      value(ES_ROW_NO) type LVC_S_ROID
-      value(ER_DRAGDROPOBJ) type ref to CL_DRAGDROPOBJECT .
-  events DROP
-    exporting
-      value(EV_ROW) type I
-      value(EV_COLUMN) type LVC_FNAME
-      value(ES_ROW_NO) type LVC_S_ROID
-      value(ER_DRAGDROPOBJ) type ref to CL_DRAGDROPOBJECT .
-  events DROP_COMPLETE
-    exporting
-      value(EV_ROW) type I
-      value(EV_COLUMN) type LVC_FNAME
-      value(ES_ROW_NO) type LVC_S_ROID
-      value(ER_DRAGDROPOBJ) type ref to CL_DRAGDROPOBJECT .
-  events CONTEXT_MENU
-    exporting
-      value(ER_MENU) type ref to CL_CTMENU .
-protected section.
+    EVENTS function_chosen
+      EXPORTING
+        VALUE(ev_function) TYPE ui_func OPTIONAL
+        VALUE(ev_tag) TYPE string OPTIONAL .
+    EVENTS double_click
+      EXPORTING
+        VALUE(ev_row) TYPE lvc_roid
+        VALUE(ev_column) TYPE lvc_fname .
+    EVENTS link_click
+      EXPORTING
+        VALUE(ev_row) TYPE i
+        VALUE(ev_column) TYPE lvc_fname .
+    EVENTS drop_get_flavor
+      EXPORTING
+        VALUE(ev_row) TYPE i
+        VALUE(ev_column) TYPE lvc_fname
+        VALUE(es_row_no) TYPE lvc_s_roid
+        VALUE(er_dragdropobj) TYPE REF TO cl_dragdropobject
+        VALUE(et_flavors) TYPE cndd_flavors .
+    EVENTS drag
+      EXPORTING
+        VALUE(ev_row) TYPE i
+        VALUE(ev_column) TYPE lvc_fname
+        VALUE(es_row_no) TYPE lvc_s_roid
+        VALUE(er_dragdropobj) TYPE REF TO cl_dragdropobject .
+    EVENTS drop
+      EXPORTING
+        VALUE(ev_row) TYPE i
+        VALUE(ev_column) TYPE lvc_fname
+        VALUE(es_row_no) TYPE lvc_s_roid
+        VALUE(er_dragdropobj) TYPE REF TO cl_dragdropobject .
+    EVENTS drop_complete
+      EXPORTING
+        VALUE(ev_row) TYPE i
+        VALUE(ev_column) TYPE lvc_fname
+        VALUE(es_row_no) TYPE lvc_s_roid
+        VALUE(er_dragdropobj) TYPE REF TO cl_dragdropobject .
+    EVENTS context_menu
+      EXPORTING
+        VALUE(er_menu) TYPE REF TO cl_ctmenu .
+    METHODS get_sender
+      RETURNING
+        VALUE(ro_alv) TYPE REF TO zcl_uitb_alv.
+  PROTECTED SECTION.
 
-  methods RAISE_DROP_GET_FLAVOR
-    importing
-      !IV_ROW type I
-      !IV_COLUMN type LVC_FNAME
-      !IS_ROW_NO type LVC_S_ROID
-      !IR_DRAGDROPOBJ type ref to CL_DRAGDROPOBJECT
-      !IT_FLAVORS type CNDD_FLAVORS optional .
-  methods RAISE_DRAG
-    importing
-      !IV_ROW type I
-      !IV_COLUMN type LVC_FNAME
-      !IS_ROW_NO type LVC_S_ROID
-      !IR_DRAGDROPOBJ type ref to CL_DRAGDROPOBJECT optional .
-  methods RAISE_DROP
-    importing
-      !IV_ROW type I
-      !IV_COLUMN type LVC_FNAME
-      !IS_ROW_NO type LVC_S_ROID
-      !IR_DRAGDROPOBJ type ref to CL_DRAGDROPOBJECT optional .
-  methods RAISE_DROP_COMPLETE
-    importing
-      !IV_ROW type I
-      !IV_COLUMN type LVC_FNAME
-      !IS_ROW_NO type LVC_S_ROID
-      !IR_DRAGDROPOBJ type ref to CL_DRAGDROPOBJECT optional .
-  methods RAISE_FUNCTION_CHOSEN
-    importing
-      !IV_FUNCTION type UI_FUNC
-      !IV_TAG type STRING optional .
-  methods RAISE_AFTER_FUNCTION
-    importing
-      !IV_FUNCTION type UI_FUNC .
-  methods RAISE_BEFORE_FUNCTION
-    importing
-      !IV_FUNCTION type UI_FUNC .
-  methods RAISE_LINK_CLICK
-    importing
-      !IV_ROW type I
-      !IV_COLUMN type LVC_FNAME .
-  methods RAISE_DOUBLE_CLICK
-    importing
-      !IV_ROW type I
-      !IV_COLUMN type LVC_FNAME .
-  methods RAISE_F4
-    importing
-      !IV_FIELDNAME type LVC_FNAME
-      !IV_FIELDVALUE type LVC_VALUE
-      !IS_ROW_NO type LVC_S_ROID
-      !IR_EVENT_DATA type ref to CL_ALV_EVENT_DATA
-      !IT_BAD_CELLS type LVC_T_MODI optional
-      !IF_DISPLAY type ABAP_BOOL optional .
-  methods RAISE_DATA_CHANGED
-    importing
-      !IR_CHANGE_PROTOCOL type ref to CL_ALV_CHANGED_DATA_PROTOCOL optional
-      !IF_ONF4 type ABAP_BOOL optional
-      !IF_ONF4_BEFORE type ABAP_BOOL optional
-      !IF_ONF4_AFTER type ABAP_BOOL optional
-      !IV_FUNCTION type SY-UCOMM optional .
-  methods RAISE_CONTEXT_MENU
-    importing
-      !IR_MENU type ref to CL_CTMENU .
+    METHODS raise_drop_get_flavor
+      IMPORTING
+        !iv_row         TYPE i
+        !iv_column      TYPE lvc_fname
+        !is_row_no      TYPE lvc_s_roid
+        !ir_dragdropobj TYPE REF TO cl_dragdropobject
+        !it_flavors     TYPE cndd_flavors OPTIONAL .
+    METHODS raise_drag
+      IMPORTING
+        !iv_row         TYPE i
+        !iv_column      TYPE lvc_fname
+        !is_row_no      TYPE lvc_s_roid
+        !ir_dragdropobj TYPE REF TO cl_dragdropobject OPTIONAL .
+    METHODS raise_drop
+      IMPORTING
+        !iv_row         TYPE i
+        !iv_column      TYPE lvc_fname
+        !is_row_no      TYPE lvc_s_roid
+        !ir_dragdropobj TYPE REF TO cl_dragdropobject OPTIONAL .
+    METHODS raise_drop_complete
+      IMPORTING
+        !iv_row         TYPE i
+        !iv_column      TYPE lvc_fname
+        !is_row_no      TYPE lvc_s_roid
+        !ir_dragdropobj TYPE REF TO cl_dragdropobject OPTIONAL .
+    METHODS raise_function_chosen
+      IMPORTING
+        !iv_function TYPE ui_func
+        !iv_tag      TYPE string OPTIONAL .
+    METHODS raise_after_function
+      IMPORTING
+        !iv_function TYPE ui_func .
+    METHODS raise_before_function
+      IMPORTING
+        !iv_function TYPE ui_func .
+    METHODS raise_link_click
+      IMPORTING
+        !iv_row    TYPE i
+        !iv_column TYPE lvc_fname .
+    METHODS raise_double_click
+      IMPORTING
+        !iv_row    TYPE i
+        !iv_column TYPE lvc_fname .
+    METHODS raise_f4
+      IMPORTING
+        !iv_fieldname  TYPE lvc_fname
+        !iv_fieldvalue TYPE lvc_value
+        !is_row_no     TYPE lvc_s_roid
+        !ir_event_data TYPE REF TO cl_alv_event_data
+        !it_bad_cells  TYPE lvc_t_modi OPTIONAL
+        !if_display    TYPE abap_bool OPTIONAL .
+    METHODS raise_data_changed
+      IMPORTING
+        !ir_change_protocol TYPE REF TO cl_alv_changed_data_protocol OPTIONAL
+        !if_onf4            TYPE abap_bool OPTIONAL
+        !if_onf4_before     TYPE abap_bool OPTIONAL
+        !if_onf4_after      TYPE abap_bool OPTIONAL
+        !iv_function        TYPE sy-ucomm OPTIONAL .
+    METHODS raise_context_menu
+      IMPORTING
+        !ir_menu TYPE REF TO cl_ctmenu .
   PRIVATE SECTION.
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_ALV_EVENTS IMPLEMENTATION.
+CLASS zcl_uitb_alv_events IMPLEMENTATION.
 
+  METHOD get_sender.
+    ro_alv = CAST zcl_uitb_alv_controller( mr_controller )->mr_model.
+  ENDMETHOD.
 
   METHOD raise_after_function.
     RAISE EVENT after_function
@@ -251,4 +257,5 @@ CLASS ZCL_UITB_ALV_EVENTS IMPLEMENTATION.
         ev_row    = iv_row
         ev_column = iv_column.
   ENDMETHOD.
+
 ENDCLASS.

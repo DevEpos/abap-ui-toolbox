@@ -1,4 +1,4 @@
-CLASS ZCL_UITB_alv_changelist DEFINITION
+CLASS zcl_uitb_alv_changelist DEFINITION
   PUBLIC
   FINAL
   CREATE PRIVATE.
@@ -6,9 +6,9 @@ CLASS ZCL_UITB_alv_changelist DEFINITION
   PUBLIC SECTION.
     CLASS-METHODS create
       IMPORTING
-        it_changelist        TYPE ZIF_UITB_alv_types=>tt_alv_changelist
+        it_changelist        TYPE zif_uitb_alv_types=>tt_alv_changelist
       RETURNING
-        VALUE(rr_changelist) TYPE REF TO ZCL_UITB_alv_changelist.
+        VALUE(rr_changelist) TYPE REF TO zcl_uitb_alv_changelist.
 
     METHODS is_refresh_requested
       RETURNING
@@ -28,7 +28,13 @@ CLASS ZCL_UITB_alv_changelist DEFINITION
     METHODS get_refresh_mode
       RETURNING
         VALUE(result) TYPE i.
-    DATA mt_changelist TYPE ZIF_UITB_alv_types=>tt_alv_changelist.
+    METHODS is_filters_only_change
+      RETURNING
+        VALUE(result) TYPE abap_bool.
+    METHODS is_layout_only_change
+      RETURNING
+        VALUE(result) TYPE abap_bool.
+    DATA mt_changelist TYPE zif_uitb_alv_types=>tt_alv_changelist.
   PROTECTED SECTION.
   PRIVATE SECTION.
 
@@ -36,7 +42,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_UITB_alv_changelist IMPLEMENTATION.
+CLASS zcl_uitb_alv_changelist IMPLEMENTATION.
   METHOD create.
     rr_changelist = NEW #( ).
     rr_changelist->mt_changelist = it_changelist.
@@ -70,6 +76,24 @@ CLASS ZCL_UITB_alv_changelist IMPLEMENTATION.
 
   METHOD is_selections_requested.
     result = xsdbool( line_exists( mt_changelist[ flavour = zif_uitb_c_alv_chglist_flavor=>selections ] ) ).
+  ENDMETHOD.
+
+  METHOD is_filters_only_change.
+    DATA(lt_changelist) = mt_changelist.
+    DELETE lt_changelist WHERE name <> zif_uitb_c_alv_metadata_types=>filter
+                           AND name <> zif_uitb_c_alv_metadata_types=>filters
+                           AND frontend = abap_false.
+
+    result = xsdbool( sy-subrc <> 0 ).
+
+  ENDMETHOD.
+
+  METHOD is_layout_only_change.
+    DATA(lt_changelist) = mt_changelist.
+    DELETE lt_changelist WHERE name <> zif_uitb_c_alv_metadata_types=>display_settings
+                           AND frontend = abap_false.
+
+    result = xsdbool( sy-subrc <> 0 ).
   ENDMETHOD.
 
 ENDCLASS.

@@ -1,14 +1,16 @@
-CLASS zcl_UITB_alv_filters DEFINITION
+"! <p class="shorttext synchronized" lang="en">Filters for ALV Columns</p>
+CLASS zcl_uitb_alv_filters DEFINITION
   PUBLIC
-  INHERITING FROM zcl_UITB_alv_metadata
+  INHERITING FROM zcl_uitb_alv_metadata
   FINAL
   CREATE PUBLIC
 
-  GLOBAL FRIENDS zcl_UITB_alv_grid_adapter
-                 zcl_UITB_alv_metadata_util.
+  GLOBAL FRIENDS zcl_uitb_alv_grid_adapter
+                 zcl_uitb_alv_metadata_util.
 
   PUBLIC SECTION.
     INTERFACES zif_uitb_enumerable.
+    "! <p class="shorttext synchronized" lang="en">Add filter to column</p>
     METHODS add_filter
       IMPORTING
         iv_columnname TYPE lvc_fname
@@ -17,59 +19,69 @@ CLASS zcl_UITB_alv_filters DEFINITION
         iv_low        TYPE zuitb_generic_range-low OPTIONAL
         iv_high       TYPE zuitb_generic_range-high OPTIONAL
       RETURNING
-        VALUE(result) TYPE REF TO zcl_UITB_alv_filter
+        VALUE(result) TYPE REF TO zcl_uitb_alv_filter
       RAISING
-        zcx_UITB_alv_not_found
-        zcx_UITB_alv_existing .
+        zcx_uitb_alv_not_found
+        zcx_uitb_alv_existing .
+    "! <p class="shorttext synchronized" lang="en">Delete all filters</p>
     METHODS clear .
     METHODS refresh.
+    "! <p class="shorttext synchronized" lang="en">CONSTRUCTOR</p>
     METHODS constructor
       IMPORTING
-        ir_columns    TYPE REF TO zcl_UITB_alv_columns
-        ir_controller TYPE REF TO zif_UITB_alv_metadata_ctrller OPTIONAL .
+        ir_columns    TYPE REF TO zcl_uitb_alv_columns
+        ir_controller TYPE REF TO zif_uitb_alv_metadata_ctrller OPTIONAL .
 
+    "! <p class="shorttext synchronized" lang="en">Get filter(s) of given column</p>
     METHODS get_filter
       IMPORTING
         iv_columnname TYPE lvc_fname
       RETURNING
-        VALUE(result) TYPE REF TO zcl_UITB_alv_filter
+        VALUE(result) TYPE REF TO zcl_uitb_alv_filter
       RAISING
-        zcx_UITB_alv_not_found.
+        zcx_uitb_alv_not_found.
+    "! <p class="shorttext synchronized" lang="en">Check if there is any filter defined</p>
     METHODS is_filter_defined
       RETURNING
         VALUE(result) TYPE abap_bool.
+    "! <p class="shorttext synchronized" lang="en">Delete filter from column</p>
     METHODS remove_filter
       IMPORTING
         iv_columnname TYPE lvc_fname .
+    "! <p class="shorttext synchronized" lang="en">Retrieve filtered row count</p>
+    METHODS get_filtered_entry_count
+      RETURNING
+        VALUE(rv_filtered_entries) TYPE i.
   PROTECTED SECTION.
   PRIVATE SECTION.
 
-    DATA mr_columns TYPE REF TO zcl_UITB_alv_columns.
-    DATA mt_filters TYPE zif_UITB_alv_types=>tt_alv_filter.
+    DATA mr_columns TYPE REF TO zcl_uitb_alv_columns.
+    DATA mt_filters TYPE zif_uitb_alv_types=>tt_alv_filter.
 
     METHODS raise_filter_exists
       IMPORTING
         iv_method     TYPE any OPTIONAL
         iv_columnname TYPE any OPTIONAL
       RAISING
-        zcx_UITB_alv_existing.
+        zcx_uitb_alv_existing.
+    "! <p class="shorttext synchronized" lang="en">Repair filter settings</p>
     METHODS repair .
     METHODS raise_filter_not_found
       IMPORTING
         iv_method     TYPE any OPTIONAL
         iv_columnname TYPE any OPTIONAL
       RAISING
-        zcx_UITB_alv_not_found.
+        zcx_uitb_alv_not_found.
 ENDCLASS.
 
 
 
-CLASS zcl_UITB_alv_filters IMPLEMENTATION.
+CLASS zcl_uitb_alv_filters IMPLEMENTATION.
 
 
   METHOD add_filter .
 
-    DATA: ls_filter TYPE zif_UITB_alv_types=>ty_alv_filter.
+    DATA: ls_filter TYPE zif_uitb_alv_types=>ty_alv_filter.
 
     CHECK iv_columnname IS NOT INITIAL.
 
@@ -86,7 +98,7 @@ CLASS zcl_UITB_alv_filters IMPLEMENTATION.
     ENDIF.
 
     ls_filter-columnname = iv_columnname.
-    ls_filter-filter_ref = NEW zcl_UITB_alv_filter(
+    ls_filter-filter_ref = NEW zcl_uitb_alv_filter(
         ir_column     = lr_column
         ir_controller = mr_controller
     ).
@@ -167,7 +179,7 @@ CLASS zcl_UITB_alv_filters IMPLEMENTATION.
 
     DATA(lv_class) = CAST cl_abap_classdescr( cl_abap_typedescr=>describe_by_object_ref( me ) )->absolute_name.
 
-    RAISE EXCEPTION TYPE zcx_UITB_alv_existing
+    RAISE EXCEPTION TYPE zcx_uitb_alv_existing
       EXPORTING
         msgv1 = 'Filter'
         msgv2 = |{ iv_columnname }|
@@ -181,7 +193,7 @@ CLASS zcl_UITB_alv_filters IMPLEMENTATION.
 
     DATA(lv_class) = CAST cl_abap_classdescr( cl_abap_typedescr=>describe_by_object_ref( me ) )->absolute_name.
 
-    RAISE EXCEPTION TYPE zcx_UITB_alv_not_found
+    RAISE EXCEPTION TYPE zcx_uitb_alv_not_found
       EXPORTING
         msgv1 = 'Filter'
         msgv2 = |{ iv_columnname }|
@@ -225,8 +237,8 @@ CLASS zcl_UITB_alv_filters IMPLEMENTATION.
               iv_option      = <ls_selopt>-option
               iv_low         = <ls_selopt>-low
               iv_high        = <ls_selopt>-high ).
-          CATCH zcx_UITB_alv_existing
-                zcx_UITB_alv_not_found.
+          CATCH zcx_uitb_alv_existing
+                zcx_uitb_alv_not_found.
         ENDTRY.
       ENDLOOP.
     ENDLOOP.
@@ -261,6 +273,18 @@ CLASS zcl_UITB_alv_filters IMPLEMENTATION.
       iv_flavour      = zif_uitb_c_alv_chglist_flavor=>setter
       iv_refresh_mode = zif_uitb_c_alv_refresh=>full
       iv_method       = 'REFRESH' ).
+  ENDMETHOD.
+
+  METHOD get_filtered_entry_count.
+    TRY.
+        DATA(lo_adapter) = CAST zcl_uitb_alv_controller( mr_controller )->mr_adapter.
+        CHECK lo_adapter IS BOUND.
+        DATA(lo_alv) = lo_adapter->get_grid( ).
+        CHECK lo_alv IS BOUND.
+        lo_alv->get_filtered_entries( IMPORTING et_filtered_entries = DATA(lt_filtered_entries) ).
+        rv_filtered_entries = lines( lt_filtered_entries ).
+      CATCH cx_sy_move_cast_error.
+    ENDTRY.
   ENDMETHOD.
 
 ENDCLASS.

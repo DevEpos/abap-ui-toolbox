@@ -1,3 +1,4 @@
+"! <p class="shorttext synchronized" lang="en">Functions for ALV</p>
 CLASS zcl_uitb_alv_functions DEFINITION
   PUBLIC
   INHERITING FROM zcl_uitb_alv_metadata
@@ -30,8 +31,10 @@ CLASS zcl_uitb_alv_functions DEFINITION
     ALIASES tt_toolbar_menu
       FOR zif_uitb_alv_types~tt_alv_toolbar_menu.
 
+    "! <p class="shorttext synchronized" lang="en">CLASS CONSTRUCTOR</p>
     CLASS-METHODS class_constructor .
 
+    "! <p class="shorttext synchronized" lang="en">Adds new function</p>
     METHODS add_function
       IMPORTING
         !iv_name             TYPE ui_func OPTIONAL
@@ -42,43 +45,52 @@ CLASS zcl_uitb_alv_functions DEFINITION
         !iv_tag              TYPE string OPTIONAL
         !iv_tooltip          TYPE string OPTIONAL
         !if_start_of_toolbar TYPE abap_bool OPTIONAL.
+    "! <p class="shorttext synchronized" lang="en">CONSTRUCTOR</p>
     METHODS constructor
       IMPORTING
         !ir_controller TYPE REF TO zif_uitb_alv_metadata_ctrller .
+    "! <p class="shorttext synchronized" lang="en">Get disabled functions (predefined ALV Functions)</p>
     METHODS get_disabled
       RETURNING
         VALUE(result) TYPE ui_functions .
+    "! <p class="shorttext synchronized" lang="en">Retrieves functions</p>
     METHODS get_functions
       IMPORTING
         !if_for_context_menu TYPE abap_bool OPTIONAL
         !if_for_toolbar      TYPE abap_bool OPTIONAL
       RETURNING
         VALUE(result)        TYPE zif_uitb_alv_types=>tt_function .
+    "! <p class="shorttext synchronized" lang="en">Is function checked?</p>
     METHODS is_checked
       IMPORTING
         !iv_user_function     TYPE ui_func
         !if_check_for_enabled TYPE abap_bool DEFAULT abap_true
       RETURNING
         VALUE(result)         TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Is function disabled?</p>
     METHODS is_disabled
       IMPORTING
         !iv_user_function TYPE ui_func
       RETURNING
         VALUE(result)     TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Is function enabled?</p>
     METHODS is_enabled
       IMPORTING
         !iv_name      TYPE ui_func
       RETURNING
         VALUE(result) TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Is function visible?</p>
     METHODS is_visible
       IMPORTING
         !iv_name      TYPE ui_func
       RETURNING
         VALUE(result) TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Removes Function</p>
     METHODS remove_function
       IMPORTING
         !iv_name TYPE ui_func OPTIONAL
         !iv_tag  TYPE string OPTIONAL .
+    "! <p class="shorttext synchronized" lang="en">Set all functions enabled/disabled</p>
     METHODS set_all
       IMPORTING
         !value TYPE abap_bool DEFAULT abap_true .
@@ -94,56 +106,67 @@ CLASS zcl_uitb_alv_functions DEFINITION
     METHODS set_default
       IMPORTING
         !value TYPE abap_bool DEFAULT abap_true .
+    "! <p class="shorttext synchronized" lang="en">Set Function status</p>
     METHODS set_function
       IMPORTING
         !iv_name    TYPE salv_de_function
+        iv_icon     TYPE iconname OPTIONAL
+        iv_text     TYPE text40 OPTIONAL
+        iv_tooltip  TYPE iconquick OPTIONAL
         !if_enable  TYPE abap_bool DEFAULT abap_true
         !if_checked TYPE abap_bool OPTIONAL .
+    "! <p class="shorttext synchronized" lang="en">Set Function status by tag name</p>
     METHODS set_functions_by_tag
       IMPORTING
         !iv_tag     TYPE string
         !if_enable  TYPE abap_bool DEFAULT abap_true
         !if_checked TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Sets quick filter function</p>
     METHODS set_quickfilter
       IMPORTING
         !value TYPE abap_bool DEFAULT abap_true .
+    "! <p class="shorttext synchronized" lang="en">Toggle checked state of function</p>
     METHODS toggle_checked
       IMPORTING
         !iv_user_function TYPE ui_func
         !if_checked       TYPE abap_bool OPTIONAL .
+    "! <p class="shorttext synchronized" lang="en">Toggle disabled state of function</p>
     METHODS toggle_disabled
       IMPORTING
         !iv_user_function TYPE ui_func
         !if_disabled      TYPE abap_bool OPTIONAL .
   PROTECTED SECTION.
-private section.
+  PRIVATE SECTION.
 
-  data MT_BUTTONS type TT_TOOLBAR_BUTTON .
-  data MT_FUNCTIONS type TT_TOOLBAR_BUTTON .
-  data MT_BUTTONS_FRONT type TT_TOOLBAR_BUTTON .
-  data MT_MENUS type TT_TOOLBAR_MENU .
-  data MT_EXISTING_DISABLED type UI_FUNCTIONS .
-  data MT_FUNCTION_TAG_MAP type TT_FUNCTION_TAG_MAP .
-  data MF_QUICKFILTER type ABAP_BOOL .
-  class-data ST_EXISTING_FUNCTIONS type UI_FUNCTIONS .
+    DATA mt_buttons TYPE tt_toolbar_button .
+    DATA mt_functions TYPE tt_toolbar_button .
+    DATA mt_buttons_front TYPE tt_toolbar_button .
+    DATA mt_menus TYPE tt_toolbar_menu .
+    DATA mt_existing_disabled TYPE ui_functions .
+    DATA mt_function_tag_map TYPE tt_function_tag_map .
+    DATA mf_quickfilter TYPE abap_bool .
+    CLASS-DATA st_existing_functions TYPE ui_functions .
 
-  methods FILL_FUNCTION_TAG_MAP_FOR_MENU
-    importing
-      !IR_MENU type ref to CL_CTMENU
-      !IV_TAG type STRING .
-  methods UPDATE_TOOLBAR_BUTTON
-    importing
-      !IS_BUTTON type TY_TOOLBAR_BUTTON .
-  methods UPDATE_TOOLBAR_BUTTONS
-    importing
-      !IV_TAG type STRING
-      !IF_DISABLE type ABAP_BOOL optional
-      !IF_CHECKED type ABAP_BOOL optional .
+    "! <p class="shorttext synchronized" lang="en">Fills function tag map for menu entries</p>
+    METHODS fill_function_tag_map_for_menu
+      IMPORTING
+        !ir_menu TYPE REF TO cl_ctmenu
+        !iv_tag  TYPE string .
+    "! <p class="shorttext synchronized" lang="en">Update states of toolbar button</p>
+    METHODS update_toolbar_button
+      IMPORTING
+        !is_button TYPE ty_toolbar_button .
+    "! <p class="shorttext synchronized" lang="en">Updates states of toolbar buttons for tag</p>
+    METHODS update_toolbar_buttons
+      IMPORTING
+        !iv_tag     TYPE string
+        !if_disable TYPE abap_bool OPTIONAL
+        !if_checked TYPE abap_bool OPTIONAL .
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_ALV_FUNCTIONS IMPLEMENTATION.
+CLASS zcl_uitb_alv_functions IMPLEMENTATION.
 
 
   METHOD add_function.
@@ -168,7 +191,7 @@ CLASS ZCL_UITB_ALV_FUNCTIONS IMPLEMENTATION.
     ENDIF.
 
     IF if_start_of_toolbar = abap_true.
-      insert ls_button into mt_buttons_front index 1.
+      INSERT ls_button INTO mt_buttons_front INDEX 1.
     ELSE.
       mt_buttons = VALUE #( BASE mt_buttons ( ls_button ) ).
     ENDIF.
@@ -183,7 +206,7 @@ CLASS ZCL_UITB_ALV_FUNCTIONS IMPLEMENTATION.
         )
       ).
 *... fill function <-> map for menu entries
-     fill_function_tag_map_for_menu( ir_menu = ir_menu iv_tag = iv_tag ).
+      fill_function_tag_map_for_menu( ir_menu = ir_menu iv_tag = iv_tag ).
     ENDIF.
 
     set_setter_changed( iv_method = 'ADD_FUNCTION' ).
@@ -331,6 +354,18 @@ CLASS ZCL_UITB_ALV_FUNCTIONS IMPLEMENTATION.
       lr_user_function->disabled = xsdbool( if_enable = abap_false ).
       lr_user_function->checked = if_checked.
 
+      IF iv_icon IS SUPPLIED.
+        lr_user_function->icon = iv_icon.
+      ENDIF.
+
+      IF iv_text IS SUPPLIED.
+        lr_user_function->text = iv_text.
+      ENDIF.
+
+      IF iv_tooltip IS SUPPLIED.
+        lr_user_function->quickinfo = iv_tooltip.
+      ENDIF.
+
       update_toolbar_button( lr_user_function->* ).
       RETURN.
     ENDIF.
@@ -405,6 +440,9 @@ CLASS ZCL_UITB_ALV_FUNCTIONS IMPLEMENTATION.
     CHECK <ls_button> IS ASSIGNED.
     <ls_button>-disabled = is_button-disabled.
     <ls_button>-checked = is_button-checked.
+    <ls_button>-icon = is_button-icon.
+    <ls_button>-text = is_button-text.
+    <ls_button>-quickinfo = is_button-quickinfo.
   ENDMETHOD.
 
 

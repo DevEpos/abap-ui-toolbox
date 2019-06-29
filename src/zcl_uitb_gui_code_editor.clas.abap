@@ -288,7 +288,6 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
         max_number_chars = mv_line_width
     ).
 
-    mo_editor->create_document( EXCEPTIONS OTHERS = 1 ).
     mo_editor->upload_properties( EXCEPTIONS OTHERS = 1 ).
     mo_editor->init_completer( ).
 

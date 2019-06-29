@@ -5,6 +5,7 @@ CLASS zcl_uitb_app_shortcuts_viewer DEFINITION
   CREATE PRIVATE.
 
   PUBLIC SECTION.
+    CLASS-METHODS class_constructor.
     "! <p class="shorttext synchronized" lang="en">Display dialog with all registered F-Key in the screen</p>
     "!
     CLASS-METHODS display_shortcuts
@@ -16,12 +17,23 @@ CLASS zcl_uitb_app_shortcuts_viewer DEFINITION
     METHODS create_content
         REDEFINITION.
   PRIVATE SECTION.
+    TYPES: BEGIN OF ty_s_fkey_sort,
+             fkey     TYPE ui_func,
+             sort_key TYPE i,
+           END OF ty_s_fkey_sort.
+    TYPES: BEGIN OF ty_s_fkey_map_with_sort.
+        INCLUDE TYPE zif_uitb_ty_gui_screen=>ty_s_fkey_map.
+    TYPES: sort_key TYPE i.
+    TYPES: END OF ty_s_fkey_map_with_sort.
+
     DATA mt_output TYPE string_table.
-    DATA mt_shortcuts TYPE zif_uitb_ty_gui_screen=>ty_t_fkey_map.
+    CLASS-DATA gt_fkey_sort TYPE STANDARD TABLE OF ty_s_fkey_sort WITH KEY fkey.
+    DATA mt_shortcuts TYPE STANDARD TABLE OF ty_s_fkey_map_with_sort.
 
     METHODS constructor
       IMPORTING
         it_shortcuts TYPE zif_uitb_ty_gui_screen=>ty_t_fkey_map.
+
 
     TYPES: tt_w3_mime TYPE STANDARD TABLE OF w3_mime WITH DEFAULT KEY.
     "! <p class="shorttext synchronized" lang="en">HTML Control Proxy Class</p>
@@ -63,7 +75,61 @@ CLASS zcl_uitb_app_shortcuts_viewer IMPLEMENTATION.
 
   METHOD constructor.
     super->constructor( iv_title = |{ 'Available Shortcuts on this Screen'(003) }| ).
-    mt_shortcuts = it_shortcuts.
+    mt_shortcuts = CORRESPONDING #( it_shortcuts ).
+
+*.. Sort the short cuts
+    LOOP AT mt_shortcuts  ASSIGNING FIELD-SYMBOL(<ls_shortcut>).
+      <ls_shortcut>-sort_key = VALUE #( gt_fkey_sort[ fkey = <ls_shortcut>-fkey ]-sort_key OPTIONAL ).
+    ENDLOOP.
+
+    SORT mt_shortcuts BY sort_key.
+  ENDMETHOD.
+
+  METHOD class_constructor.
+    gt_fkey_sort = VALUE #(
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-f2             )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-f5             )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-f6             )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-f7             )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-f8             )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-f9             )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-shift_f1       )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-shift_f2       )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-shift_f4       )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-shift_f5       )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-shift_f6       )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-shift_f7       )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-shift_f8       )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-shift_f9       )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-shift_f11      )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-shift_f12      )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_f1        )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_f2        )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_f3        )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_f4        )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_f5        )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_f6        )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_f7        )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_f8        )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_f9        )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_f10       )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_f11       )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_f12       )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f2  )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f3  )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f4  )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f5  )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f6  )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f7  )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f8  )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f9  )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f10 )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f11 )
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f12 )
+    ).
+    LOOP AT gt_fkey_sort ASSIGNING FIELD-SYMBOL(<ls_fkey_sort>).
+      <ls_fkey_sort>-sort_key = sy-tabix.
+    ENDLOOP.
   ENDMETHOD.
 
   METHOD zif_uitb_gui_command_handler~execute_command.

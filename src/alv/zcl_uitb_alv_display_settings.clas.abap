@@ -1,92 +1,102 @@
-class ZCL_UITB_ALV_DISPLAY_SETTINGS definition
-  public
-  inheriting from ZCL_UITB_ALV_METADATA
-  final
-  create public
+CLASS zcl_uitb_alv_display_settings DEFINITION
+  PUBLIC
+  INHERITING FROM zcl_uitb_alv_metadata
+  FINAL
+  CREATE PUBLIC
 
-  global friends ZCL_UITB_ALV_METADATA_UTIL .
+  GLOBAL FRIENDS zcl_uitb_alv_metadata_util .
 
-public section.
+  PUBLIC SECTION.
 
-  methods GET_TITLE
-    returning
-      value(RESULT) type LVC_TITLE .
-  methods SET_TITLE
-    importing
-      !VALUE type LVC_TITLE .
-  methods IS_ROW_MOVE_ALLOWED
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods SET_ROW_MOVE_ALLOWED
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE .
-  methods HAS_ROW_MARKS
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods SET_ROW_MARKS
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE .
-  methods IS_ROW_INSERTION_POSSIBLE
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods SET_ROW_INSERTIONS
-    importing
-      !VALUE type ABAP_BOOL .
-  methods IS_EDITABLE
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods SET_EDITABLE
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE .
-  methods HIDE_TOOLBAR
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE .
-  methods IS_TOOLBAR_HIDDEN
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods IS_STRIPED
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods SET_STRIPED
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE .
-  methods IS_MERGED
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods SET_MERGED
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE .
-  methods IS_SMALL_TITLE
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods SET_SMALL_TITLE
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE .
-  methods GET_DRAG_N_DROP
-    returning
-      value(RESULT) type LVC_S_DD01 .
-  methods SET_DRAG_N_DROP
-    importing
-      !VALUE type LVC_S_DD01 .
+    "! <p class="shorttext synchronized" lang="en">CONSTRUCTOR</p>
+    METHODS constructor
+      IMPORTING
+        io_controller TYPE REF TO zif_uitb_alv_metadata_ctrller.
+    METHODS get_title
+      RETURNING
+        VALUE(result) TYPE lvc_title .
+    METHODS set_title
+      IMPORTING
+        !value TYPE lvc_title .
+    METHODS is_row_move_allowed
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    METHODS set_row_move_allowed
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true .
+    METHODS has_row_marks
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    METHODS set_row_marks
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true .
+    METHODS is_row_insertion_possible
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    METHODS set_row_insertions
+      IMPORTING
+        !value TYPE abap_bool .
+    METHODS is_editable
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    METHODS set_editable
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true .
+    METHODS hide_toolbar
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true .
+    METHODS is_toolbar_hidden
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    METHODS is_striped
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    METHODS set_striped
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true .
+    METHODS is_merged
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    METHODS set_merged
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true .
+    METHODS is_small_title
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    METHODS set_small_title
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true .
+    METHODS get_drag_n_drop
+      RETURNING
+        VALUE(result) TYPE lvc_s_dd01 .
+    METHODS set_drag_n_drop
+      IMPORTING
+        !value TYPE lvc_s_dd01 .
   PROTECTED SECTION.
-private section.
+  PRIVATE SECTION.
 
-  data MF_NO_ROW_INSERTIONS type ABAP_BOOL .
-  data MF_EDITABLE type ABAP_BOOL .
-  data MF_HIDE_TOOLBAR type ABAP_BOOL .
-  data MS_DND type LVC_S_DD01 .
-  data MF_STRIPED type ABAP_BOOL .
-  data MF_NO_MERGING type ABAP_BOOL .
-  data MF_NO_ROW_MARKS type ABAP_BOOL .
-  data MF_NO_ROW_MOVES type ABAP_BOOL .
-  data MV_TITLE type LVC_TITLE .
-  data MF_SMALLTITLE type ABAP_BOOL .
+    DATA mf_no_row_insertions TYPE abap_bool .
+    DATA mf_editable TYPE abap_bool .
+    DATA mf_hide_toolbar TYPE abap_bool .
+    DATA ms_dnd TYPE lvc_s_dd01 .
+    DATA mf_striped TYPE abap_bool .
+    DATA mf_no_merging TYPE abap_bool .
+    DATA mf_no_row_marks TYPE abap_bool .
+    DATA mf_no_row_moves TYPE abap_bool .
+    DATA mv_title TYPE lvc_title .
+    DATA mf_smalltitle TYPE abap_bool .
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_ALV_DISPLAY_SETTINGS IMPLEMENTATION.
+CLASS zcl_uitb_alv_display_settings IMPLEMENTATION.
 
+  method constructor.
+    super->constructor(
+        ir_controller = io_controller
+        iv_name       = zif_uitb_c_alv_metadata_types=>display_settings
+    ).
+  ENDMETHOD.
 
   METHOD get_drag_n_drop.
     result = ms_dnd.
@@ -169,6 +179,7 @@ CLASS ZCL_UITB_ALV_DISPLAY_SETTINGS IMPLEMENTATION.
     ELSE.
       mf_no_merging = abap_true.
     ENDIF.
+    set_setter_changed( iv_method = 'SET_MERGED' ).
   ENDMETHOD.
 
 
@@ -212,6 +223,7 @@ CLASS ZCL_UITB_ALV_DISPLAY_SETTINGS IMPLEMENTATION.
 
   METHOD set_striped.
     mf_striped = value.
+    set_setter_changed( iv_method = 'SET_STRIPED' ).
   ENDMETHOD.
 
 

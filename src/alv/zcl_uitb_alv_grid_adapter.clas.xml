@@ -12,6 +12,14 @@
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
    </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_ALV_GRID_ADAPTER</CLSNAME>
+     <CMPNAME>FILL_MENU_FROM_SERIALIZED</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Deserialize menu from table</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
   </asx:values>
  </asx:abap>
 </abapGit>

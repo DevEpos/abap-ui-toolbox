@@ -20,8 +20,8 @@ INTERFACE zif_uitb_c_alv_functions
   CONSTANTS filter_menu TYPE ui_func VALUE cl_gui_alv_grid=>mc_mb_filter.
   CONSTANTS filter TYPE ui_func VALUE cl_gui_alv_grid=>mc_fc_filter. "#EC NOTEXT
   CONSTANTS filter_delete TYPE ui_func VALUE cl_gui_alv_grid=>mc_fc_delete_filter. "#EC NOTEXT
-  CONSTANTS quickfilter TYPE ui_func VALUE 'QUICKFILT'.
-  constants quickfilter_exclude type ui_func value 'QUICKFILT_EXCL'.
+  CONSTANTS quickfilter TYPE ui_func VALUE '&QUICKFILT'.
+  constants quickfilter_exclude type ui_func value '&QUICKFILT_EXCL'.
   constants quickfilter_menu type ui_func value 'MB_QUICKFILT'.
   CONSTANTS abc_analysis TYPE ui_func VALUE cl_gui_alv_grid=>mc_fc_call_abc. "#EC NOTEXT
   CONSTANTS view_menu TYPE ui_func VALUE cl_gui_alv_grid=>mc_mb_view.

@@ -1,126 +1,154 @@
-class ZCL_UITB_ALV_COLUMNS definition
-  public
-  inheriting from ZCL_UITB_ALV_METADATA
-  final
-  create public
+"! <p class="shorttext synchronized" lang="en">Columns of ALV</p>
+CLASS zcl_uitb_alv_columns DEFINITION
+  PUBLIC
+  INHERITING FROM zcl_uitb_alv_metadata
+  FINAL
+  CREATE PUBLIC
 
-  global friends ZCL_UITB_ALV_DATA_DESCR
-                 ZCL_UITB_ALV_METADATA_UTIL .
+  GLOBAL FRIENDS zcl_uitb_alv_data_descr
+                 zcl_uitb_alv_metadata_util .
 
-public section.
+  PUBLIC SECTION.
 
-  interfaces ZIF_UITB_LIST .
+    INTERFACES zif_uitb_list .
 
-  types:
-    BEGIN OF ty_alv_column,
+    TYPES:
+      BEGIN OF ty_alv_column,
         columnname TYPE lvc_fname,
         ref        TYPE REF TO zcl_uitb_alv_column,
       END OF ty_alv_column .
-  types:
-    tt_alv_columns TYPE STANDARD TABLE OF ty_alv_column WITH KEY columnname .
+    TYPES:
+      tt_alv_columns TYPE STANDARD TABLE OF ty_alv_column WITH KEY columnname .
 
-  methods ADD_COLUMN
-    importing
-      !IS_DATA type LVC_S_FCAT .
-  methods CONSTRUCTOR
-    importing
-      !IR_DATA type ref to DATA
-      !IR_CONTROLLER type ref to ZIF_UITB_ALV_METADATA_CTRLLER .
-  methods CONVERT_TO_FIELDCAT
-    returning
-      value(RESULT) type LVC_T_FCAT .
-  methods GET_COLOR_COLUMN
-    returning
-      value(RESULT) type LVC_FNAME .
-  methods GET_COLOR_COLUMN_SIMPLE
-    returning
-      value(RESULT) type LVC_CIFNM .
-  methods GET_COLUMN
-    importing
-      !IV_COLUMNNAME type LVC_FNAME
-    returning
-      value(RESULT) type ref to ZCL_UITB_ALV_COLUMN
-    raising
-      ZCX_UITB_ALV_NOT_FOUND .
+    METHODS add_column
+      IMPORTING
+        !is_data TYPE lvc_s_fcat .
+    METHODS constructor
+      IMPORTING
+        !ir_data       TYPE REF TO data
+        !ir_controller TYPE REF TO zif_uitb_alv_metadata_ctrller .
+    METHODS convert_to_fieldcat
+      RETURNING
+        VALUE(result) TYPE lvc_t_fcat .
+    "! <p class="shorttext synchronized" lang="en">Gets the name of the color column</p>
+    METHODS get_color_column
+      RETURNING
+        VALUE(result) TYPE lvc_fname .
+    METHODS get_color_column_simple
+      RETURNING
+        VALUE(result) TYPE lvc_cifnm .
+    METHODS get_column
+      IMPORTING
+        !iv_columnname TYPE lvc_fname
+      RETURNING
+        VALUE(result)  TYPE REF TO zcl_uitb_alv_column
+      RAISING
+        zcx_uitb_alv_not_found .
     "! Returns the current column header mode
     "! @parameter result | current column header mode
-  methods GET_COLUMN_HEADER_MODE
-    returning
-      value(RESULT) type I .
-  methods GET_DESCRIPTION_LANGUAGE
-    returning
-      value(RESULT) type LANGU .
-  methods GET_STYLE_COLUMN
-    returning
-      value(RESULT) type LVC_FNAME .
-  methods IS_COLUMN_HEADERS_VISIBLE
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods IS_KEY_FIXATION
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods IS_OPTIMIZED
-    returning
-      value(RESULT) type ABAP_BOOL .
-  methods SET_COLOR_COLUMN
-    importing
-      !VALUE type LVC_FNAME .
-  methods SET_COLOR_COLUMN_SIMPLE
-    importing
-      !VALUE type LVC_CIFNM .
-  methods SET_COLUMN_HEADERS_VISIBLE
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE .
-  methods SET_COLUMN_HEADER_MODE
-    importing
-      !IV_COLUMN_HEADER_MODE type I default ZIF_UITB_C_ALV_COLHEADER_MODE=>DEFAULT .
-  methods SET_COLUMN_POSITION
-    importing
-      !IV_COLUMNNAME type LVC_FNAME
-      !IV_POSITION type I
-    returning
-      value(RV_POS) type I .
-  methods SET_DESCRIPTION_LANGUAGE
-    importing
-      !IV_LANGUAGE type LANGU default SY-LANGU .
-  methods SET_EDITABLE
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE .
-  methods SET_KEY_FIXATION
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE .
-  methods SET_OPTIMIZED
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE .
-  methods SET_SINGLE_CLICK_SORT
-    importing
-      !VALUE type ABAP_BOOL default ABAP_TRUE .
-  methods SET_STYLE_COLUMN
-    importing
-      !VALUE type LVC_FNAME .
-  methods UPDATE_COLUMN_DATA
-    importing
-      !IV_COLUMNNAME type LVC_FNAME
-      !IS_DATA type LVC_S_FCAT .
+    METHODS get_column_header_mode
+      RETURNING
+        VALUE(result) TYPE i .
+    METHODS get_description_language
+      RETURNING
+        VALUE(result) TYPE langu .
+    METHODS get_style_column
+      RETURNING
+        VALUE(result) TYPE lvc_fname .
+    "! <p class="shorttext synchronized" lang="en">Is column headers visible</p>
+    METHODS is_column_headers_visible
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    METHODS is_key_fixation
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Get Column Optimization</p>
+    METHODS is_optimized
+      RETURNING
+        VALUE(result) TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Sets the color column</p>
+    METHODS set_color_column
+      IMPORTING
+        !value TYPE lvc_fname .
+    METHODS set_color_column_simple
+      IMPORTING
+        !value TYPE lvc_cifnm .
+    "! <p class="shorttext synchronized" lang="en">Set column headers visible</p>
+    METHODS set_column_headers_visible
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true .
+    METHODS set_column_header_mode
+      IMPORTING
+        !iv_column_header_mode TYPE i DEFAULT zif_uitb_c_alv_colheader_mode=>default .
+    METHODS get_column_position
+      IMPORTING
+        iv_columnname      TYPE lvc_fname
+      RETURNING
+        VALUE(rv_position) TYPE i.
+    METHODS set_column_position
+      IMPORTING
+        !iv_columnname TYPE lvc_fname
+        !iv_position   TYPE i
+      RETURNING
+        VALUE(rv_pos)  TYPE i .
+    "! Moves the given column after <strong>iv_after_column</strong>
+    METHODS move_column_after
+      IMPORTING
+        iv_column       TYPE lvc_fname
+        iv_after_column TYPE lvc_fname
+      RETURNING
+        VALUE(rv_pos)   TYPE i .
+    "! Moves the given column before <strong>iv_before_column</strong>
+    METHODS move_column_before
+      IMPORTING
+        iv_column        TYPE lvc_fname
+        iv_before_column TYPE lvc_fname
+      RETURNING
+        VALUE(rv_pos)    TYPE i .
+    METHODS set_description_language
+      IMPORTING
+        !iv_language TYPE langu DEFAULT sy-langu .
+    METHODS set_editable
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true .
+    METHODS set_key_fixation
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true .
+    "! <p class="shorttext synchronized" lang="en">Activate Column optimization</p>
+    METHODS set_optimized
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true .
+    "! <p class="shorttext synchronized" lang="en">Set column to single click sort mode</p>
+    METHODS set_single_click_sort
+      IMPORTING
+        !value TYPE abap_bool DEFAULT abap_true .
+    METHODS set_style_column
+      IMPORTING
+        !value TYPE lvc_fname .
+    METHODS update_column_data
+      IMPORTING
+        !iv_columnname TYPE lvc_fname
+        !is_data       TYPE lvc_s_fcat .
   PROTECTED SECTION.
-PRIVATE SECTION.
+  PRIVATE SECTION.
 
-  DATA mt_columns TYPE tt_alv_columns .
-  DATA mv_color_column_simple TYPE lvc_cifnm .
-  DATA mv_style_column TYPE lvc_fname .
-  DATA mv_color_column TYPE lvc_fname .
-  DATA mf_optimized TYPE abap_bool .
-  DATA mf_key_fixation TYPE abap_bool .
-  DATA mv_col_header_mode TYPE i VALUE zif_uitb_c_alv_colheader_mode=>default ##NO_TEXT.
-  DATA mv_language TYPE langu .
-  DATA mr_table_structure TYPE REF TO data .
-  DATA mf_single_click_sort TYPE abap_bool .
-  DATA mf_col_header_visible TYPE abap_bool VALUE abap_true ##NO_TEXT.
+    DATA mt_columns TYPE tt_alv_columns .
+    DATA mv_color_column_simple TYPE lvc_cifnm .
+    DATA mv_style_column TYPE lvc_fname .
+    "! <p class="shorttext synchronized" lang="en">ALV control: Field name of internal table field</p>
+    DATA mv_color_column TYPE lvc_fname .
+    DATA mf_optimized TYPE abap_bool .
+    DATA mf_key_fixation TYPE abap_bool .
+    DATA mv_col_header_mode TYPE i VALUE zif_uitb_c_alv_colheader_mode=>default ##NO_TEXT.
+    DATA mv_language TYPE langu .
+    DATA mr_table_structure TYPE REF TO data .
+    DATA mf_single_click_sort TYPE abap_bool .
+    DATA mf_col_header_visible TYPE abap_bool VALUE abap_true ##NO_TEXT.
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_ALV_COLUMNS IMPLEMENTATION.
+CLASS zcl_uitb_alv_columns IMPLEMENTATION.
 
 
   METHOD add_column.
@@ -174,7 +202,7 @@ CLASS ZCL_UITB_ALV_COLUMNS IMPLEMENTATION.
 
 
   METHOD get_description_language.
-    result = cond #( when mv_language is initial then sy-langu else mv_language ).
+    result = COND #( WHEN mv_language IS INITIAL THEN sy-langu ELSE mv_language ).
   ENDMETHOD.
 
 
@@ -255,6 +283,33 @@ CLASS ZCL_UITB_ALV_COLUMNS IMPLEMENTATION.
 
   METHOD set_column_header_mode.
     mv_col_header_mode = iv_column_header_mode.
+  ENDMETHOD.
+
+  METHOD get_column_position.
+    rv_position = line_index( mt_columns[ columnname = iv_columnname ] ).
+  ENDMETHOD.
+
+  METHOD move_column_after.
+    DATA(lv_target_column_index) = line_index( mt_columns[ columnname = iv_after_column ] ).
+    IF lv_target_column_index <> 0.
+      rv_pos = set_column_position(
+        iv_columnname = iv_column
+        iv_position   = lv_target_column_index + 1
+      ).
+    ENDIF.
+    set_setter_changed( iv_method = 'MOVE_COLUMN_AFTER' ).
+  ENDMETHOD.
+
+  METHOD move_column_before.
+    DATA(lv_target_column_index) = line_index( mt_columns[ columnname = iv_before_column ] ).
+    IF lv_target_column_index <> 0.
+      rv_pos = set_column_position(
+        iv_columnname = iv_column
+        iv_position   = lv_target_column_index
+      ).
+    ENDIF.
+
+    set_setter_changed( iv_method = 'MOVE_COLUMN_BEFORE' ).
   ENDMETHOD.
 
 

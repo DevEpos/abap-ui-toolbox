@@ -10,6 +10,7 @@ CLASS zcl_uitb_alv_grid_adapter DEFINITION
       IMPORTING
         ir_controller TYPE REF TO zcl_uitb_alv_controller.
     METHODS get_metadata.
+    METHODS close.
     METHODS set_function
       IMPORTING
         iv_function TYPE ui_func.
@@ -32,6 +33,19 @@ CLASS zcl_uitb_alv_grid_adapter DEFINITION
     METHODS set_focus_to_grid.
   PROTECTED SECTION.
   PRIVATE SECTION.
+    TYPES:
+      BEGIN OF ty_s_context_function,
+        function TYPE ui_func,
+        text     TYPE string,
+      END OF ty_s_context_function.
+    TYPES: ty_t_context_function TYPE STANDARD TABLE OF ty_s_context_function WITH KEY function.
+    TYPES:
+      BEGIN OF ty_s_internal_ctx_func,
+        functions     TYPE ty_t_context_function,
+        insert_before TYPE ui_func,
+        insert_after  TYPE ui_func,
+      END OF ty_s_internal_ctx_func.
+    TYPES: ty_t_internal_ctx_func TYPE STANDARD TABLE OF ty_s_internal_ctx_func WITH KEY insert_before insert_after.
     DATA mr_grid TYPE REF TO cl_gui_alv_grid.
     DATA mo_current_changelist TYPE REF TO zcl_uitb_alv_changelist.
     DATA mo_dialog TYPE REF TO if_alv_dialog.
@@ -108,6 +122,12 @@ CLASS zcl_uitb_alv_grid_adapter DEFINITION
           e_onf4_before
           e_onf4_after
           e_ucomm.
+    "! <p class="shorttext synchronized" lang="en">Deserialize menu from table</p>
+    METHODS fill_menu_from_serialized
+      IMPORTING
+        it_menu_serialize       TYPE sctx_serialize
+        it_additional_functions TYPE ty_t_internal_ctx_func
+        io_menu                 TYPE REF TO cl_ctmenu.
     METHODS set_event_handlers.
     METHODS on_drag
           FOR EVENT ondrag OF cl_gui_alv_grid
@@ -270,6 +290,7 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
 
 
   METHOD on_context_menu.
+    DATA: lt_serialized_menu TYPE sctx_serialize.
     DATA(lr_model) = mr_controller->mr_model.
 
     DATA(lr_functions) = lr_model->get_functions( ).
@@ -278,10 +299,26 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
       e_object->hide_functions( lt_disabled ).
 
       IF lr_functions->mf_quickfilter = abap_true.
-*...... Look for Filter entry
+*...... Recreate menu and add quick filter actions
+        e_object->get_functions( IMPORTING fcodes = DATA(lt_fcodes) ).
+        e_object->if_ctxmnu_internal~serialize_menu( CHANGING menu = lt_serialized_menu ).
+        e_object->clear( ).
+        fill_menu_from_serialized(
+            it_menu_serialize       = lt_serialized_menu
+            it_additional_functions = VALUE #(
+             (  insert_after = zif_uitb_c_alv_functions=>filter
+                functions    = VALUE #(
+                  ( function     = zif_uitb_c_alv_functions=>quickfilter
+                    text         = |{ 'Quickfilter' }| )
+                  ( function     = zif_uitb_c_alv_functions=>quickfilter_exclude
+                    text         = |{ 'Quickfilter (Exclude value)' }| )
+                )
+              )
+            )
+            io_menu                 = e_object
+        ).
       ENDIF.
     ENDIF.
-
 
     set_function_call_active( ).
 
@@ -491,9 +528,11 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
        e_ucomm = zif_uitb_c_alv_functions=>quickfilter_menu OR
        e_ucomm = zif_uitb_c_alv_functions=>quickfilter.
 
+      zcl_uitb_alv_evt_controller=>handle_before_event( ir_controller = mr_controller ).
       mr_controller->mr_model->perform_quick_filter(
           if_exclude = COND #( WHEN e_ucomm = zif_uitb_c_alv_functions=>quickfilter_exclude THEN abap_true )
       ).
+      zcl_uitb_alv_evt_controller=>handle_after_event( ir_controller = mr_controller ).
     ELSE.
       zcl_uitb_alv_evt_controller=>raise_function_chosen(
           ir_controller = mr_controller
@@ -505,6 +544,51 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
     set_function_call_active( abap_false ).
   ENDMETHOD.
 
+  METHOD fill_menu_from_serialized.
+    FIELD-SYMBOLS: <ls_serialized> LIKE LINE OF it_menu_serialize.
+
+    DEFINE add_serialized_function.
+      io_menu->add_function(
+          fcode       = <ls_serialized>-fcode
+          text        = <ls_serialized>-text
+          disabled    = <ls_serialized>-disabled
+          checked     = <ls_serialized>-checked
+          accelerator = <ls_serialized>-accelerator
+      ).
+    END-OF-DEFINITION.
+
+    LOOP AT it_menu_serialize ASSIGNING <ls_serialized>.
+      IF <ls_serialized>-type = sctx_c_type_separator.
+        io_menu->add_separator( ).
+      ELSEIF <ls_serialized>-type = sctx_c_type_function.
+*..... Check if an additional function should be inserted before or after
+        LOOP AT it_additional_functions ASSIGNING FIELD-SYMBOL(<ls_add_func>) WHERE insert_after = <ls_serialized>-fcode
+                                                                                 OR insert_before = <ls_serialized>-fcode.
+        ENDLOOP.
+        IF sy-subrc = 0.
+          IF <ls_add_func>-insert_after IS NOT INITIAL.
+            add_serialized_function.
+            io_menu->add_separator( ).
+          ENDIF.
+          LOOP AT <ls_add_func>-functions ASSIGNING FIELD-SYMBOL(<ls_ctx_func>).
+            io_menu->add_function(
+                fcode = <ls_ctx_func>-function
+                text  = |{ <ls_ctx_func>-text }|
+            ).
+          ENDLOOP.
+          IF <ls_add_func>-insert_before = abap_true.
+            io_menu->add_separator( ).
+            add_serialized_function.
+          ENDIF.
+        ELSE.
+          add_serialized_function.
+        ENDIF.
+
+      ENDIF.
+
+    ENDLOOP.
+
+  ENDMETHOD.
 
   METHOD set_event_handlers.
 
@@ -530,10 +614,16 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
   ENDMETHOD.
 
 
+
   METHOD set_focus_to_grid.
     CHECK mr_grid IS BOUND.
 
     cl_gui_control=>set_focus( mr_grid ).
+  ENDMETHOD.
+
+  METHOD close.
+    CHECK mo_dialog IS BOUND.
+    mo_dialog->zif_uitb_gui_screen~leave_screen( ).
   ENDMETHOD.
 
 
@@ -625,6 +715,10 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
            CHANGING  cs_layout           = ls_layout
       ).
 
+      IF mr_controller->mr_model->mv_display_type <> zif_uitb_c_alv_display_types=>embedded.
+        CLEAR ls_layout-grid_title.
+      ENDIF.
+
       DATA(lt_fieldcat) = zcl_uitb_alv_metadata_util=>set_fieldcatalog(
         ir_display_settings = lr_display_settings
         ir_columns          = lr_columns
@@ -650,11 +744,17 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
       WHEN abap_false.
 
         IF mo_current_changelist->has_metadata_changed( ).
-          mr_grid->set_frontend_fieldcatalog( lt_fieldcat ).
-          mr_grid->set_filter_criteria( lt_filters ).
-          mr_grid->set_frontend_layout( ls_layout ).
-          mr_grid->set_sort_criteria( lt_sort ).
-          mr_grid->set_drop_down_table( it_drop_down_alias = zcl_uitb_alv_metadata_util=>get_dropdowns( lr_dropdowns ) ).
+          IF mo_current_changelist->is_filters_only_change( ).
+            mr_grid->set_filter_criteria( lt_filters ).
+          ELSEIF mo_current_changelist->is_layout_only_change( ).
+            mr_grid->set_frontend_layout( ls_layout ).
+          ELSE.
+            mr_grid->set_frontend_fieldcatalog( lt_fieldcat ).
+            mr_grid->set_filter_criteria( lt_filters ).
+            mr_grid->set_frontend_layout( ls_layout ).
+            mr_grid->set_sort_criteria( lt_sort ).
+            mr_grid->set_drop_down_table( it_drop_down_alias = zcl_uitb_alv_metadata_util=>get_dropdowns( lr_dropdowns ) ).
+          ENDIF.
         ENDIF.
 
         IF lr_display_settings->is_editable( ).

@@ -232,7 +232,9 @@ CLASS zcl_uitb_gui_screen_base IMPLEMENTATION.
       cl_gui_cfw=>flush( ).
     ENDIF.
 
-    CLEAR mo_container.
+    CLEAR: mo_container,
+           mf_screen_is_live,
+           mf_visible.
 
     do_after_exit( ).
   ENDMETHOD.
@@ -281,7 +283,7 @@ CLASS zcl_uitb_gui_screen_base IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD do_after_exit.
-    return.
+    RETURN.
   ENDMETHOD.
 
   METHOD trigger_command.

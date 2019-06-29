@@ -8,6 +8,9 @@ CLASS zcl_uitb_column_tree_model DEFINITION
     INTERFACES zif_uitb_content_searcher .
     INTERFACES zif_uitb_gui_control .
 
+    aliases mr_control
+      for zif_uitb_gui_control~mr_control.
+
     CONSTANTS c_single_selection TYPE i VALUE cl_tree_model=>node_sel_mode_single ##NO_TEXT.
     CONSTANTS c_multiple_selection TYPE i VALUE cl_tree_model=>node_sel_mode_multiple ##NO_TEXT.
     CONSTANTS c_dnd_move TYPE i VALUE cl_dragdrop=>move ##NO_TEXT.
@@ -69,7 +72,6 @@ CLASS zcl_uitb_column_tree_model DEFINITION
     DATA mr_parent TYPE REF TO cl_gui_container .
     DATA mr_toolbar_model TYPE REF TO zcl_uitb_toolbar_model .
     DATA mf_with_toolbar TYPE abap_bool .
-    DATA mr_tree_control TYPE REF TO cl_gui_control .
     DATA mf_item_selection TYPE abap_bool .
     DATA mr_selections TYPE REF TO zcl_uitb_ctm_selections .
     DATA mr_columns TYPE REF TO zcl_uitb_ctm_columns .
@@ -107,7 +109,7 @@ CLASS zcl_uitb_column_tree_model IMPLEMENTATION.
         ir_tree_model     = mr_tree_model
     ).
     " create tree control from model
-    mr_tree_control = mr_tree_container->get_tree( ).
+    mr_control = mr_tree_container->get_tree( ).
 
     IF mf_with_toolbar = abap_true.
       DATA(lr_toolbar) = mr_tree_container->get_toolbar( ).
@@ -210,8 +212,8 @@ CLASS zcl_uitb_column_tree_model IMPLEMENTATION.
 
     IF sy-subrc = 0.
       result = xsdbool( mr_temp_control IS NOT INITIAL AND
-                        mr_tree_control IS BOUND AND
-                        mr_temp_control = mr_tree_control ).
+                        mr_control IS BOUND AND
+                        mr_temp_control = mr_control ).
     ENDIF.
   ENDMETHOD.
 
@@ -257,9 +259,9 @@ CLASS zcl_uitb_column_tree_model IMPLEMENTATION.
 
 
   METHOD zif_uitb_gui_control~focus.
-    CHECK mr_tree_control IS BOUND.
+    CHECK mr_control IS BOUND.
 
-    cl_gui_control=>set_focus( mr_tree_control ).
+    cl_gui_control=>set_focus( mr_control ).
   ENDMETHOD.
 
 
@@ -273,7 +275,7 @@ CLASS zcl_uitb_column_tree_model IMPLEMENTATION.
         OTHERS            = 3
     ).
     IF sy-subrc = 0.
-      IF mr_temp_control = mr_tree_control.
+      IF mr_temp_control = mr_control.
         rf_has_focus = abap_true.
       ENDIF.
     ENDIF.

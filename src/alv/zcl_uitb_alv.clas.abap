@@ -50,6 +50,18 @@ CLASS zcl_uitb_alv DEFINITION
     METHODS set_editable
       IMPORTING
         !value TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Stores the given user data in this ALV</p>
+    METHODS store_user_data
+      IMPORTING
+        ir_user_data TYPE REF TO data.
+    "! <p class="shorttext synchronized" lang="en">Returns stored user data if there is any</p>
+    METHODS get_user_data
+      RETURNING
+        VALUE(rr_user_data) TYPE REF TO data.
+    "! <p class="shorttext synchronized" lang="en">Closes the ALV</p>
+    "! <strong>NOTE:</strong> The alv has to be opened in dialog mode
+    "! for this to work
+    METHODS close.
     METHODS display
       RAISING
         zcx_uitb_alv_error .
@@ -92,6 +104,10 @@ CLASS zcl_uitb_alv DEFINITION
     METHODS set_data
       IMPORTING
         !ir_data TYPE REF TO data .
+    "! <p class="shorttext synchronized" lang="en">Set visibility of Grid control</p>
+    METHODS set_visible
+      IMPORTING
+        value TYPE abap_bool DEFAULT abap_true.
   PROTECTED SECTION.
 
     "! <p class="shorttext synchronized" lang="en">Perform Quick filter</p>
@@ -136,6 +152,7 @@ CLASS zcl_uitb_alv DEFINITION
         height TYPE i,
       END OF ms_popup_dimensions.
     DATA mv_display_type TYPE i.
+    DATA: mr_user_data TYPE REF TO data.
     METHODS init
       IMPORTING
         !if_editable             TYPE abap_bool
@@ -172,6 +189,17 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
     ).
   ENDMETHOD.
 
+  METHOD store_user_data.
+    mr_user_data = ir_user_data.
+  ENDMETHOD.
+
+  METHOD get_user_data.
+    rr_user_data = mr_user_data.
+  ENDMETHOD.
+
+  METHOD close.
+    mr_controller->mr_adapter->close( ).
+  ENDMETHOD.
 
   METHOD display.
     CHECK mr_controller IS BOUND.
@@ -190,6 +218,15 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
     ENDIF.
 
     result = mr_columns.
+  ENDMETHOD.
+
+  METHOD set_visible.
+    IF mr_controller IS BOUND.
+      DATA(lo_grid) = mr_controller->mr_adapter->get_grid( ).
+      IF lo_grid IS BOUND.
+        lo_grid->set_visible( COND #( WHEN value = abap_true THEN cl_gui_control=>visible_true ELSE cl_gui_control=>visible_false ) ).
+      ENDIF.
+    ENDIF.
   ENDMETHOD.
 
 
@@ -212,7 +249,7 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
 
   METHOD get_display_settings.
     IF mr_display_settings IS NOT BOUND.
-      mr_display_settings = NEW #( ir_controller = mr_controller ).
+      mr_display_settings = NEW #( io_controller = mr_controller ).
     ENDIF.
 
     result = mr_display_settings.
@@ -269,7 +306,7 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
 
   METHOD get_metadata.
     DATA(lr_adapter) = mr_controller->mr_adapter.
-    IF lr_adapter IS BOUND.
+    IF lr_adapter IS BOUND AND NOT lr_adapter->is_function_call_active( ).
       lr_adapter->get_metadata( ).
     ENDIF.
   ENDMETHOD.
@@ -326,7 +363,6 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
 
     FIELD-SYMBOLS: <lt_table> TYPE table.
 
-    get_metadata( ).
     DATA(lr_filters) = get_filters( ).
     DATA(lr_columns) = get_columns( ).
     DATA(lt_selected_cells) = get_selections( )->get_selected_cells( ).
@@ -363,12 +399,6 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
           iv_low    = |{ <lv_value> }|
       ).
     ENDLOOP.
-
-    IF sy-subrc = 0.
-      refresh(
-          is_stable = VALUE #( row = abap_true col = abap_true )
-      ).
-    ENDIF.
   ENDMETHOD.
 
 

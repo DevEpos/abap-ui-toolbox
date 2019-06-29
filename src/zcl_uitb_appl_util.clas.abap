@@ -69,8 +69,8 @@ public section.
       !IV_TITLE type STRING default SPACE
       !IV_QUERY type STRING
       !IF_DISPLAY_CANCEL_BUTTON type BOOLEAN default ABAP_TRUE
-      !IV_TEXT_BUTTON1 type CHAR12 default 'Ja'
-      !IV_TEXT_BUTTON2 type CHAR12 default 'Nein'
+      !IV_TEXT_BUTTON1 type any default 'Yes'(001)
+      !IV_TEXT_BUTTON2 type any default 'No'(002)
       !IV_QUICKINFO_BUTTON1 type TEXT132 optional
       !IV_QUICKINFO_BUTTON2 type TEXT132 optional
       !IV_ICON_TYPE type ICONNAME
