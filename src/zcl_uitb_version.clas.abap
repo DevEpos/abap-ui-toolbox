@@ -7,6 +7,12 @@ CLASS zcl_uitb_version DEFINITION
     "! <p class="shorttext synchronized" lang="en">Current version of UI Toolbox</p>
     "! <strong>Changelog</strong> <br/><br/>
     "!
+    "! ## v1.7.0    - 2019-07-15
+    "!
+    "! ### Features
+    "!
+    "! - minor changes in F4 Select dialog
+    "!
     "! ## v1.6.0    - 2019-06-27
     "!
     "! ### Features
@@ -41,7 +47,7 @@ CLASS zcl_uitb_version DEFINITION
     "!
     "! - No longer create document in zcl_uitb_gui_code_editor
     "!
-    CONSTANTS c_version TYPE string VALUE '1.6.0'.
+    CONSTANTS c_version TYPE string VALUE '1.7.0'.
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.

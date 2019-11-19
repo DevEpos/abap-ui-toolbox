@@ -1,79 +1,98 @@
+"! <p class="shorttext synchronized" lang="en">Item of a Node of a tree model</p>
 CLASS zcl_uitb_ctm_item DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC .
 
   PUBLIC SECTION.
+    TYPES: ty_t_ctm_item TYPE STANDARD TABLE OF REF TO zcl_uitb_ctm_item WITH EMPTY KEY.
 
+    "! <p class="shorttext synchronized" lang="en">CONSTRUCTOR</p>
     METHODS constructor
       IMPORTING
         !ir_model           TYPE REF TO cl_column_tree_model
         !iv_node_key        TYPE tm_nodekey
         !iv_item_name       TYPE tv_itmname
         !is_item_properties TYPE treemcitem .
+    "! <p class="shorttext synchronized" lang="en">Sets text property of item</p>
     METHODS set_text
       IMPORTING
         !value TYPE tm_itemtxt
       RAISING
         zcx_uitb_tree_error.
+    "! <p class="shorttext synchronized" lang="en">Gets text property of item</p>
     METHODS get_text
       RETURNING
         VALUE(result) TYPE tm_itemtxt
       RAISING
         zcx_uitb_tree_error.
+    "! <p class="shorttext synchronized" lang="en">Sets style property of item</p>
     METHODS set_style
       IMPORTING
         !value TYPE i
       RAISING
         zcx_uitb_tree_error.
+    "! <p class="shorttext synchronized" lang="en">Gets style property of item</p>
     METHODS get_style
       RETURNING
         VALUE(result) TYPE i .
+    "! <p class="shorttext synchronized" lang="en">Sets font property of item</p>
     METHODS set_font
       IMPORTING
         !value TYPE i
       RAISING
         zcx_uitb_tree_error.
+    "! <p class="shorttext synchronized" lang="en">Gets font property of item</p>
     METHODS get_font
       RETURNING
         VALUE(result) TYPE i .
+    "! <p class="shorttext synchronized" lang="en">Sets hidden property of item</p>
     METHODS set_hidden
       IMPORTING
         !value TYPE abap_bool DEFAULT abap_true
       RAISING
         zcx_uitb_tree_error.
+    "! <p class="shorttext synchronized" lang="en">Gets hidden property of item</p>
     METHODS is_hidden
       RETURNING
         VALUE(result) TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Sets chosen property of item</p>
     METHODS set_chosen
       IMPORTING
         !value TYPE abap_bool DEFAULT abap_true
       RAISING
         zcx_uitb_tree_error.
+    "! <p class="shorttext synchronized" lang="en">Gets chosen property of item</p>
     METHODS is_chosen
       RETURNING
         VALUE(result) TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Sets editable of item</p>
     METHODS set_editable
       IMPORTING
         !value TYPE abap_bool DEFAULT abap_true
       RAISING
         zcx_uitb_tree_error.
+    "! <p class="shorttext synchronized" lang="en">Gets editable of item</p>
     METHODS is_editable
       RETURNING
         VALUE(result) TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Sets disabled of item</p>
     METHODS set_disabled
       IMPORTING
         !value TYPE abap_bool DEFAULT abap_true
       RAISING
         zcx_uitb_tree_error.
+    "! <p class="shorttext synchronized" lang="en">Gets disabled of item</p>
     METHODS is_disabled
       RETURNING
         VALUE(result) TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Sets image of item</p>
     METHODS set_image
       IMPORTING
         !value TYPE tv_image
       RAISING
         zcx_uitb_tree_error.
+    "! <p class="shorttext synchronized" lang="en">Gets image of item</p>
     METHODS get_image
       RETURNING
         VALUE(result) TYPE tv_image .

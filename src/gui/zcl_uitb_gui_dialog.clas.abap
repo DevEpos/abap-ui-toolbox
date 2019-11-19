@@ -75,6 +75,7 @@ CLASS zcl_uitb_gui_dialog IMPLEMENTATION.
     cl_gui_cfw=>flush( ).
     mo_dialog_box->set_visible( cl_gui_control=>visible_true ).
 
+
 *.. No PBO so flag has to be set here
     mf_visible = abap_true.
   ENDMETHOD.

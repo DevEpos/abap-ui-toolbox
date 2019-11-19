@@ -114,12 +114,13 @@ CLASS zcl_uitb_rtti_util IMPLEMENTATION.
   METHOD extend_struct_by_components.
     DATA(lt_components) = ir_struct_descr->get_components( ).
 
-    lt_components = VALUE #(
-      BASE lt_components
-      FOR <ls_comp> IN it_component_append
-      ( name = <ls_comp>-component
-        type = CAST #( cl_abap_typedescr=>describe_by_name( <ls_comp>-type ) ) )
-    ).
+    LOOP AT it_component_append ASSIGNING FIELD-SYMBOL(<ls_new_comp>).
+      CHECK NOT line_exists( lt_components[ name = <ls_new_comp>-component ] ).
+      lt_components = VALUE #( BASE lt_components
+        ( name = <ls_new_comp>-component
+          type = CAST #( cl_abap_typedescr=>describe_by_name( <ls_new_comp>-type ) ) )
+      ).
+    ENDLOOP.
 
     " now create the new type
     DATA(lr_line_type_new) = cl_abap_structdescr=>create( p_components = lt_components ).

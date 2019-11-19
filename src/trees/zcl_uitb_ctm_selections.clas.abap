@@ -13,7 +13,7 @@ CLASS zcl_uitb_ctm_selections DEFINITION
         !iv_selection_mode TYPE i .
     METHODS get_selected_nodes
       RETURNING
-        VALUE(result) TYPE zuitb_ctm_node_rt.
+        VALUE(result) TYPE zcl_uitb_ctm_node=>ty_t_ctm_node.
     METHODS get_selected_node
       RETURNING
         VALUE(result) TYPE REF TO zcl_uitb_ctm_node.

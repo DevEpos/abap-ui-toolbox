@@ -47,7 +47,8 @@ CLASS zcl_uitb_selection_dialog DEFINITION
       RETURNING
         VALUE(rv_field) TYPE fieldname.
     "! <p class="shorttext synchronized" lang="en">Returns 'X' if selections were made</p>
-    "! To be redefined in subclass if multi selections are enabled
+    "! <strong>Note</strong>: The default implementation only returns 'X' if at least one row is selected
+    "! in multi selection mode.
     METHODS has_selections
       RETURNING
         VALUE(rf_has_selections) TYPE abap_bool.
@@ -165,8 +166,8 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
 
     mo_filter_input = NEW cl_gui_input_field(
       parent               = lo_splitter->get_container( 1 )
-      input_prompt_text    = COND #( WHEN mv_filter_prompt IS NOT INITIAL THEN mv_filter_prompt ELSE 'Enter Filter' )
-      label_text           = 'Filter'
+      input_prompt_text    = COND #( WHEN mv_filter_prompt IS NOT INITIAL THEN mv_filter_prompt ELSE |{ 'Enter Filter'(007) }| )
+      label_text           = 'Filter'(006)
       label_width          = 10
       activate_find_button = abap_true
     ).
@@ -196,7 +197,7 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
       DATA(lo_col) = CAST zcl_uitb_alv_column( lo_col_iterator->get_next( ) ).
       IF mf_multi_select = abap_true AND lo_col->get_name( ) = get_mark_field( ).
         lo_col->set_cell_type( zif_uitb_c_alv_cell_types=>checkbox_hotspot ).
-        lo_col->set_descriptions( iv_medium = 'Sel.' iv_long = 'Selected' ).
+        lo_col->set_descriptions( iv_medium = |{ 'Sel.'(008) }| iv_long = |{ 'Selected'(009) }| ).
         lo_col->set_optimized( ).
         lo_col->set_style( zif_uitb_c_alv_cell_style=>enabled ).
       ELSEIF mf_use_alv_filter = abap_true AND lo_col->get_name( ) = get_filtered_column( ).
@@ -228,7 +229,7 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
 
       lo_functions->add_function(
           iv_name    = c_func_accept_selections
-          iv_icon    = |{ icon_execute_object }|
+          iv_icon    = |{ icon_okay }|
           iv_tooltip = |{ TEXT-003 }|
       ).
       lo_functions->add_function(
@@ -246,9 +247,13 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
       ).
     ENDIF.
 
-    mo_alv->display( ).
-    mo_alv->zif_uitb_gui_control~focus( ).
-    lo_cols->set_optimized( ).
+    TRY.
+        mo_alv->display( ).
+        mo_alv->zif_uitb_gui_control~focus( ).
+        lo_cols->set_optimized( ).
+      CATCH zcx_uitb_alv_error INTO DATA(lx_alv_error).
+        MESSAGE lx_alv_error->get_text( ) TYPE 'X'.
+    ENDTRY.
 
   ENDMETHOD.
 
@@ -281,7 +286,7 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
                 iv_low        = |{ abap_true }|
             ).
           CATCH zcx_uitb_alv_error.
-            MESSAGE |Column { get_filtered_column( ) } not found in table| TYPE 'X'.
+            MESSAGE |{ 'Column'(010) } { get_filtered_column( ) } { 'not found in table'(011) }| TYPE 'X'.
         ENDTRY.
 
         LOOP AT <lt_output_data> ASSIGNING FIELD-SYMBOL(<ls_output_data>).
@@ -314,7 +319,7 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
     set_selected_element( EXPORTING iv_row    = ev_row
                                     iv_column = ev_column ).
     IF mf_multi_select = abap_true.
-      mo_alv->refresh( ).
+      mo_alv->refresh( if_keep_scroll_position = abap_true ).
     ELSE.
       leave_screen( ).
     ENDIF.
@@ -365,7 +370,19 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD has_selections.
-    RETURN.
+    FIELD-SYMBOLS: <lt_data> TYPE table.
+
+    CHECK mf_multi_select = abap_true.
+
+    ASSIGN mr_t_data->* TO <lt_data>.
+
+    DATA(lv_mark_column) = get_mark_field( ).
+    DATA(lv_where) = |{ lv_mark_column } = abap_true|.
+
+    LOOP AT <lt_data> ASSIGNING FIELD-SYMBOL(<ls_data>) WHERE (lv_where).
+    ENDLOOP.
+
+    rf_has_selections = xsdbool( sy-subrc = 0 ).
   ENDMETHOD.
 
   METHOD get_filtered_column.
@@ -398,7 +415,7 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
 
   METHOD accept_selections.
     IF NOT has_selections( ).
-      MESSAGE |Select at least 1 element| TYPE 'I'.
+      MESSAGE |{ 'Select at least 1 element'(012) }| TYPE 'I'.
     ELSE.
       mf_data_selected = abap_true.
       leave_screen( ).

@@ -1,8 +1,15 @@
 # UIToolbox - Changelog
 
+## v1.7.0    - 2019-11-19
+
+### Changes
+
+- minor changes in F4 Select dialog
+- move includes for accessing global function group variables from DB Browser into UI Toolbox
+
 ## v1.6.0    - 2019-06-27
 
-### Features
+### Changes
 
 - Minor updates in event handling in ALV Grid Adapter
 

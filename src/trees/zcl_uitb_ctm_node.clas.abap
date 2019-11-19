@@ -5,7 +5,7 @@ CLASS zcl_uitb_ctm_node DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-
+    TYPES: ty_t_ctm_node TYPE STANDARD TABLE OF REF TO zcl_uitb_ctm_node WITH EMPTY KEY.
     "! <p class="shorttext synchronized" lang="en">Tree Control: Node Key</p>
     DATA mv_node_key TYPE tm_nodekey READ-ONLY .
 
@@ -24,7 +24,7 @@ CLASS zcl_uitb_ctm_node DEFINITION
     "! <p class="shorttext synchronized" lang="en">Get all child nodes</p>
     METHODS get_children
       RETURNING
-        VALUE(rt_children) TYPE zuitb_ctm_node_rt
+        VALUE(rt_children) TYPE ty_t_ctm_node
       RAISING
         zcx_uitb_tree_error .
     "! <p class="shorttext synchronized" lang="en">Gets expanded image property of node</p>
@@ -52,7 +52,7 @@ CLASS zcl_uitb_ctm_node DEFINITION
     "! <p class="shorttext synchronized" lang="en">Get all items of this node</p>
     METHODS get_items
       RETURNING
-        VALUE(result) TYPE zuitb_ctm_item_rt
+        VALUE(result) TYPE zcl_uitb_ctm_item=>ty_t_ctm_item
       RAISING
         zcx_uitb_tree_error .
     "! <p class="shorttext synchronized" lang="en">gets the last child of a node</p>

@@ -117,7 +117,7 @@ CLASS zcl_uitb_ctm_nodes DEFINITION
     "! @parameter rt_root_nodes | <p class="shorttext synchronized" lang="en">References List of the root nodes</p>
     METHODS get_root_nodes
       RETURNING
-        VALUE(rt_root_nodes) TYPE zuitb_ctm_node_rt .
+        VALUE(rt_root_nodes) TYPE zcl_uitb_ctm_node=>ty_t_ctm_node .
     "! <p class="shorttext synchronized" lang="en">Retrieves keys of the root nodes</p>
     "!
     "! @parameter rt_root_node_keys | <p class="shorttext synchronized" lang="en">List of keys of the root nodes</p>

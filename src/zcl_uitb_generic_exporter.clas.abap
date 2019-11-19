@@ -45,15 +45,15 @@ CLASS ZCL_UITB_GENERIC_EXPORTER IMPLEMENTATION.
     FIELD-SYMBOLS: <lt_table> TYPE STANDARD TABLE.
 
     ASSIGN mr_source_data_tab->* TO <lt_table>.
-    DATA(lr_json_writer) = cl_sxml_table_writer=>create( ).
+    DATA(lo_xml_writer) = cl_sxml_table_writer=>create( ).
 
-    lr_json_writer->if_sxml_writer~set_option( option = if_sxml_writer=>co_opt_linebreaks value = abap_true ).
+    lo_xml_writer->if_sxml_writer~set_option( option = if_sxml_writer=>co_opt_linebreaks value = abap_true ).
 
     CALL TRANSFORMATION id
                         SOURCE xmldat = <lt_table>
-                        RESULT XML lr_json_writer.
+                        RESULT XML lo_xml_writer.
 
-    lr_json_writer->get_output( IMPORTING output = mt_xml_data ).
+    lo_xml_writer->get_output( IMPORTING output = mt_xml_data ).
   ENDMETHOD.
 
 
