@@ -84,6 +84,12 @@
      <ENTRY>Select at least 1 element</ENTRY>
      <LENGTH>50</LENGTH>
     </item>
+    <item>
+     <ID>I</ID>
+     <KEY>013</KEY>
+     <ENTRY>Select?</ENTRY>
+     <LENGTH>17</LENGTH>
+    </item>
    </TPOOL>
    <DESCRIPTIONS>
     <SEOCOMPOTX>
@@ -127,6 +133,12 @@
      <CMPNAME>GET_MARK_FIELD</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Returns marking field in the output structure</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_SELECTION_DIALOG</CLSNAME>
+     <CMPNAME>GET_MARK_FIELD_DESCRIPTION</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Returns the description for the mark field</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CLSNAME>ZCL_UITB_SELECTION_DIALOG</CLSNAME>

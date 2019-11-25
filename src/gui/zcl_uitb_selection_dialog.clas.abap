@@ -46,6 +46,19 @@ CLASS zcl_uitb_selection_dialog DEFINITION
     METHODS get_mark_field
       RETURNING
         VALUE(rv_field) TYPE fieldname.
+    "! <p class="shorttext synchronized" lang="en">Returns the description for the mark field</p>
+    "!
+    "! To be redefined by subclass if multi selections are enabled and <br/>
+    "! the default column description should be overriden
+    "!
+    "! @parameter ev_short | <p class="shorttext synchronized" lang="en">The short text for the markfield</p>
+    "! @parameter ev_medium | <p class="shorttext synchronized" lang="en">The medium text for the mark field</p>
+    "! @parameter ev_long | <p class="shorttext synchronized" lang="en">The long text for the mark field</p>
+    METHODS get_mark_field_description
+      EXPORTING
+        ev_short  TYPE scrtext_s
+        ev_medium TYPE scrtext_m
+        ev_long   TYPE scrtext_l.
     "! <p class="shorttext synchronized" lang="en">Returns 'X' if selections were made</p>
     "! <strong>Note</strong>: The default implementation only returns 'X' if at least one row is selected
     "! in multi selection mode.
@@ -197,7 +210,15 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
       DATA(lo_col) = CAST zcl_uitb_alv_column( lo_col_iterator->get_next( ) ).
       IF mf_multi_select = abap_true AND lo_col->get_name( ) = get_mark_field( ).
         lo_col->set_cell_type( zif_uitb_c_alv_cell_types=>checkbox_hotspot ).
-        lo_col->set_descriptions( iv_medium = |{ 'Sel.'(008) }| iv_long = |{ 'Selected'(009) }| ).
+        get_mark_field_description(
+            importing ev_short   = data(lv_mark_desc_short)
+                      ev_medium  = data(lv_mark_desc_medium)
+                      ev_long    = data(lv_mark_desc_long)
+        ).
+        lo_col->set_descriptions(
+            iv_short  = lv_mark_desc_short
+            iv_medium = lv_mark_desc_medium
+            iv_long   = lv_mark_desc_long ).
         lo_col->set_optimized( ).
         lo_col->set_style( zif_uitb_c_alv_cell_style=>enabled ).
       ELSEIF mf_use_alv_filter = abap_true AND lo_col->get_name( ) = get_filtered_column( ).
@@ -391,6 +412,12 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
 
   METHOD get_mark_field.
     rv_field = c_mark_default_field.
+  ENDMETHOD.
+
+  METHOD get_mark_field_description.
+    ev_short =
+    ev_medium =
+    ev_long = |{ 'Select?'(013) }|.
   ENDMETHOD.
 
 
