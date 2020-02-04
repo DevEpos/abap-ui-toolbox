@@ -51,7 +51,7 @@ CLASS ZCL_UITB_alv_dropdown IMPLEMENTATION.
 
   METHOD constructor.
     super->constructor(
-      ir_controller = ir_controller
+      io_controller = ir_controller
       iv_name       = 'DROPDOWN'
     ).
 

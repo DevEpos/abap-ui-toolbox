@@ -161,7 +161,7 @@ CLASS zcl_uitb_alv_columns IMPLEMENTATION.
 
 
   METHOD constructor.
-    super->constructor( ir_controller = ir_controller
+    super->constructor( io_controller = ir_controller
                         iv_name       = 'COLUMNS' ).
   ENDMETHOD.
 

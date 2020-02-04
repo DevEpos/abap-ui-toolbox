@@ -125,23 +125,23 @@ CLASS zcl_uitb_alv DEFINITION
     CONSTANTS c_delete_row_custom TYPE string VALUE 'DELETE_ROW' ##NO_TEXT.
     DATA:
       mt_changes TYPE HASHED TABLE OF char1 WITH UNIQUE KEY table_line .
-    DATA mr_controller TYPE REF TO zcl_uitb_alv_controller .
-    DATA mr_alv_data_wrapper TYPE REF TO zcl_uitb_alv_data .
-    DATA mr_functions TYPE REF TO zcl_uitb_alv_functions .
-    DATA mr_functional_settings TYPE REF TO zcl_uitb_alv_func_settings .
-    DATA mr_filters TYPE REF TO zcl_uitb_alv_filters .
-    DATA mr_display_settings TYPE REF TO zcl_uitb_alv_display_settings .
+    DATA mo_controller TYPE REF TO zcl_uitb_alv_controller .
+    DATA mo_alv_data_wrapper TYPE REF TO zcl_uitb_alv_data .
+    DATA mo_functions TYPE REF TO zcl_uitb_alv_functions .
+    DATA mo_functional_settings TYPE REF TO zcl_uitb_alv_func_settings .
+    DATA mo_filters TYPE REF TO zcl_uitb_alv_filters .
+    DATA mo_display_settings TYPE REF TO zcl_uitb_alv_display_settings .
     DATA mr_data TYPE REF TO data .
-    DATA mr_columns TYPE REF TO zcl_uitb_alv_columns .
-    DATA mr_events TYPE REF TO zcl_uitb_alv_events .
+    DATA mo_columns TYPE REF TO zcl_uitb_alv_columns .
+    DATA mo_events TYPE REF TO zcl_uitb_alv_events .
     DATA mt_exclude_toolbar TYPE ui_functions .
     DATA mf_register_modified TYPE abap_bool .
-    DATA mr_selections TYPE REF TO zcl_uitb_alv_selections .
+    DATA mo_selections TYPE REF TO zcl_uitb_alv_selections .
     DATA mt_sorting TYPE lvc_t_sort .
     DATA mr_container TYPE REF TO cl_gui_container .
     DATA mr_sorting TYPE REF TO zcl_uitb_alv_sorts .
     "! <p class="shorttext synchronized" lang="en">Layout for ALV Grid</p>
-    DATA mr_layout TYPE REF TO zcl_uitb_alv_layout .
+    DATA mo_layout TYPE REF TO zcl_uitb_alv_layout .
     DATA:
       BEGIN OF ms_popup_dimensions,
         top    TYPE i,
@@ -198,31 +198,31 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD close.
-    mr_controller->mr_adapter->close( ).
+    mo_controller->mo_adapter->close( ).
   ENDMETHOD.
 
   METHOD display.
-    CHECK mr_controller IS BOUND.
+    CHECK mo_controller IS BOUND.
 
-    mr_controller->display( ).
+    mo_controller->display( ).
 
   ENDMETHOD.
 
 
   METHOD get_columns.
-    IF mr_columns IS INITIAL.
-      mr_columns = NEW #(
+    IF mo_columns IS INITIAL.
+      mo_columns = NEW #(
         ir_data       = mr_data
-        ir_controller = mr_controller
+        ir_controller = mo_controller
       ).
     ENDIF.
 
-    result = mr_columns.
+    result = mo_columns.
   ENDMETHOD.
 
   METHOD set_visible.
-    IF mr_controller IS BOUND.
-      DATA(lo_grid) = mr_controller->mr_adapter->get_grid( ).
+    IF mo_controller IS BOUND.
+      DATA(lo_grid) = mo_controller->mo_adapter->get_grid( ).
       IF lo_grid IS BOUND.
         lo_grid->set_visible( COND #( WHEN value = abap_true THEN cl_gui_control=>visible_true ELSE cl_gui_control=>visible_false ) ).
       ENDIF.
@@ -236,94 +236,94 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
 
 
   METHOD get_data_changes.
-    IF mr_alv_data_wrapper IS NOT BOUND.
-      mr_alv_data_wrapper = NEW #(
-        ir_controller = mr_controller
+    IF mo_alv_data_wrapper IS NOT BOUND.
+      mo_alv_data_wrapper = NEW #(
+        ir_controller = mo_controller
         ir_data       = mr_data
       ).
     ENDIF.
 
-    result = mr_alv_data_wrapper.
+    result = mo_alv_data_wrapper.
   ENDMETHOD.
 
 
   METHOD get_display_settings.
-    IF mr_display_settings IS NOT BOUND.
-      mr_display_settings = NEW #( io_controller = mr_controller ).
+    IF mo_display_settings IS NOT BOUND.
+      mo_display_settings = NEW #( io_controller = mo_controller ).
     ENDIF.
 
-    result = mr_display_settings.
+    result = mo_display_settings.
   ENDMETHOD.
 
 
   METHOD get_events.
-    IF mr_events IS NOT BOUND.
-      mr_events = NEW #( ir_controller = mr_controller ).
+    IF mo_events IS NOT BOUND.
+      mo_events = NEW #( io_controller = mo_controller ).
     ENDIF.
 
-    result = mr_events.
+    result = mo_events.
   ENDMETHOD.
 
 
   METHOD get_filters.
-    IF mr_filters IS INITIAL.
-      mr_filters = NEW zcl_uitb_alv_filters(
-        ir_controller = mr_controller
+    IF mo_filters IS INITIAL.
+      mo_filters = NEW zcl_uitb_alv_filters(
+        ir_controller = mo_controller
         ir_columns    = get_columns( )
       ).
     ENDIF.
 
-    result = mr_filters.
+    result = mo_filters.
   ENDMETHOD.
 
 
   METHOD get_functional_settings.
-    IF mr_functional_settings IS NOT BOUND.
-      mr_functional_settings = NEW #( ir_controller = mr_controller ).
+    IF mo_functional_settings IS NOT BOUND.
+      mo_functional_settings = NEW #( ir_controller = mo_controller ).
     ENDIF.
 
-    result = mr_functional_settings.
+    result = mo_functional_settings.
   ENDMETHOD.
 
 
   METHOD get_functions.
-    IF mr_functions IS INITIAL.
-      mr_functions = NEW #( mr_controller ).
+    IF mo_functions IS INITIAL.
+      mo_functions = NEW #( mo_controller ).
     ENDIF.
 
-    result = mr_functions.
+    result = mo_functions.
   ENDMETHOD.
 
 
   METHOD get_layout.
-    IF mr_layout IS INITIAL.
-      mr_layout = NEW #( ir_controller = mr_controller ).
+    IF mo_layout IS INITIAL.
+      mo_layout = NEW #( ir_controller = mo_controller ).
     ENDIF.
 
-    result = mr_layout.
+    result = mo_layout.
   ENDMETHOD.
 
 
   METHOD get_metadata.
-    DATA(lr_adapter) = mr_controller->mr_adapter.
-    IF lr_adapter IS BOUND AND NOT lr_adapter->is_function_call_active( ).
-      lr_adapter->get_metadata( ).
+    DATA(lo_adapter) = mo_controller->mo_adapter.
+    IF lo_adapter IS BOUND AND NOT lo_adapter->is_function_call_active( ).
+      lo_adapter->get_metadata( ).
     ENDIF.
   ENDMETHOD.
 
 
   METHOD get_selections.
-    IF mr_selections IS INITIAL.
-      mr_selections = NEW #( ir_controller = mr_controller ).
+    IF mo_selections IS INITIAL.
+      mo_selections = NEW #( ir_controller = mo_controller ).
     ENDIF.
 
-    result = mr_selections.
+    result = mo_selections.
   ENDMETHOD.
 
 
   METHOD get_sorting.
     IF mr_sorting IS INITIAL.
-      mr_sorting = NEW #( ir_controller = mr_controller
+      mr_sorting = NEW #( ir_controller = mo_controller
                           ir_columns    = get_columns( ) ).
     ENDIF.
 
@@ -334,7 +334,7 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
   METHOD init.
 
     " create the controller
-    mr_controller = NEW #( ir_model = me ).
+    mo_controller = NEW #( io_model = me ).
 
     get_columns( )->set_description_language( iv_description_language ).
     get_functional_settings( ).
@@ -343,7 +343,7 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
     get_functions( ).
     get_data_changes( ).
 
-    mr_display_settings->set_editable( if_editable ).
+    mo_display_settings->set_editable( if_editable ).
 
     " create columns from input data
     set_data( mr_data ).
@@ -359,12 +359,12 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
 
     TYPES: ltt_filter TYPE SORTED TABLE OF lty_filter WITH UNIQUE KEY column.
 
-    DATA: lr_filter TYPE REF TO zcl_uitb_alv_filter.
+    DATA: lo_filter TYPE REF TO zcl_uitb_alv_filter.
 
     FIELD-SYMBOLS: <lt_table> TYPE table.
 
-    DATA(lr_filters) = get_filters( ).
-    DATA(lr_columns) = get_columns( ).
+    DATA(lo_filters) = get_filters( ).
+    DATA(lo_columns) = get_columns( ).
     DATA(lt_selected_cells) = get_selections( )->get_selected_cells( ).
 
     SORT lt_selected_cells BY row.
@@ -379,21 +379,21 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
       ENDAT.
 
       TRY.
-          DATA(lr_column) = lr_columns->get_column( <ls_cell>-column ).
+          DATA(lo_column) = lo_columns->get_column( <ls_cell>-column ).
         CATCH zcx_uitb_alv_not_found.
           CONTINUE.
       ENDTRY.
 
       ASSIGN COMPONENT <ls_cell>-column OF STRUCTURE <ls_line> TO FIELD-SYMBOL(<lv_value>).
       TRY.
-          lr_filter = lr_filters->get_filter( <ls_cell>-column ).
+          lo_filter = lo_filters->get_filter( <ls_cell>-column ).
         CATCH zcx_uitb_alv_not_found.
-          lr_filter = lr_filters->add_filter( iv_columnname = <ls_cell>-column ).
+          lo_filter = lo_filters->add_filter( iv_columnname = <ls_cell>-column ).
       ENDTRY.
 
-      CHECK lr_filter IS BOUND.
+      CHECK lo_filter IS BOUND.
 
-      lr_filter->add_selopt(
+      lo_filter->add_selopt(
           iv_sign   = COND #( WHEN if_exclude = abap_true THEN 'E' ELSE 'I' )
           iv_option = 'EQ'
           iv_low    = |{ <lv_value> }|
@@ -403,14 +403,14 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
 
 
   METHOD refresh.
-    CHECK mr_controller IS BOUND.
+    CHECK mo_controller IS BOUND.
 
     DATA(lv_refresh_mode) = COND #( WHEN if_soft = abap_true THEN
                                       zif_uitb_c_alv_refresh=>soft
                                     ELSE
                                       zif_uitb_c_alv_refresh=>full ).
 
-    mr_controller->zif_uitb_alv_metadata_ctrller~set_changed(
+    mo_controller->zif_uitb_alv_metadata_ctrller~set_changed(
         iv_name         = 'ZCL_UITB_EDITABLE_ALV'
         iv_flavour      = zif_uitb_c_alv_chglist_flavor=>refresh
         iv_refresh_mode = lv_refresh_mode
@@ -418,12 +418,12 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
     ).
 
     IF is_stable IS SUPPLIED.
-      mr_controller->refresh(
+      mo_controller->refresh(
           is_stable               = is_stable
           if_keep_scroll_position = if_keep_scroll_position
       ).
     ELSE.
-      mr_controller->refresh(
+      mo_controller->refresh(
           is_stable               = VALUE #( row = abap_true col = abap_true )
           if_keep_scroll_position = if_keep_scroll_position
       ).
@@ -441,18 +441,18 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
 *.. @TODO: Check if new data is allowed
     CHECK ir_data IS NOT INITIAL.
 
-    DATA(lr_columns) = get_columns( ).
+    DATA(lo_columns) = get_columns( ).
     mr_data = ir_data.
 
     zcl_uitb_alv_data_descr=>describe_table(
-        ir_columns = lr_columns
+        io_columns = lo_columns
         ir_table   = mr_data
     ).
     get_filters( )->clear( ).
 
-    CHECK mr_controller IS BOUND.
+    CHECK mo_controller IS BOUND.
 
-    mr_controller->zif_uitb_alv_metadata_ctrller~set_changed(
+    mo_controller->zif_uitb_alv_metadata_ctrller~set_changed(
         iv_name         = 'ZCL_UITB_EDITABLE_ALV'
         iv_flavour      = zif_uitb_c_alv_chglist_flavor=>data_set
         iv_method       = 'SET_DATA'
@@ -476,9 +476,9 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD set_function.
-    CHECK mr_controller IS BOUND.
+    CHECK mo_controller IS BOUND.
 
-    mr_controller->set_function( iv_function ).
+    mo_controller->set_function( iv_function ).
   ENDMETHOD.
 
 
@@ -492,7 +492,7 @@ CLASS zcl_uitb_alv IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_uitb_gui_control~focus.
-    CHECK mr_controller IS BOUND.
-    mr_controller->focus( ).
+    CHECK mo_controller IS BOUND.
+    mo_controller->focus( ).
   ENDMETHOD.
 ENDCLASS.

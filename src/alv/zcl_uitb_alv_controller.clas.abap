@@ -1,17 +1,17 @@
-CLASS ZCL_UITB_alv_controller DEFINITION
+CLASS zcl_uitb_alv_controller DEFINITION
   PUBLIC
   CREATE PUBLIC
-  GLOBAL FRIENDS ZCL_UITB_alv_grid_adapter.
+  GLOBAL FRIENDS zcl_uitb_alv_grid_adapter.
 
   PUBLIC SECTION.
-    INTERFACES ZIF_UITB_alv_metadata_ctrller.
-    INTERFACES ZIF_UITB_alv_controller.
+    INTERFACES zif_uitb_alv_metadata_ctrller.
+    INTERFACES zif_uitb_alv_controller.
 
     METHODS constructor
       IMPORTING
-        ir_model TYPE REF TO ZCL_UITB_alv.
-    DATA mr_model TYPE REF TO ZCL_UITB_alv.
-    DATA mr_adapter TYPE REF TO ZCL_UITB_alv_grid_adapter.
+        io_model TYPE REF TO zcl_uitb_alv.
+    DATA mo_model TYPE REF TO zcl_uitb_alv.
+    DATA mo_adapter TYPE REF TO zcl_uitb_alv_grid_adapter.
     DATA mf_event_mode TYPE abap_bool.
 
     METHODS display.
@@ -26,17 +26,17 @@ CLASS ZCL_UITB_alv_controller DEFINITION
 
   PROTECTED SECTION.
   PRIVATE SECTION.
-    DATA mt_changelist TYPE ZIF_UITB_alv_types=>tt_alv_changelist.
+    DATA mt_changelist TYPE zif_uitb_alv_types=>tt_alv_changelist.
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_alv_controller IMPLEMENTATION.
+CLASS zcl_uitb_alv_controller IMPLEMENTATION.
 
   METHOD display.
-    IF mr_adapter IS INITIAL.
-      mr_adapter = NEW ZCL_UITB_alv_grid_adapter(
-          ir_controller = me
+    IF mo_adapter IS INITIAL.
+      mo_adapter = NEW zcl_uitb_alv_grid_adapter(
+          io_controller = me
       ).
     ENDIF.
     refresh( ).
@@ -46,10 +46,10 @@ CLASS ZCL_UITB_alv_controller IMPLEMENTATION.
     TRY.
         DATA: ls_stable TYPE lvc_s_stbl.
 
-        IF mr_adapter IS BOUND.
+        IF mo_adapter IS BOUND.
           IF mf_event_mode EQ abap_true.
-            mr_adapter->ms_stable = ls_stable.
-            mr_adapter->mf_keep_scroll_position = if_keep_scroll_position.
+            mo_adapter->ms_stable = ls_stable.
+            mo_adapter->mf_keep_scroll_position = if_keep_scroll_position.
             RETURN.
           ELSE. " before and after event
             " continue processing coding
@@ -58,9 +58,9 @@ CLASS ZCL_UITB_alv_controller IMPLEMENTATION.
           RETURN.
         ENDIF.
 
-        CHECK ZIF_UITB_alv_metadata_ctrller~check_changelist( ) NE abap_false.
+        CHECK zif_uitb_alv_metadata_ctrller~check_changelist( ) NE abap_false.
 
-        DATA(lr_changelist) = ZCL_UITB_alv_changelist=>create( mt_changelist ).
+        DATA(lr_changelist) = zcl_uitb_alv_changelist=>create( mt_changelist ).
 
         DELETE lr_changelist->mt_changelist
           WHERE flavour NE if_salv_c_changelist_flavour=>setter
@@ -73,10 +73,10 @@ CLASS ZCL_UITB_alv_controller IMPLEMENTATION.
 
         " new call --> therefore setters and application irrelevant
 
-        ZIF_UITB_alv_metadata_ctrller~clear_changelist( iv_flavour = if_salv_c_changelist_flavour=>setter ).
-        ZIF_UITB_alv_metadata_ctrller~clear_changelist( iv_flavour = if_salv_c_changelist_flavour=>data_set ).
-        ZIF_UITB_alv_metadata_ctrller~clear_changelist( iv_flavour = if_salv_c_changelist_flavour=>application ).
-        ZIF_UITB_alv_metadata_ctrller~clear_changelist( iv_flavour = if_salv_c_changelist_flavour=>refresh ).
+        zif_uitb_alv_metadata_ctrller~clear_changelist( iv_flavour = if_salv_c_changelist_flavour=>setter ).
+        zif_uitb_alv_metadata_ctrller~clear_changelist( iv_flavour = if_salv_c_changelist_flavour=>data_set ).
+        zif_uitb_alv_metadata_ctrller~clear_changelist( iv_flavour = if_salv_c_changelist_flavour=>application ).
+        zif_uitb_alv_metadata_ctrller~clear_changelist( iv_flavour = if_salv_c_changelist_flavour=>refresh ).
 
         CHECK lr_changelist->is_new_data_requested( ) OR
               lr_changelist->has_metadata_changed( ) OR
@@ -86,20 +86,20 @@ CLASS ZCL_UITB_alv_controller IMPLEMENTATION.
 *              lr_changelist->is_screen_closed( ) .
 
         " send the data to the frontend
-        mr_adapter->set_metadata(
+        mo_adapter->set_metadata(
           is_stable               = is_stable
           if_keep_scroll_position = if_keep_scroll_position
           ir_changelist           = lr_changelist
         ).
-      CATCH ZCX_UITB_alv_error.
+      CATCH zcx_uitb_alv_error.
     ENDTRY.
   ENDMETHOD.
 
   METHOD constructor.
-    mr_model = ir_model.
+    mo_model = io_model.
   ENDMETHOD.
 
-  METHOD ZIF_UITB_alv_metadata_ctrller~register.
+  METHOD zif_uitb_alv_metadata_ctrller~register.
 
     CHECK line_exists(
             mt_changelist[
@@ -113,9 +113,9 @@ CLASS ZCL_UITB_alv_controller IMPLEMENTATION.
     ) INTO TABLE mt_changelist.
   ENDMETHOD.
 
-  METHOD ZIF_UITB_alv_metadata_ctrller~set_changed.
+  METHOD zif_uitb_alv_metadata_ctrller~set_changed.
 
-    DATA: ls_changelist TYPE ZIF_UITB_alv_types=>ty_alv_s_changelist.
+    DATA: ls_changelist TYPE zif_uitb_alv_types=>ty_alv_s_changelist.
 
     " check if object has been registered
     IF NOT line_exists(
@@ -138,7 +138,7 @@ CLASS ZCL_UITB_alv_controller IMPLEMENTATION.
     ENDIF.
 
     IF iv_flavour EQ zif_uitb_c_alv_chglist_flavor=>selections.
-      DATA(lt_changelist) = ZIF_UITB_alv_metadata_ctrller~get_changelist( zif_uitb_c_alv_chglist_flavor=>selections ).
+      DATA(lt_changelist) = zif_uitb_alv_metadata_ctrller~get_changelist( zif_uitb_c_alv_chglist_flavor=>selections ).
       IF lt_changelist IS NOT INITIAL.
         SORT lt_changelist BY sequence DESCENDING.
         ls_changelist = lt_changelist[ 1 ].
@@ -158,8 +158,8 @@ CLASS ZCL_UITB_alv_controller IMPLEMENTATION.
     INSERT ls_changelist INTO TABLE mt_changelist.
   ENDMETHOD.
 
-  METHOD ZIF_UITB_alv_metadata_ctrller~clear_changelist.
-    DATA: ls_changelist TYPE ZIF_UITB_alv_types=>ty_alv_s_changelist.
+  METHOD zif_uitb_alv_metadata_ctrller~clear_changelist.
+    DATA: ls_changelist TYPE zif_uitb_alv_types=>ty_alv_s_changelist.
 
     IF iv_name IS SUPPLIED.
       DELETE mt_changelist WHERE name EQ iv_name.
@@ -194,8 +194,8 @@ CLASS ZCL_UITB_alv_controller IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD ZIF_UITB_alv_metadata_ctrller~check_changelist.
-    DATA: ls_changelist TYPE ZIF_UITB_alv_types=>ty_alv_s_changelist.
+  METHOD zif_uitb_alv_metadata_ctrller~check_changelist.
+    DATA: ls_changelist TYPE zif_uitb_alv_types=>ty_alv_s_changelist.
 
 
     IF iv_flavour IS SUPPLIED.
@@ -271,7 +271,7 @@ CLASS ZCL_UITB_alv_controller IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
-  METHOD ZIF_UITB_alv_metadata_ctrller~get_changelist.
+  METHOD zif_uitb_alv_metadata_ctrller~get_changelist.
 
     result = mt_changelist.
 
@@ -279,16 +279,16 @@ CLASS ZCL_UITB_alv_controller IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD set_function.
-    check mr_adapter is bound.
+    CHECK mo_adapter IS BOUND.
 
-    mr_adapter->set_function( iv_function ).
+    mo_adapter->set_function( iv_function ).
   ENDMETHOD.
 
 
   METHOD focus.
-    check mr_adapter is bound.
+    CHECK mo_adapter IS BOUND.
 
-    mr_adapter->set_focus_to_grid( ).
+    mo_adapter->set_focus_to_grid( ).
   ENDMETHOD.
 
 ENDCLASS.

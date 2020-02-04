@@ -77,21 +77,21 @@ CLASS ZCL_UITB_alv_selections IMPLEMENTATION.
 
   METHOD constructor.
     super->constructor(
-        ir_controller = ir_controller
+        io_controller = ir_controller
         iv_name       = 'SELECTIONS'
     ).
   ENDMETHOD.
 
   METHOD get_grid.
     DATA(lr_controller) = CAST ZCL_UITB_alv_controller( mr_controller ).
-    DATA(lr_adapter) = CAST ZCL_UITB_alv_grid_adapter( lr_controller->mr_adapter ).
+    DATA(lr_adapter) = CAST ZCL_UITB_alv_grid_adapter( lr_controller->mo_adapter ).
 
     result = lr_adapter->get_grid( ).
   ENDMETHOD.
 
   METHOD get_selected_rows.
     IF mf_rows_received = abap_false.
-      DATA(lr_adapter) = CAST ZCL_UITB_alv_controller( mr_controller )->mr_adapter.
+      DATA(lr_adapter) = CAST ZCL_UITB_alv_controller( mr_controller )->mo_adapter.
 
       ZCL_UITB_alv_metadata_util=>get_selected_rows(
           ir_grid       = lr_adapter->get_grid( )
@@ -122,7 +122,7 @@ CLASS ZCL_UITB_alv_selections IMPLEMENTATION.
 
   METHOD get_selected_columns.
     IF mf_cols_received = abap_false.
-      DATA(lr_adapter) = CAST ZCL_UITB_alv_controller( mr_controller )->mr_adapter.
+      DATA(lr_adapter) = CAST ZCL_UITB_alv_controller( mr_controller )->mo_adapter.
 
       ZCL_UITB_alv_metadata_util=>get_selected_columns(
           ir_grid       = lr_adapter->get_grid( )
@@ -153,7 +153,7 @@ CLASS ZCL_UITB_alv_selections IMPLEMENTATION.
 
   METHOD get_current_cell.
     IF mf_ccell_received = abap_false.
-      DATA(lr_adapter) = CAST ZCL_UITB_alv_controller( mr_controller )->mr_adapter.
+      DATA(lr_adapter) = CAST ZCL_UITB_alv_controller( mr_controller )->mo_adapter.
 
       ZCL_UITB_alv_metadata_util=>get_current_cell(
           ir_grid       = lr_adapter->get_grid( )
@@ -184,7 +184,7 @@ CLASS ZCL_UITB_alv_selections IMPLEMENTATION.
 
   METHOD get_selected_cells.
     IF mf_cells_received = abap_false.
-      DATA(lr_adapter) = CAST ZCL_UITB_alv_controller( mr_controller )->mr_adapter.
+      DATA(lr_adapter) = CAST ZCL_UITB_alv_controller( mr_controller )->mo_adapter.
 
       ZCL_UITB_alv_metadata_util=>get_selected_cells(
           ir_grid       = lr_adapter->get_grid( )

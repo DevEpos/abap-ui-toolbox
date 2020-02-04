@@ -158,7 +158,7 @@
       <SCREEN>0101</SCREEN>
       <LANGUAGE>E</LANGUAGE>
       <DESCRIPT>Template Screen for Dialog calling</DESCRIPT>
-      <TYPE>M</TYPE>
+      <TYPE>N</TYPE>
       <NEXTSCREEN>0101</NEXTSCREEN>
       <LINES>200</LINES>
       <COLUMNS>255</COLUMNS>

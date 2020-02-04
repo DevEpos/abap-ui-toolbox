@@ -45,10 +45,16 @@ CLASS zcl_uitb_alv_functions DEFINITION
         !iv_tag              TYPE string OPTIONAL
         !iv_tooltip          TYPE string OPTIONAL
         !if_start_of_toolbar TYPE abap_bool OPTIONAL.
+    "! <p class="shorttext synchronized" lang="en">Sets functions that are active if input is invalid</p>
+    "!
+    "! @parameter it_ucomm | <p class="shorttext synchronized" lang="en">Table of function codes</p>
+    METHODS set_process_func_on_invinput
+      IMPORTING
+        it_ucomm TYPE ui_functions.
     "! <p class="shorttext synchronized" lang="en">CONSTRUCTOR</p>
     METHODS constructor
       IMPORTING
-        !ir_controller TYPE REF TO zif_uitb_alv_metadata_ctrller .
+        !io_controller TYPE REF TO zif_uitb_alv_metadata_ctrller .
     "! <p class="shorttext synchronized" lang="en">Get disabled functions (predefined ALV Functions)</p>
     METHODS get_disabled
       RETURNING
@@ -145,6 +151,7 @@ CLASS zcl_uitb_alv_functions DEFINITION
     DATA mt_existing_disabled TYPE ui_functions .
     DATA mt_function_tag_map TYPE tt_function_tag_map .
     DATA mf_quickfilter TYPE abap_bool .
+    data mt_func_on_invalid_input type ui_functions.
     CLASS-DATA st_existing_functions TYPE ui_functions .
 
     "! <p class="shorttext synchronized" lang="en">Fills function tag map for menu entries</p>
@@ -227,7 +234,7 @@ CLASS zcl_uitb_alv_functions IMPLEMENTATION.
 
 
   METHOD constructor.
-    super->constructor( ir_controller = ir_controller ).
+    super->constructor( io_controller = io_controller ).
   ENDMETHOD.
 
 
@@ -401,6 +408,11 @@ CLASS zcl_uitb_alv_functions IMPLEMENTATION.
     mf_quickfilter = value.
   ENDMETHOD.
 
+  METHOD set_process_func_on_invinput.
+    mt_func_on_invalid_input = it_ucomm.
+    set_setter_changed( 'SET_ACTIVE_FUNC_ON_INVINPUT' ).
+  ENDMETHOD.
+
 
   METHOD toggle_checked.
     DATA(lr_user_function) = REF #( mt_functions[ function = to_upper( iv_user_function ) ] OPTIONAL ).
@@ -457,4 +469,5 @@ CLASS zcl_uitb_alv_functions IMPLEMENTATION.
       <ls_button>-disabled = if_disable.
     ENDLOOP.
   ENDMETHOD.
+
 ENDCLASS.

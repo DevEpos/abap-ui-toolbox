@@ -21,7 +21,7 @@ CLASS ZCL_UITB_alv_selction_ctrller IMPLEMENTATION.
     rf_selections_set = abap_false.
 
     TRY.
-        DATA(lr_selections) = CAST ZIF_UITB_alv_adpt_selections( ir_controller->mr_adapter ).
+        DATA(lr_selections) = CAST ZIF_UITB_alv_adpt_selections( ir_controller->mo_adapter ).
 
         " we can not sort by frontend as in some languages SPACE is sorted after non-SPACE
         " characters, in it is sorted before non-SPACE characters

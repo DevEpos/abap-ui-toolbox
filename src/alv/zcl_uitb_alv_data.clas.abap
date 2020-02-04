@@ -1,38 +1,44 @@
-class ZCL_UITB_ALV_DATA definition
-  public
-  inheriting from ZCL_UITB_ALV_METADATA
-  final
-  create public
+CLASS zcl_uitb_alv_data DEFINITION
+  PUBLIC
+  INHERITING FROM zcl_uitb_alv_metadata
+  FINAL
+  CREATE PUBLIC
 
-  global friends ZCL_UITB_ALV_GRID_ADAPTER .
+  GLOBAL FRIENDS zcl_uitb_alv_grid_adapter .
 
-public section.
+  PUBLIC SECTION.
 
-  methods CONSTRUCTOR
-    importing
-      !IR_CONTROLLER type ref to ZIF_UITB_ALV_METADATA_CTRLLER
-      !IR_DATA type ref to DATA .
-  methods CHECK_CHANGED
-    returning
-      value(RF_VALID) type ABAP_BOOL .
-  methods SET_CHANGE_EVENT
-    importing
-      !IV_EVENT_ID type I default CL_GUI_ALV_GRID=>MC_EVT_ENTER .
+    METHODS constructor
+      IMPORTING
+        !ir_controller TYPE REF TO zif_uitb_alv_metadata_ctrller
+        !ir_data       TYPE REF TO data .
+    METHODS check_changed
+      RETURNING
+        VALUE(rf_valid) TYPE abap_bool .
+    "! <p class="shorttext synchronized" lang="en">Sets container for application log</p>
+    "!
+    "! @parameter io_container | <p class="shorttext synchronized" lang="en">Container reference for log</p>
+    METHODS set_container_for_log
+      IMPORTING
+        io_container TYPE REF TO cl_gui_container.
+    METHODS set_change_event
+      IMPORTING
+        !iv_event_id TYPE i DEFAULT cl_gui_alv_grid=>mc_evt_enter .
   PROTECTED SECTION.
-private section.
-
-  data MR_DATA type ref to DATA .
-  data MV_EDIT_EVENT type I value CL_GUI_ALV_GRID=>MC_EVT_ENTER ##NO_TEXT.
+  PRIVATE SECTION.
+    data mo_applog_container type ref to cl_gui_container.
+    DATA mr_data TYPE REF TO data .
+    DATA mv_edit_event TYPE i VALUE cl_gui_alv_grid=>mc_evt_enter ##NO_TEXT.
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_ALV_DATA IMPLEMENTATION.
+CLASS zcl_uitb_alv_data IMPLEMENTATION.
 
 
   METHOD check_changed.
-    data(lr_model) = cast ZCL_UITB_alv_controller( mr_controller ).
-    data(lr_adapter) = lr_model->mr_adapter.
+    DATA(lr_model) = CAST zcl_uitb_alv_controller( mr_controller ).
+    DATA(lr_adapter) = lr_model->mo_adapter.
 
     DATA(lr_grid) = lr_adapter->get_grid( ).
 
@@ -47,7 +53,7 @@ CLASS ZCL_UITB_ALV_DATA IMPLEMENTATION.
 
 
   METHOD constructor.
-    super->constructor( ir_controller = ir_controller ).
+    super->constructor( io_controller = ir_controller ).
 
     mr_data = ir_data.
   ENDMETHOD.
@@ -58,4 +64,9 @@ CLASS ZCL_UITB_ALV_DATA IMPLEMENTATION.
 
     mv_edit_event = iv_event_id.
   ENDMETHOD.
+
+  METHOD set_container_for_log.
+    mo_applog_container = io_container.
+  ENDMETHOD.
+
 ENDCLASS.

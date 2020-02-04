@@ -1,4 +1,4 @@
-FUNCTION ZUITB_CALL_GUI_SCREEN.
+FUNCTION zuitb_call_gui_screen.
 *"----------------------------------------------------------------------
 *"*"Local Interface:
 *"  IMPORTING
@@ -23,7 +23,11 @@ FUNCTION ZUITB_CALL_GUI_SCREEN.
 
   IF iv_start_line IS NOT INITIAL.
     gs_view_data-as_dialog = abap_true.
-    CALL SCREEN 0101 STARTING AT iv_start_column iv_start_line ENDING AT iv_end_column iv_end_line.
+    IF iv_end_column IS INITIAL OR iv_end_line IS INITIAL.
+      CALL SCREEN 0101 STARTING AT iv_start_column iv_start_line.
+    ELSE.
+      CALL SCREEN 0101 STARTING AT iv_start_column iv_start_line ENDING AT iv_end_column iv_end_line.
+    ENDIF.
   ELSE.
     CALL SCREEN 0100.
   ENDIF.

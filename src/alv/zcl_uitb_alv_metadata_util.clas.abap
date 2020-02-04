@@ -1,164 +1,164 @@
-class ZCL_UITB_ALV_METADATA_UTIL definition
-  public
-  final
-  create private .
+CLASS zcl_uitb_alv_metadata_util DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PRIVATE .
 
-public section.
+  PUBLIC SECTION.
 
-  class-methods GET_VARIANT
-    importing
-      !IR_LAYOUT type ref to ZCL_UITB_ALV_LAYOUT
-    changing
-      !CS_VARIANT type DISVARIANT .
-  class-methods SET_VARIANT
-    importing
-      !IS_VARIANT type DISVARIANT
-      !IR_LAYOUT type ref to ZCL_UITB_ALV_LAYOUT .
-  class-methods GET_VARIANT_DEFAULT
-    importing
-      !IR_LAYOUT type ref to ZCL_UITB_ALV_LAYOUT
-    returning
-      value(RF_DEFAULT) type ABAP_BOOL .
-  class-methods GET_VARIANT_SAVE
-    importing
-      !IR_LAYOUT type ref to ZCL_UITB_ALV_LAYOUT
-    returning
-      value(RV_SAVE) type CHAR1 .
-  class-methods GET_DROPDOWNS
-    importing
-      !IR_DROPDOWNS type ref to ZCL_UITB_ALV_DROPDOWNS
-    returning
-      value(RT_DROPDOWN_ALIAS) type LVC_T_DRAL .
-  class-methods SET_ALV_LAYOUT
-    importing
-      !IR_SELECTIONS type ref to ZCL_UITB_ALV_SELECTIONS
-      !IR_DISPLAY_SETTINGS type ref to ZCL_UITB_ALV_DISPLAY_SETTINGS
-      !IR_COLUMNS type ref to ZCL_UITB_ALV_COLUMNS
-    changing
-      !CS_LAYOUT type LVC_S_LAYO .
-  class-methods SET_FIELDCATALOG
-    importing
-      !IR_COLUMNS type ref to ZCL_UITB_ALV_COLUMNS
-      !IR_DISPLAY_SETTINGS type ref to ZCL_UITB_ALV_DISPLAY_SETTINGS
-    returning
-      value(RT_FIELDCAT) type LVC_T_FCAT .
-  class-methods SET_FILTERS
-    importing
-      !IR_FILTERS type ref to ZCL_UITB_ALV_FILTERS
-    returning
-      value(RT_FILTERS) type LVC_T_FILT .
-  class-methods SET_SORTING
-    importing
-      !IR_SORTS type ref to ZCL_UITB_ALV_SORTS
-    returning
-      value(RESULT) type LVC_T_SORT .
-  class-methods GET_SORTING
-    importing
-      !IR_SORTS type ref to ZCL_UITB_ALV_SORTS
-      !IT_SORTS type LVC_T_SORT .
-  class-methods GET_FILTERS
-    importing
-      !IR_FILTERS type ref to ZCL_UITB_ALV_FILTERS
-      !IT_FILTER type LVC_T_FILT .
-  class-methods SET_F4_REGISTRATIONS
-    importing
-      !IR_COLUMNS type ref to ZCL_UITB_ALV_COLUMNS
-    returning
-      value(RT_F4) type LVC_T_F4 .
-  class-methods GET_FIELDCATALOG
-    importing
-      !IT_FIELDCAT type LVC_T_FCAT
-      !IR_COLUMNS type ref to ZCL_UITB_ALV_COLUMNS .
-  class-methods GET_ALV_LAYOUT
-    importing
-      !IS_LAYOUT type LVC_S_LAYO
-      !IR_SELECTIONS type ref to ZCL_UITB_ALV_SELECTIONS
-      !IR_DISPLAY_SETTINGS type ref to ZCL_UITB_ALV_DISPLAY_SETTINGS
-      !IR_COLUMNS type ref to ZCL_UITB_ALV_COLUMNS .
-  class-methods GET_SELECTED_CELLS
-    importing
-      !IR_GRID type ref to CL_GUI_ALV_GRID
-      !IR_SELECTIONS type ref to ZCL_UITB_ALV_SELECTIONS
-    returning
-      value(RF_CHANGED) type ABAP_BOOL .
-  class-methods GET_SELECTED_COLUMNS
-    importing
-      !IR_GRID type ref to CL_GUI_ALV_GRID
-      !IR_SELECTIONS type ref to ZCL_UITB_ALV_SELECTIONS
-    returning
-      value(RF_CHANGED) type ABAP_BOOL .
-  class-methods GET_SELECTED_ROWS
-    importing
-      !IR_GRID type ref to CL_GUI_ALV_GRID
-      !IR_SELECTIONS type ref to ZCL_UITB_ALV_SELECTIONS
-    returning
-      value(RF_CHANGED) type ABAP_BOOL .
-  class-methods SET_CURRENT_CELL
-    importing
-      !IR_GRID type ref to CL_GUI_ALV_GRID
-      !IR_SELECTIONS type ref to ZCL_UITB_ALV_SELECTIONS .
-  class-methods SET_SELECTED_CELLS
-    importing
-      !IR_GRID type ref to CL_GUI_ALV_GRID
-      !IR_SELECTIONS type ref to ZCL_UITB_ALV_SELECTIONS .
-  class-methods SET_SELECTED_COLS
-    importing
-      !IR_GRID type ref to CL_GUI_ALV_GRID
-      !IR_SELECTIONS type ref to ZCL_UITB_ALV_SELECTIONS .
-  class-methods SET_SELECTED_ROWS
-    importing
-      !IR_GRID type ref to CL_GUI_ALV_GRID
-      !IR_SELECTIONS type ref to ZCL_UITB_ALV_SELECTIONS .
-  class-methods GET_CURRENT_CELL
-    importing
-      !IR_GRID type ref to CL_GUI_ALV_GRID
-      !IR_SELECTIONS type ref to ZCL_UITB_ALV_SELECTIONS
-    returning
-      value(RF_CHANGED) type ABAP_BOOL .
+    CLASS-METHODS get_variant
+      IMPORTING
+        !ir_layout  TYPE REF TO zcl_uitb_alv_layout
+      CHANGING
+        !cs_variant TYPE disvariant .
+    CLASS-METHODS set_variant
+      IMPORTING
+        !is_variant TYPE disvariant
+        !io_layout  TYPE REF TO zcl_uitb_alv_layout .
+    CLASS-METHODS get_variant_default
+      IMPORTING
+        !ir_layout        TYPE REF TO zcl_uitb_alv_layout
+      RETURNING
+        VALUE(rf_default) TYPE abap_bool .
+    CLASS-METHODS get_variant_save
+      IMPORTING
+        !ir_layout     TYPE REF TO zcl_uitb_alv_layout
+      RETURNING
+        VALUE(rv_save) TYPE char1 .
+    CLASS-METHODS get_dropdowns
+      IMPORTING
+        !ir_dropdowns            TYPE REF TO zcl_uitb_alv_dropdowns
+      RETURNING
+        VALUE(rt_dropdown_alias) TYPE lvc_t_dral .
+    CLASS-METHODS set_alv_layout
+      IMPORTING
+        !ir_selections       TYPE REF TO zcl_uitb_alv_selections
+        !ir_display_settings TYPE REF TO zcl_uitb_alv_display_settings
+        !ir_columns          TYPE REF TO zcl_uitb_alv_columns
+      CHANGING
+        !cs_layout           TYPE lvc_s_layo .
+    CLASS-METHODS set_fieldcatalog
+      IMPORTING
+        !ir_columns          TYPE REF TO zcl_uitb_alv_columns
+        !ir_display_settings TYPE REF TO zcl_uitb_alv_display_settings
+      RETURNING
+        VALUE(rt_fieldcat)   TYPE lvc_t_fcat .
+    CLASS-METHODS set_filters
+      IMPORTING
+        !ir_filters       TYPE REF TO zcl_uitb_alv_filters
+      RETURNING
+        VALUE(rt_filters) TYPE lvc_t_filt .
+    CLASS-METHODS set_sorting
+      IMPORTING
+        !ir_sorts     TYPE REF TO zcl_uitb_alv_sorts
+      RETURNING
+        VALUE(result) TYPE lvc_t_sort .
+    CLASS-METHODS get_sorting
+      IMPORTING
+        !io_sorts TYPE REF TO zcl_uitb_alv_sorts
+        !it_sorts TYPE lvc_t_sort .
+    CLASS-METHODS get_filters
+      IMPORTING
+        !io_filters TYPE REF TO zcl_uitb_alv_filters
+        !it_filter  TYPE lvc_t_filt .
+    CLASS-METHODS set_f4_registrations
+      IMPORTING
+        !ir_columns  TYPE REF TO zcl_uitb_alv_columns
+      RETURNING
+        VALUE(rt_f4) TYPE lvc_t_f4 .
+    CLASS-METHODS get_fieldcatalog
+      IMPORTING
+        !it_fieldcat TYPE lvc_t_fcat
+        !io_columns  TYPE REF TO zcl_uitb_alv_columns .
+    CLASS-METHODS get_alv_layout
+      IMPORTING
+        !is_layout           TYPE lvc_s_layo
+        !io_selections       TYPE REF TO zcl_uitb_alv_selections
+        !io_display_settings TYPE REF TO zcl_uitb_alv_display_settings
+        !io_columns          TYPE REF TO zcl_uitb_alv_columns .
+    CLASS-METHODS get_selected_cells
+      IMPORTING
+        !ir_grid          TYPE REF TO cl_gui_alv_grid
+        !ir_selections    TYPE REF TO zcl_uitb_alv_selections
+      RETURNING
+        VALUE(rf_changed) TYPE abap_bool .
+    CLASS-METHODS get_selected_columns
+      IMPORTING
+        !ir_grid          TYPE REF TO cl_gui_alv_grid
+        !ir_selections    TYPE REF TO zcl_uitb_alv_selections
+      RETURNING
+        VALUE(rf_changed) TYPE abap_bool .
+    CLASS-METHODS get_selected_rows
+      IMPORTING
+        !ir_grid          TYPE REF TO cl_gui_alv_grid
+        !ir_selections    TYPE REF TO zcl_uitb_alv_selections
+      RETURNING
+        VALUE(rf_changed) TYPE abap_bool .
+    CLASS-METHODS set_current_cell
+      IMPORTING
+        !ir_grid       TYPE REF TO cl_gui_alv_grid
+        !ir_selections TYPE REF TO zcl_uitb_alv_selections .
+    CLASS-METHODS set_selected_cells
+      IMPORTING
+        !ir_grid       TYPE REF TO cl_gui_alv_grid
+        !ir_selections TYPE REF TO zcl_uitb_alv_selections .
+    CLASS-METHODS set_selected_cols
+      IMPORTING
+        !ir_grid       TYPE REF TO cl_gui_alv_grid
+        !ir_selections TYPE REF TO zcl_uitb_alv_selections .
+    CLASS-METHODS set_selected_rows
+      IMPORTING
+        !ir_grid       TYPE REF TO cl_gui_alv_grid
+        !ir_selections TYPE REF TO zcl_uitb_alv_selections .
+    CLASS-METHODS get_current_cell
+      IMPORTING
+        !ir_grid          TYPE REF TO cl_gui_alv_grid
+        !ir_selections    TYPE REF TO zcl_uitb_alv_selections
+      RETURNING
+        VALUE(rf_changed) TYPE abap_bool .
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_ALV_METADATA_UTIL IMPLEMENTATION.
+CLASS zcl_uitb_alv_metadata_util IMPLEMENTATION.
 
 
   METHOD get_alv_layout.
-    IF ir_columns IS BOUND.
-      ir_columns->mv_color_column_simple = is_layout-info_fname.
-      ir_columns->mv_style_column = is_layout-stylefname.
-      ir_columns->mf_optimized = is_layout-cwidth_opt.
-      ir_columns->mf_key_fixation = xsdbool( is_layout-no_keyfix = abap_false ).
-      ir_columns->mf_single_click_sort = is_layout-sgl_clk_hd.
-      ir_columns->mf_col_header_visible = xsdbool( is_layout-no_headers = abap_false ).
+    IF io_columns IS BOUND.
+      io_columns->mv_color_column_simple = is_layout-info_fname.
+      io_columns->mv_style_column = is_layout-stylefname.
+      io_columns->mf_optimized = is_layout-cwidth_opt.
+      io_columns->mf_key_fixation = xsdbool( is_layout-no_keyfix = abap_false ).
+      io_columns->mf_single_click_sort = is_layout-sgl_clk_hd.
+      io_columns->mf_col_header_visible = xsdbool( is_layout-no_headers = abap_false ).
     ENDIF.
 
-    IF ir_display_settings IS BOUND.
-      ir_display_settings->mf_no_merging = is_layout-no_merging.
-      ir_display_settings->mf_hide_toolbar = is_layout-no_toolbar.
-      ir_display_settings->mf_no_row_insertions = is_layout-no_rowins.
-      ir_display_settings->mf_striped = is_layout-zebra.
-      ir_display_settings->mf_no_row_marks = is_layout-no_rowmark.
-      ir_display_settings->mf_no_row_moves = is_layout-no_rowmove.
-      ir_display_settings->mv_title = is_layout-grid_title.
-      ir_display_settings->mf_smalltitle = is_layout-smalltitle.
-      ir_display_settings->ms_dnd = is_layout-s_dragdrop.
+    IF io_display_settings IS BOUND.
+      io_display_settings->mf_no_merging = is_layout-no_merging.
+      io_display_settings->mf_hide_toolbar = is_layout-no_toolbar.
+      io_display_settings->mf_no_row_insertions = is_layout-no_rowins.
+      io_display_settings->mf_striped = is_layout-zebra.
+      io_display_settings->mf_no_row_marks = is_layout-no_rowmark.
+      io_display_settings->mf_no_row_moves = is_layout-no_rowmove.
+      io_display_settings->mv_title = is_layout-grid_title.
+      io_display_settings->mf_smalltitle = is_layout-smalltitle.
+      io_display_settings->ms_dnd = is_layout-s_dragdrop.
     ENDIF.
 
-    IF ir_selections IS BOUND.
+    IF io_selections IS BOUND.
       CASE is_layout-sel_mode.
         WHEN 'B'.
-          ir_selections->mv_mode = zif_uitb_c_alv_selection=>single.
+          io_selections->mv_mode = zif_uitb_c_alv_selection=>single.
 
         WHEN 'C'.
-          ir_selections->mv_mode = zif_uitb_c_alv_selection=>multiple.
+          io_selections->mv_mode = zif_uitb_c_alv_selection=>multiple.
 
         WHEN 'D'.
-          ir_selections->mv_mode = zif_uitb_c_alv_selection=>cell.
+          io_selections->mv_mode = zif_uitb_c_alv_selection=>cell.
 
         WHEN 'A'.
-          ir_selections->mv_mode = zif_uitb_c_alv_selection=>row_column.
+          io_selections->mv_mode = zif_uitb_c_alv_selection=>row_column.
       ENDCASE.
     ENDIF.
   ENDMETHOD.
@@ -222,27 +222,27 @@ CLASS ZCL_UITB_ALV_METADATA_UTIL IMPLEMENTATION.
     LOOP AT lt_fieldcat ASSIGNING FIELD-SYMBOL(<ls_fcat>).
       DATA(lv_tabix) = sy-tabix.
 
-      ir_columns->update_column_data(
+      io_columns->update_column_data(
         iv_columnname = <ls_fcat>-fieldname
         is_data       = <ls_fcat>
       ).
 
-      ir_columns->set_column_position( iv_columnname = <ls_fcat>-fieldname iv_position = lv_tabix ).
+      io_columns->set_column_position( iv_columnname = <ls_fcat>-fieldname iv_position = lv_tabix ).
     ENDLOOP.
   ENDMETHOD.
 
 
   METHOD get_filters.
-    CHECK ir_filters IS BOUND.
+    CHECK io_filters IS BOUND.
 
-    ir_filters->clear( ).
+    io_filters->clear( ).
 
     LOOP AT it_filter ASSIGNING FIELD-SYMBOL(<ls_filter>).
       TRY.
-          DATA(lr_filter) = ir_filters->get_filter( <ls_filter>-fieldname ).
+          DATA(lr_filter) = io_filters->get_filter( <ls_filter>-fieldname ).
         CATCH zcx_uitb_alv_not_found.
           TRY.
-              lr_filter = ir_filters->add_filter(
+              lr_filter = io_filters->add_filter(
                 iv_columnname = <ls_filter>-fieldname
               ).
             CATCH zcx_uitb_alv_not_found zcx_uitb_alv_existing.
@@ -255,8 +255,8 @@ CLASS ZCL_UITB_ALV_METADATA_UTIL IMPLEMENTATION.
       lr_filter->add_selopt(
           iv_sign   = <ls_filter>-sign
           iv_option = <ls_filter>-option
-          iv_low    = conv #( <ls_filter>-low )
-          iv_high   = conv #( <ls_filter>-high )
+          iv_low    = CONV #( <ls_filter>-low )
+          iv_high   = CONV #( <ls_filter>-high )
       ).
     ENDLOOP.
   ENDMETHOD.
@@ -377,7 +377,7 @@ CLASS ZCL_UITB_ALV_METADATA_UTIL IMPLEMENTATION.
     SORT lt_sort BY spos ASCENDING.
     LOOP AT lt_sort ASSIGNING FIELD-SYMBOL(<ls_sort>).
       TRY.
-          DATA(lr_sort_existing) = ir_sorts->get_sort( iv_column_name = <ls_sort>-fieldname ).
+          DATA(lr_sort_existing) = io_sorts->get_sort( iv_column_name = <ls_sort>-fieldname ).
           lr_sort_existing->mv_sequence =
             COND #( WHEN <ls_sort>-down = abap_true THEN
                       zif_uitb_c_alv_sorting=>descending
@@ -387,7 +387,7 @@ CLASS ZCL_UITB_ALV_METADATA_UTIL IMPLEMENTATION.
         CATCH zcx_uitb_alv_not_found.
           " add sorting definition
           TRY.
-              ir_sorts->add_sort(
+              io_sorts->add_sort(
                       EXPORTING
                         iv_column_name        = <ls_sort>-fieldname
                         iv_position           = sy-tabix
@@ -430,7 +430,7 @@ CLASS ZCL_UITB_ALV_METADATA_UTIL IMPLEMENTATION.
       WHEN zif_uitb_c_alv_layout_restrict=>restrict_cross_user    THEN 'X'
       WHEN zif_uitb_c_alv_layout_restrict=>restrict_user_specific THEN 'U'
       WHEN zif_uitb_c_alv_layout_restrict=>restrict_none          THEN 'A'
-      else                                                             'A'
+      ELSE                                                             'A'
     ).
   ENDMETHOD.
 
@@ -674,16 +674,16 @@ CLASS ZCL_UITB_ALV_METADATA_UTIL IMPLEMENTATION.
 
 
   METHOD set_variant.
-    CHECK ir_layout IS BOUND.
+    CHECK io_layout IS BOUND.
 
-    ir_layout->ms_key-report          = is_variant-report.
-    ir_layout->ms_key-handle          = is_variant-handle.
-    ir_layout->ms_key-logical_group   = is_variant-log_group.
-    ir_layout->ms_current_layout-layout = is_variant-variant.
+    io_layout->ms_key-report          = is_variant-report.
+    io_layout->ms_key-handle          = is_variant-handle.
+    io_layout->ms_key-logical_group   = is_variant-log_group.
+    io_layout->ms_current_layout-layout = is_variant-variant.
     IF is_variant-username IS INITIAL.
-      ir_layout->ms_current_layout-user_specific = abap_false.
+      io_layout->ms_current_layout-user_specific = abap_false.
     ELSE.
-      ir_layout->ms_current_layout-user_specific = abap_true.
+      io_layout->ms_current_layout-user_specific = abap_true.
     ENDIF.
   ENDMETHOD.
 ENDCLASS.

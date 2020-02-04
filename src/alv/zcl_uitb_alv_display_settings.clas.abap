@@ -93,7 +93,7 @@ CLASS zcl_uitb_alv_display_settings IMPLEMENTATION.
 
   method constructor.
     super->constructor(
-        ir_controller = io_controller
+        io_controller = io_controller
         iv_name       = zif_uitb_c_alv_metadata_types=>display_settings
     ).
   ENDMETHOD.

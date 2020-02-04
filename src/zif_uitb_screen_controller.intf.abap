@@ -1,36 +1,57 @@
-interface ZIF_UITB_SCREEN_CONTROLLER
-  public .
+"! <p class="shorttext synchronized" lang="en">Screen Controller</p>
+INTERFACE zif_uitb_screen_controller
+  PUBLIC .
 
 
-  data MF_NEW_SEQUENCE type ABAP_BOOL .
-  data MF_FIRST_CALL type ABAP_BOOL .
+  DATA mf_new_sequence TYPE abap_bool .
+  DATA mf_first_call TYPE abap_bool .
 
-  events LEAVE .
+  TYPES:
+    "! Defines the Size of a screen
+    BEGIN OF ty_s_screen_size,
+      top     TYPE i,
+      left    TYPE i,
+      columns TYPE i,
+      rows    TYPE i,
+    END OF ty_s_screen_size.
 
-  methods HANDLE_USER_COMMAND
-    changing
-      !CV_FUNCTION_CODE type SY-UCOMM .
-  methods LOAD_CONTEXT_MENU default ignore
-    importing
-      !IR_MENU type ref to CL_CTMENU
-      !IV_SCREEN_PARAMETER type STRING optional .
-  methods DETERMINE_CURSOR default ignore .
-  methods PBO .
-  methods SET_STATUS .
-  methods CALL_SCREEN
-    importing
-      !IF_AS_DIALOG type ABAP_BOOL optional .
-  methods FREE_SCREEN_RESOURCES default ignore .
-  methods CANCEL default ignore
-    importing
-      value(IV_FUNCTION_CODE) type SY-UCOMM optional .
-  methods WAS_NOT_CANCELLED default ignore
-    returning
-      value(RF_NOT_CANCELLED) type BOOLEAN .
-  methods GET_REPORT_ID default ignore
-    returning
-      value(RESULT) type REPID .
-  methods GET_SCREEN_ID default ignore
-    returning
-      value(RESULT) type DYNNR .
-endinterface.
+  EVENTS leave .
+
+  "! <p class="shorttext synchronized" lang="en">After Input Handler</p>
+  METHODS handle_user_command
+    CHANGING
+      !cv_function_code TYPE sy-ucomm .
+  "! <p class="shorttext synchronized" lang="en">Loads Context Menu</p>
+  METHODS load_context_menu DEFAULT IGNORE
+    IMPORTING
+      !ir_menu             TYPE REF TO cl_ctmenu
+      !iv_screen_parameter TYPE string OPTIONAL .
+  "! <p class="shorttext synchronized" lang="en">Determination of the current cursor position</p>
+  METHODS determine_cursor DEFAULT IGNORE .
+  "! <p class="shorttext synchronized" lang="en">Before Output Handler</p>
+  METHODS pbo .
+  "! <p class="shorttext synchronized" lang="en">Set the GUI Status for the screen</p>
+  METHODS set_status .
+  "! <p class="shorttext synchronized" lang="en">Call the Screen</p>
+  METHODS call_screen
+    IMPORTING
+      !if_as_dialog  TYPE abap_bool OPTIONAL
+      is_screen_size TYPE ty_s_screen_size OPTIONAL.
+  "! <p class="shorttext synchronized" lang="en">Free allocated Resourcen</p>
+  METHODS free_screen_resources DEFAULT IGNORE .
+  "! <p class="shorttext synchronized" lang="en">Cancelled by User</p>
+  METHODS cancel DEFAULT IGNORE
+    IMPORTING
+      VALUE(iv_function_code) TYPE sy-ucomm OPTIONAL .
+  METHODS was_not_cancelled DEFAULT IGNORE
+    RETURNING
+      VALUE(rf_not_cancelled) TYPE boolean .
+  "! <p class="shorttext synchronized" lang="en">Get the ID of the report of the screen</p>
+  METHODS get_report_id DEFAULT IGNORE
+    RETURNING
+      VALUE(result) TYPE repid .
+  "! <p class="shorttext synchronized" lang="en">Get the ID of the screen</p>
+  METHODS get_screen_id DEFAULT IGNORE
+    RETURNING
+      VALUE(result) TYPE dynnr .
+ENDINTERFACE.

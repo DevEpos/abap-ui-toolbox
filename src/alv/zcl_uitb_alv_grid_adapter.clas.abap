@@ -8,7 +8,7 @@ CLASS zcl_uitb_alv_grid_adapter DEFINITION
     INTERFACES zif_uitb_alv_adpt_selections.
     METHODS constructor
       IMPORTING
-        ir_controller TYPE REF TO zcl_uitb_alv_controller.
+        io_controller TYPE REF TO zcl_uitb_alv_controller.
     METHODS get_metadata.
     METHODS close.
     METHODS set_function
@@ -46,14 +46,14 @@ CLASS zcl_uitb_alv_grid_adapter DEFINITION
         insert_after  TYPE ui_func,
       END OF ty_s_internal_ctx_func.
     TYPES: ty_t_internal_ctx_func TYPE STANDARD TABLE OF ty_s_internal_ctx_func WITH KEY insert_before insert_after.
-    DATA mr_grid TYPE REF TO cl_gui_alv_grid.
+    DATA mo_grid TYPE REF TO cl_gui_alv_grid.
     DATA mo_current_changelist TYPE REF TO zcl_uitb_alv_changelist.
     DATA mo_dialog TYPE REF TO if_alv_dialog.
     DATA ms_stable TYPE lvc_s_stbl.
     DATA mf_keep_scroll_position TYPE abap_bool.
-    DATA mr_controller TYPE REF TO zcl_uitb_alv_controller.
+    DATA mo_controller TYPE REF TO zcl_uitb_alv_controller.
     DATA mf_function_call_active TYPE abap_bool.
-    DATA mr_quickfilter_menu TYPE REF TO cl_ctmenu.
+    DATA mo_quickfilter_menu TYPE REF TO cl_ctmenu.
 
     METHODS get_function_tag
       IMPORTING
@@ -61,67 +61,67 @@ CLASS zcl_uitb_alv_grid_adapter DEFINITION
       RETURNING
         VALUE(result)    TYPE string.
     METHODS on_user_command
-          FOR EVENT user_command OF cl_gui_alv_grid
+        FOR EVENT user_command OF cl_gui_alv_grid
       IMPORTING
-          !e_ucomm .
+        !e_ucomm .
     METHODS on_before_user_command
-          FOR EVENT before_user_command OF cl_gui_alv_grid
+        FOR EVENT before_user_command OF cl_gui_alv_grid
       IMPORTING
-          !e_ucomm .
+        !e_ucomm .
     METHODS on_after_user_command
-          FOR EVENT after_user_command OF cl_gui_alv_grid
+        FOR EVENT after_user_command OF cl_gui_alv_grid
       IMPORTING
-          !e_not_processed
-          !e_saved
-          !e_ucomm .
+        !e_not_processed
+        !e_saved
+        !e_ucomm .
     METHODS on_toolbar
-          FOR EVENT toolbar OF cl_gui_alv_grid
+        FOR EVENT toolbar OF cl_gui_alv_grid
       IMPORTING
-          !e_interactive
-          !e_object .
+        !e_interactive
+        !e_object .
     METHODS on_hotspot_click
-          FOR EVENT hotspot_click OF cl_gui_alv_grid
+        FOR EVENT hotspot_click OF cl_gui_alv_grid
       IMPORTING
-          es_row_no
-          e_column_id
-          e_row_id.
+        es_row_no
+        e_column_id
+        e_row_id.
     METHODS on_button_click
-          FOR EVENT button_click OF cl_gui_alv_grid
+        FOR EVENT button_click OF cl_gui_alv_grid
       IMPORTING
-          es_col_id
-          es_row_no.
+        es_col_id
+        es_row_no.
     METHODS on_double_click
-          FOR EVENT double_click OF cl_gui_alv_grid
+        FOR EVENT double_click OF cl_gui_alv_grid
       IMPORTING
-          es_row_no
-          e_column
-          e_row.
+        es_row_no
+        e_column
+        e_row.
     METHODS on_context_menu
-          FOR EVENT context_menu_request OF cl_gui_alv_grid
+        FOR EVENT context_menu_request OF cl_gui_alv_grid
       IMPORTING
-          e_object.
+        e_object.
     METHODS on_menu_button
-          FOR EVENT menu_button OF cl_gui_alv_grid
+        FOR EVENT menu_button OF cl_gui_alv_grid
       IMPORTING
-          e_object
-          e_ucomm.
+        e_object
+        e_ucomm.
     METHODS on_f4
-          FOR EVENT onf4 OF cl_gui_alv_grid
+        FOR EVENT onf4 OF cl_gui_alv_grid
       IMPORTING
-          e_fieldname
-          e_fieldvalue
-          es_row_no
-          er_event_data
-          et_bad_cells
-          e_display.
+        e_fieldname
+        e_fieldvalue
+        es_row_no
+        er_event_data
+        et_bad_cells
+        e_display.
     METHODS on_data_changed
-          FOR EVENT data_changed OF cl_gui_alv_grid
+        FOR EVENT data_changed OF cl_gui_alv_grid
       IMPORTING
-          er_data_changed
-          e_onf4
-          e_onf4_before
-          e_onf4_after
-          e_ucomm.
+        er_data_changed
+        e_onf4
+        e_onf4_before
+        e_onf4_after
+        e_ucomm.
     "! <p class="shorttext synchronized" lang="en">Deserialize menu from table</p>
     METHODS fill_menu_from_serialized
       IMPORTING
@@ -130,34 +130,34 @@ CLASS zcl_uitb_alv_grid_adapter DEFINITION
         io_menu                 TYPE REF TO cl_ctmenu.
     METHODS set_event_handlers.
     METHODS on_drag
-          FOR EVENT ondrag OF cl_gui_alv_grid
+        FOR EVENT ondrag OF cl_gui_alv_grid
       IMPORTING
-          es_row_no
-          e_column
-          e_dragdropobj
-          e_row.
+        es_row_no
+        e_column
+        e_dragdropobj
+        e_row.
     METHODS on_drop
-          FOR EVENT ondrop OF cl_gui_alv_grid
+        FOR EVENT ondrop OF cl_gui_alv_grid
       IMPORTING
-          es_row_no
-          e_column
-          e_dragdropobj
-          e_row.
+        es_row_no
+        e_column
+        e_dragdropobj
+        e_row.
     METHODS on_drop_complete
-          FOR EVENT ondropcomplete OF cl_gui_alv_grid
+        FOR EVENT ondropcomplete OF cl_gui_alv_grid
       IMPORTING
-          es_row_no
-          e_column
-          e_dragdropobj
-          e_row.
+        es_row_no
+        e_column
+        e_dragdropobj
+        e_row.
     METHODS on_drop_get_flavor
-          FOR EVENT ondropgetflavor OF cl_gui_alv_grid
+        FOR EVENT ondropgetflavor OF cl_gui_alv_grid
       IMPORTING
-          es_row_no
-          e_column
-          e_dragdropobj
-          e_flavors
-          e_row.
+        es_row_no
+        e_column
+        e_dragdropobj
+        e_flavors
+        e_row.
 ENDCLASS.
 
 
@@ -166,82 +166,82 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
 
 
   METHOD constructor.
-    mr_controller = ir_controller.
-    mr_quickfilter_menu = NEW cl_ctmenu( ).
-    mr_quickfilter_menu->add_function(
+    mo_controller = io_controller.
+    mo_quickfilter_menu = NEW cl_ctmenu( ).
+    mo_quickfilter_menu->add_function(
         fcode = zif_uitb_c_alv_functions=>quickfilter_exclude
         text  = 'Exclude value'
     ).
 
 *...... initialize dialog for alv display
-    IF mr_controller->mr_model->mv_display_type = zif_uitb_c_alv_display_types=>dialog.
-      mo_dialog = NEW cl_dialog( iv_title        = mr_controller->mr_model->get_display_settings( )->get_title( )
+    IF mo_controller->mo_model->mv_display_type = zif_uitb_c_alv_display_types=>dialog.
+      mo_dialog = NEW cl_dialog( iv_title        = mo_controller->mo_model->get_display_settings( )->get_title( )
                                  io_grid_adapter = me ).
-    ELSEIF mr_controller->mr_model->mv_display_type = zif_uitb_c_alv_display_types=>modal_dialog.
-      mo_dialog = NEW cl_modal_dialog( iv_title = mr_controller->mr_model->get_display_settings( )->get_title( )
+    ELSEIF mo_controller->mo_model->mv_display_type = zif_uitb_c_alv_display_types=>modal_dialog.
+      mo_dialog = NEW cl_modal_dialog( iv_title = mo_controller->mo_model->get_display_settings( )->get_title( )
                                        io_grid_adapter = me ).
     ENDIF.
   ENDMETHOD.
 
 
   METHOD get_function_tag.
-    DATA(lr_functions) = mr_controller->mr_model->get_functions( ).
+    DATA(lo_functions) = mo_controller->mo_model->get_functions( ).
 
-    result = VALUE #( lr_functions->mt_function_tag_map[ function = iv_user_function ]-tag OPTIONAL ).
+    result = VALUE #( lo_functions->mt_function_tag_map[ function = iv_user_function ]-tag OPTIONAL ).
   ENDMETHOD.
 
 
   METHOD get_grid.
-    result = mr_grid.
+    result = mo_grid.
   ENDMETHOD.
 
 
   METHOD get_metadata.
-    CHECK mr_grid IS BOUND.
+    CHECK mo_grid IS BOUND.
 
-    DATA(lr_model) = mr_controller->mr_model.
+    DATA(lo_model) = mo_controller->mo_model.
 
-    DATA(lr_columns) = lr_model->get_columns( ).
-    DATA(lr_functional_settings) = lr_model->get_functional_settings( ).
-    DATA(lr_display_settings) = lr_model->get_display_settings( ).
-    DATA(lr_selections) = lr_model->get_selections( ).
-    DATA(lr_filters) = lr_model->get_filters( ).
-    DATA(lr_sorting) = lr_model->get_sorting( ).
-    DATA(lr_layout) = lr_model->get_layout( ).
+    DATA(lo_columns) = lo_model->get_columns( ).
+    DATA(lo_functional_settings) = lo_model->get_functional_settings( ).
+    DATA(lo_display_settings) = lo_model->get_display_settings( ).
+    DATA(lo_selections) = lo_model->get_selections( ).
+    DATA(lo_filters) = lo_model->get_filters( ).
+    DATA(lo_sorting) = lo_model->get_sorting( ).
+    DATA(lo_layout) = lo_model->get_layout( ).
 
-    mr_grid->get_frontend_fieldcatalog( IMPORTING et_fieldcatalog = DATA(lt_fcat) ).
-    mr_grid->get_frontend_layout( IMPORTING es_layout = DATA(ls_layout) ).
-    mr_grid->get_filter_criteria( IMPORTING et_filter = DATA(lt_filter) ).
-    mr_grid->get_sort_criteria( IMPORTING et_sort = DATA(lt_sort) ).
-    mr_grid->get_variant( IMPORTING es_variant = DATA(ls_variant) ).
+    mo_grid->get_frontend_fieldcatalog( IMPORTING et_fieldcatalog = DATA(lt_fcat) ).
+    mo_grid->get_frontend_layout( IMPORTING es_layout = DATA(ls_layout) ).
+    mo_grid->get_filter_criteria( IMPORTING et_filter = DATA(lt_filter) ).
+    mo_grid->get_sort_criteria( IMPORTING et_sort = DATA(lt_sort) ).
+    mo_grid->get_variant( IMPORTING es_variant = DATA(ls_variant) ).
 
-    lr_selections->invalidate_selections( ).
+    lo_selections->invalidate_selections( ).
 
     zcl_uitb_alv_metadata_util=>get_alv_layout(
         is_layout           = ls_layout
-        ir_selections       = lr_selections
-        ir_display_settings = lr_display_settings
-        ir_columns          = lr_columns
+        io_selections       = lo_selections
+        io_display_settings = lo_display_settings
+        io_columns          = lo_columns
     ).
 
     zcl_uitb_alv_metadata_util=>get_fieldcatalog(
         it_fieldcat = lt_fcat
-        ir_columns  = lr_columns
+        io_columns  = lo_columns
     ).
 
     zcl_uitb_alv_metadata_util=>get_filters(
-        ir_filters = lr_filters
+        io_filters = lo_filters
         it_filter  = lt_filter
     ).
 
     zcl_uitb_alv_metadata_util=>get_sorting(
-        ir_sorts = lr_sorting
+        io_sorts = lo_sorting
         it_sorts = lt_sort
     ).
 
     zcl_uitb_alv_metadata_util=>set_variant(
         is_variant = ls_variant
-        ir_layout  = lr_layout
+        io_layout  = lo_layout
     ).
 
   ENDMETHOD.
@@ -256,7 +256,7 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
     set_function_call_active( ).
 
     zcl_uitb_alv_evt_controller=>raise_after_function(
-        ir_controller = mr_controller
+        io_controller = mo_controller
         iv_function   = e_ucomm
     ).
 
@@ -268,7 +268,7 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
     set_function_call_active( ).
 
     zcl_uitb_alv_evt_controller=>raise_before_function(
-        ir_controller = mr_controller
+        io_controller = mo_controller
         iv_function   = e_ucomm
     ).
 
@@ -280,7 +280,7 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
     set_function_call_active( ).
 
     zcl_uitb_alv_evt_controller=>raise_link_click(
-        ir_controller = mr_controller
+        io_controller = mo_controller
         iv_column     = es_col_id-fieldname
         iv_row        = es_row_no-row_id
     ).
@@ -291,14 +291,14 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
 
   METHOD on_context_menu.
     DATA: lt_serialized_menu TYPE sctx_serialize.
-    DATA(lr_model) = mr_controller->mr_model.
+    DATA(lo_model) = mo_controller->mo_model.
 
-    DATA(lr_functions) = lr_model->get_functions( ).
-    IF lr_functions IS BOUND.
-      DATA(lt_disabled) = lr_functions->get_disabled( ).
+    DATA(lo_functions) = lo_model->get_functions( ).
+    IF lo_functions IS BOUND.
+      DATA(lt_disabled) = lo_functions->get_disabled( ).
       e_object->hide_functions( lt_disabled ).
 
-      IF lr_functions->mf_quickfilter = abap_true.
+      IF lo_functions->mf_quickfilter = abap_true.
 *...... Recreate menu and add quick filter actions
         e_object->get_functions( IMPORTING fcodes = DATA(lt_fcodes) ).
         e_object->if_ctxmnu_internal~serialize_menu( CHANGING menu = lt_serialized_menu ).
@@ -323,8 +323,8 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
     set_function_call_active( ).
 
     zcl_uitb_alv_evt_controller=>raise_context_menu(
-        ir_controller = mr_controller
-        ir_menu       = e_object
+        io_controller = mo_controller
+        io_menu       = e_object
     ).
 
     set_function_call_active( abap_false ).
@@ -336,8 +336,8 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
     set_function_call_active( ).
 
     zcl_uitb_alv_evt_controller=>raise_data_changed(
-        ir_controller      = mr_controller
-        ir_change_protocol = er_data_changed
+        io_controller      = mo_controller
+        io_change_protocol = er_data_changed
         iv_function        = e_ucomm
         if_onf4            = e_onf4
         if_onf4_before     = e_onf4_before
@@ -352,7 +352,7 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
     set_function_call_active( abap_true ).
 
     zcl_uitb_alv_evt_controller=>raise_double_click(
-        ir_controller = mr_controller
+        io_controller = mo_controller
         iv_column     = e_column-fieldname
         iv_row        = es_row_no-row_id
     ).
@@ -363,44 +363,44 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
 
   METHOD on_drag.
     zcl_uitb_alv_evt_controller=>raise_drag(
-        ir_controller  = mr_controller
+        io_controller  = mo_controller
         iv_row         = es_row_no-row_id
         iv_column      = e_column-fieldname
         is_row_no      = es_row_no
-        ir_dragdropobj = e_dragdropobj
+        io_dragdropobj = e_dragdropobj
     ).
   ENDMETHOD.
 
 
   METHOD on_drop.
     zcl_uitb_alv_evt_controller=>raise_drop(
-        ir_controller  = mr_controller
+        io_controller  = mo_controller
         iv_row         = es_row_no-row_id
         iv_column      = e_column-fieldname
         is_row_no      = es_row_no
-        ir_dragdropobj = e_dragdropobj
+        io_dragdropobj = e_dragdropobj
     ).
   ENDMETHOD.
 
 
   METHOD on_drop_complete.
     zcl_uitb_alv_evt_controller=>raise_drop_complete(
-        ir_controller  = mr_controller
+        io_controller  = mo_controller
         iv_row         = es_row_no-row_id
         iv_column      = e_column-fieldname
         is_row_no      = es_row_no
-        ir_dragdropobj = e_dragdropobj
+        io_dragdropobj = e_dragdropobj
     ).
   ENDMETHOD.
 
 
   METHOD on_drop_get_flavor.
     zcl_uitb_alv_evt_controller=>raise_drop_get_flavor(
-        ir_controller  = mr_controller
+        io_controller  = mo_controller
         iv_row         = es_row_no-row_id
         iv_column      = e_column-fieldname
         is_row_no      = es_row_no
-        ir_dragdropobj = e_dragdropobj
+        io_dragdropobj = e_dragdropobj
         it_flavors     = e_flavors
     ).
   ENDMETHOD.
@@ -410,11 +410,11 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
     set_function_call_active( ).
 
     zcl_uitb_alv_evt_controller=>raise_f4(
-        ir_controller = mr_controller
+        io_controller = mo_controller
         iv_fieldname  = e_fieldname
         iv_fieldvalue = e_fieldvalue
         is_row_no     = es_row_no
-        ir_event_data = er_event_data
+        io_event_data = er_event_data
         it_bad_cells  = et_bad_cells
         if_display    = e_display
     ).
@@ -427,7 +427,7 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
     set_function_call_active( ).
 
     zcl_uitb_alv_evt_controller=>raise_link_click(
-        ir_controller = mr_controller
+        io_controller = mo_controller
         iv_column     = e_column_id-fieldname
         iv_row        = es_row_no-row_id
     ).
@@ -443,14 +443,14 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
   METHOD on_toolbar.
     DATA: lt_disabled_selopt TYPE RANGE OF ui_func.
 
-    DATA(lr_model) = mr_controller->mr_model.
+    DATA(lo_model) = mo_controller->mo_model.
 
-    DATA(lr_functions) = lr_model->get_functions( ).
-    IF lr_functions IS NOT BOUND.
+    DATA(lo_functions) = lo_model->get_functions( ).
+    IF lo_functions IS NOT BOUND.
       RETURN.
     ENDIF.
 
-    DATA(lt_disabled) = lr_functions->get_disabled( ).
+    DATA(lt_disabled) = lo_functions->get_disabled( ).
 
     IF lt_disabled IS NOT INITIAL.
       lt_disabled_selopt = VALUE #(
@@ -465,26 +465,26 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
     ENDIF.
 
 *.. Insert toolbar functions at start
-    IF lr_functions->mt_buttons_front IS NOT INITIAL.
-      LOOP AT lr_functions->mt_buttons_front ASSIGNING FIELD-SYMBOL(<ls_button_front>).
+    IF lo_functions->mt_buttons_front IS NOT INITIAL.
+      LOOP AT lo_functions->mt_buttons_front ASSIGNING FIELD-SYMBOL(<ls_button_front>).
         INSERT CORRESPONDING #( <ls_button_front> ) INTO e_object->mt_toolbar INDEX 1.
       ENDLOOP.
     ENDIF.
 
 *.. append toolbar buttons at the end
     e_object->mt_toolbar = VALUE #( BASE e_object->mt_toolbar
-      ( LINES OF CORRESPONDING #( lr_functions->mt_buttons ) )
+      ( LINES OF CORRESPONDING #( lo_functions->mt_buttons ) )
     ).
 
-    IF lr_functions->mt_menus IS NOT INITIAL.
+    IF lo_functions->mt_menus IS NOT INITIAL.
       e_object->mt_btnmnu = VALUE #(
         BASE e_object->mt_btnmnu
-        ( LINES OF CORRESPONDING #( lr_functions->mt_menus ) )
+        ( LINES OF CORRESPONDING #( lo_functions->mt_menus ) )
       ).
     ENDIF.
 
 *.. add quickfilter if set inside functions
-    IF lr_functions->mf_quickfilter = abap_true.
+    IF lo_functions->mf_quickfilter = abap_true.
 
       " try to find filter function
       DATA(lv_index) = line_index( e_object->mt_toolbar[ function = zif_uitb_c_alv_functions=>filter_menu ] ).
@@ -511,7 +511,7 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
         e_object->mt_btnmnu = VALUE #(
           BASE e_object->mt_btnmnu
           ( function = zif_uitb_c_alv_functions=>quickfilter_menu
-            ctmenu   = mr_quickfilter_menu )
+            ctmenu   = mo_quickfilter_menu )
         ).
 
       ENDIF.
@@ -528,14 +528,14 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
        e_ucomm = zif_uitb_c_alv_functions=>quickfilter_menu OR
        e_ucomm = zif_uitb_c_alv_functions=>quickfilter.
 
-      zcl_uitb_alv_evt_controller=>handle_before_event( ir_controller = mr_controller ).
-      mr_controller->mr_model->perform_quick_filter(
+      zcl_uitb_alv_evt_controller=>handle_before_event( io_controller = mo_controller ).
+      mo_controller->mo_model->perform_quick_filter(
           if_exclude = COND #( WHEN e_ucomm = zif_uitb_c_alv_functions=>quickfilter_exclude THEN abap_true )
       ).
-      zcl_uitb_alv_evt_controller=>handle_after_event( ir_controller = mr_controller ).
+      zcl_uitb_alv_evt_controller=>handle_after_event( io_controller = mo_controller ).
     ELSE.
       zcl_uitb_alv_evt_controller=>raise_function_chosen(
-          ir_controller = mr_controller
+          io_controller = mo_controller
           iv_function   = e_ucomm
           iv_tag        = get_function_tag( iv_user_function = e_ucomm )
       ).
@@ -593,22 +593,22 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
   METHOD set_event_handlers.
 
     SET HANDLER:
-            on_user_command FOR mr_grid,
-            on_before_user_command FOR mr_grid,
-            on_after_user_command FOR mr_grid,
-            on_toolbar FOR mr_grid,
-            on_menu_button FOR mr_grid,
-            on_button_click FOR mr_grid,
-            on_hotspot_click FOR mr_grid,
-            on_double_click FOR mr_grid,
-            on_context_menu FOR mr_grid,
-            on_menu_button FOR mr_grid,
-            on_f4 FOR mr_grid,
-            on_data_changed FOR mr_grid,
-            on_drag FOR mr_grid,
-            on_drop FOR mr_grid,
-            on_drop_get_flavor FOR mr_grid,
-            on_drop_complete FOR mr_grid
+            on_user_command FOR mo_grid,
+            on_before_user_command FOR mo_grid,
+            on_after_user_command FOR mo_grid,
+            on_toolbar FOR mo_grid,
+            on_menu_button FOR mo_grid,
+            on_button_click FOR mo_grid,
+            on_hotspot_click FOR mo_grid,
+            on_double_click FOR mo_grid,
+            on_context_menu FOR mo_grid,
+            on_menu_button FOR mo_grid,
+            on_f4 FOR mo_grid,
+            on_data_changed FOR mo_grid,
+            on_drag FOR mo_grid,
+            on_drop FOR mo_grid,
+            on_drop_get_flavor FOR mo_grid,
+            on_drop_complete FOR mo_grid
             .
 
   ENDMETHOD.
@@ -616,9 +616,9 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
 
 
   METHOD set_focus_to_grid.
-    CHECK mr_grid IS BOUND.
+    CHECK mo_grid IS BOUND.
 
-    cl_gui_control=>set_focus( mr_grid ).
+    cl_gui_control=>set_focus( mo_grid ).
   ENDMETHOD.
 
   METHOD close.
@@ -628,15 +628,15 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
 
 
   METHOD set_function.
-    CHECK mr_grid IS BOUND.
+    CHECK mo_grid IS BOUND.
 
     sy-ucomm = iv_function.
 
-    mr_grid->fcode_bouncer( ).
+    mo_grid->fcode_bouncer( ).
 
     CLEAR sy-ucomm.
 
-    mr_grid->set_user_command( space ).
+    mo_grid->set_user_command( space ).
 
   ENDMETHOD.
 
@@ -653,7 +653,8 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
 
     FIELD-SYMBOLS: <lt_data> TYPE STANDARD TABLE.
 
-    DATA(lr_model) = mr_controller->mr_model.
+    DATA(lo_model) = mo_controller->mo_model.
+    DATA(lo_data_changes) = lo_model->get_data_changes( ).
 
     ms_stable = is_stable.
     mf_keep_scroll_position = if_keep_scroll_position.
@@ -661,29 +662,30 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
       mo_current_changelist = ir_changelist.
     ENDIF.
 
-    IF mr_grid IS INITIAL.
+    IF mo_grid IS INITIAL.
       IF mo_dialog IS BOUND.
 
         IF mo_dialog->mf_visible = abap_false.
           mo_dialog->show(
-              iv_top    = lr_model->ms_popup_dimensions-top
-              iv_left   = lr_model->ms_popup_dimensions-left
-              iv_width  = lr_model->ms_popup_dimensions-width
-              iv_height = lr_model->ms_popup_dimensions-height
+              iv_top    = lo_model->ms_popup_dimensions-top
+              iv_left   = lo_model->ms_popup_dimensions-left
+              iv_width  = lo_model->ms_popup_dimensions-width
+              iv_height = lo_model->ms_popup_dimensions-height
           ).
           IF mo_dialog->mf_modal = abap_true.
             RETURN.
           ENDIF.
         ENDIF.
 
-        mr_grid = mo_dialog->mo_gui_alv_grid.
+        mo_grid = mo_dialog->mo_gui_alv_grid.
       ELSE.
         " initialize grid
-        mr_grid = NEW cl_gui_alv_grid(
-            i_parent        = lr_model->mr_container
-            i_lifetime      = lr_model->mr_container->lifetime
+        mo_grid = NEW cl_gui_alv_grid(
+            i_parent        = lo_model->mr_container
+            i_lifetime      = lo_model->mr_container->lifetime
             i_fcat_complete = abap_true
             i_appl_events   = abap_true
+            i_applogparent  = lo_data_changes->mo_applog_container
         ).
 
       ENDIF.
@@ -692,16 +694,15 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
       set_event_handlers( ).
     ENDIF.
 
-    DATA(lr_columns) = lr_model->get_columns( ).
-    DATA(lr_functional_settings) = lr_model->get_functional_settings( ).
-    DATA(lr_dropdowns) = lr_functional_settings->get_dropdowns( ).
-    DATA(lr_display_settings) = lr_model->get_display_settings( ).
-    DATA(lr_functions) = lr_model->get_functions( ).
-    DATA(lr_layout) = lr_model->get_layout( ).
-    DATA(lr_filters) = lr_model->get_filters( ).
-    DATA(lr_sorting) = lr_model->get_sorting( ).
-    DATA(lr_data_changes) = lr_model->get_data_changes( ).
-    DATA(lr_selections) = lr_model->get_selections( ).
+    DATA(lo_columns) = lo_model->get_columns( ).
+    DATA(lo_functional_settings) = lo_model->get_functional_settings( ).
+    DATA(lo_dropdowns) = lo_functional_settings->get_dropdowns( ).
+    DATA(lo_display_settings) = lo_model->get_display_settings( ).
+    DATA(lo_functions) = lo_model->get_functions( ).
+    DATA(lo_layout) = lo_model->get_layout( ).
+    DATA(lo_filters) = lo_model->get_filters( ).
+    DATA(lo_sorting) = lo_model->get_sorting( ).
+    DATA(lo_selections) = lo_model->get_selections( ).
 
     IF mo_current_changelist->has_metadata_changed( ) OR
        mo_current_changelist->is_new_data_requested( ).
@@ -709,33 +710,35 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
 
       " get grid metadata for both new data and changed metadata
       zcl_uitb_alv_metadata_util=>set_alv_layout(
-           EXPORTING ir_selections       = lr_selections
-                     ir_display_settings = lr_display_settings
-                     ir_columns          = lr_columns
+           EXPORTING ir_selections       = lo_selections
+                     ir_display_settings = lo_display_settings
+                     ir_columns          = lo_columns
            CHANGING  cs_layout           = ls_layout
       ).
 
-      IF mr_controller->mr_model->mv_display_type <> zif_uitb_c_alv_display_types=>embedded.
+      IF mo_controller->mo_model->mv_display_type <> zif_uitb_c_alv_display_types=>embedded.
         CLEAR ls_layout-grid_title.
       ENDIF.
 
       DATA(lt_fieldcat) = zcl_uitb_alv_metadata_util=>set_fieldcatalog(
-        ir_display_settings = lr_display_settings
-        ir_columns          = lr_columns
+        ir_display_settings = lo_display_settings
+        ir_columns          = lo_columns
       ).
 
-      DATA(lt_sort) = zcl_uitb_alv_metadata_util=>set_sorting( ir_sorts = lr_sorting ).
+      DATA(lt_sort) = zcl_uitb_alv_metadata_util=>set_sorting( ir_sorts = lo_sorting ).
 
-      DATA(lt_filters) = zcl_uitb_alv_metadata_util=>set_filters( ir_filters = lr_filters ).
+      DATA(lt_filters) = zcl_uitb_alv_metadata_util=>set_filters( ir_filters = lo_filters ).
 
-      DATA(lt_f4) = zcl_uitb_alv_metadata_util=>set_f4_registrations( ir_columns = lr_columns ).
-      mr_grid->register_f4_for_fields( lt_f4 ).
+      DATA(lt_f4) = zcl_uitb_alv_metadata_util=>set_f4_registrations( ir_columns = lo_columns ).
+      mo_grid->register_f4_for_fields( lt_f4 ).
 
-      IF lr_display_settings->is_editable( ).
-        mr_grid->set_ready_for_input( 1 ).
+      IF lo_display_settings->is_editable( ).
+        mo_grid->set_ready_for_input( 1 ).
       ELSE.
-        mr_grid->set_ready_for_input( 0 ).
+        mo_grid->set_ready_for_input( 0 ).
       ENDIF.
+
+      mo_grid->process_ucomm_on_invalid_input( lo_functions->mt_func_on_invalid_input ).
     ENDIF.
 
 
@@ -745,26 +748,26 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
 
         IF mo_current_changelist->has_metadata_changed( ).
           IF mo_current_changelist->is_filters_only_change( ).
-            mr_grid->set_filter_criteria( lt_filters ).
+            mo_grid->set_filter_criteria( lt_filters ).
           ELSEIF mo_current_changelist->is_layout_only_change( ).
-            mr_grid->set_frontend_layout( ls_layout ).
+            mo_grid->set_frontend_layout( ls_layout ).
           ELSE.
-            mr_grid->set_frontend_fieldcatalog( lt_fieldcat ).
-            mr_grid->set_filter_criteria( lt_filters ).
-            mr_grid->set_frontend_layout( ls_layout ).
-            mr_grid->set_sort_criteria( lt_sort ).
-            mr_grid->set_drop_down_table( it_drop_down_alias = zcl_uitb_alv_metadata_util=>get_dropdowns( lr_dropdowns ) ).
+            mo_grid->set_frontend_fieldcatalog( lt_fieldcat ).
+            mo_grid->set_filter_criteria( lt_filters ).
+            mo_grid->set_frontend_layout( ls_layout ).
+            mo_grid->set_sort_criteria( lt_sort ).
+            mo_grid->set_drop_down_table( it_drop_down_alias = zcl_uitb_alv_metadata_util=>get_dropdowns( lo_dropdowns ) ).
           ENDIF.
         ENDIF.
 
-        IF lr_display_settings->is_editable( ).
-          mr_grid->register_edit_event( lr_data_changes->mv_edit_event ).
+        IF lo_display_settings->is_editable( ).
+          mo_grid->register_edit_event( lo_data_changes->mv_edit_event ).
         ENDIF.
 
         IF mo_current_changelist->get_refresh_mode( ) <> zif_uitb_c_alv_refresh=>none.
           IF mf_keep_scroll_position = abap_true.
             DATA(lf_update_scroll_position) = abap_true.
-            mr_grid->get_scroll_info_via_id(
+            mo_grid->get_scroll_info_via_id(
               IMPORTING es_row_no   = DATA(ls_row_no)
                         es_col_info = DATA(ls_col_info)
             ).
@@ -774,40 +777,40 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
         CASE mo_current_changelist->get_refresh_mode( ).
 
           WHEN zif_uitb_c_alv_refresh=>full.
-            mr_grid->refresh_table_display(
+            mo_grid->refresh_table_display(
                 is_stable      = ms_stable
             ).
 
           WHEN zif_uitb_c_alv_refresh=>soft.
-            mr_grid->refresh_table_display(
+            mo_grid->refresh_table_display(
                 is_stable      = ms_stable
                 i_soft_refresh = abap_true
             ).
         ENDCASE.
 
       WHEN abap_true.
-        mr_grid->set_drop_down_table( it_drop_down_alias = zcl_uitb_alv_metadata_util=>get_dropdowns( lr_dropdowns ) ).
+        mo_grid->set_drop_down_table( it_drop_down_alias = zcl_uitb_alv_metadata_util=>get_dropdowns( lo_dropdowns ) ).
 
-        ASSIGN lr_model->mr_data->* TO <lt_data>.
+        ASSIGN lo_model->mr_data->* TO <lt_data>.
 
-        IF lr_display_settings->is_editable( ).
-          mr_grid->register_edit_event( lr_data_changes->mv_edit_event ).
+        IF lo_display_settings->is_editable( ).
+          mo_grid->register_edit_event( lo_data_changes->mv_edit_event ).
         ENDIF.
 
-        DATA(lf_variant_default) = zcl_uitb_alv_metadata_util=>get_variant_default( lr_layout ).
-        DATA(lv_variant_save) = zcl_uitb_alv_metadata_util=>get_variant_save( lr_layout ).
+        DATA(lf_variant_default) = zcl_uitb_alv_metadata_util=>get_variant_default( lo_layout ).
+        DATA(lv_variant_save) = zcl_uitb_alv_metadata_util=>get_variant_save( lo_layout ).
         zcl_uitb_alv_metadata_util=>get_variant(
-          EXPORTING ir_layout  = lr_layout
+          EXPORTING ir_layout  = lo_layout
           CHANGING  cs_variant = ls_variant
         ).
 
-        mr_grid->set_table_for_first_display(
+        mo_grid->set_table_for_first_display(
           EXPORTING
             is_layout                     = ls_layout
             is_variant                    = ls_variant
             i_save                        = lv_variant_save
             i_default                     = lf_variant_default
-            it_toolbar_excluding          = lr_functions->get_disabled( )
+            it_toolbar_excluding          = lo_functions->get_disabled( )
           CHANGING
             it_outtab                     = <lt_data>
             it_fieldcatalog               = lt_fieldcat
@@ -838,11 +841,11 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
 
     ENDCASE.
 
-    zcl_uitb_alv_selction_ctrller=>set_selections( mr_controller ).
+    zcl_uitb_alv_selction_ctrller=>set_selections( mo_controller ).
 
 
     IF lf_update_scroll_position = abap_true.
-      mr_grid->set_scroll_info_via_id(
+      mo_grid->set_scroll_info_via_id(
           is_col_info = ls_col_info
           is_row_no   = ls_row_no
       ).
@@ -853,97 +856,97 @@ CLASS zcl_uitb_alv_grid_adapter IMPLEMENTATION.
 
 
   METHOD zif_uitb_alv_adpt_selections~get_current_cell.
-    CHECK mr_grid IS BOUND.
+    CHECK mo_grid IS BOUND.
 
-    DATA(lr_model) = mr_controller->mr_model.
+    DATA(lo_model) = mo_controller->mo_model.
 
     zcl_uitb_alv_metadata_util=>get_current_cell(
-        ir_grid       = mr_grid
-        ir_selections = lr_model->mr_selections
+        ir_grid       = mo_grid
+        ir_selections = lo_model->mo_selections
     ).
   ENDMETHOD.
 
 
   METHOD zif_uitb_alv_adpt_selections~get_selected_cells.
-    CHECK mr_grid IS BOUND.
+    CHECK mo_grid IS BOUND.
 
-    DATA(lr_model) = mr_controller->mr_model.
+    DATA(lo_model) = mo_controller->mo_model.
 
     zcl_uitb_alv_metadata_util=>get_selected_cells(
-        ir_grid       = mr_grid
-        ir_selections = lr_model->mr_selections
+        ir_grid       = mo_grid
+        ir_selections = lo_model->mo_selections
     ).
   ENDMETHOD.
 
 
   METHOD zif_uitb_alv_adpt_selections~get_selected_columns.
-    CHECK mr_grid IS BOUND.
+    CHECK mo_grid IS BOUND.
 
-    DATA(lr_model) = mr_controller->mr_model.
+    DATA(lo_model) = mo_controller->mo_model.
 
     zcl_uitb_alv_metadata_util=>get_selected_columns(
-        ir_grid       = mr_grid
-        ir_selections = lr_model->mr_selections
+        ir_grid       = mo_grid
+        ir_selections = lo_model->mo_selections
     ).
   ENDMETHOD.
 
 
   METHOD zif_uitb_alv_adpt_selections~get_selected_rows.
-    CHECK mr_grid IS BOUND.
+    CHECK mo_grid IS BOUND.
 
-    DATA(lr_model) = mr_controller->mr_model.
+    DATA(lo_model) = mo_controller->mo_model.
 
     zcl_uitb_alv_metadata_util=>get_selected_rows(
-        ir_grid       = mr_grid
-        ir_selections = lr_model->mr_selections
+        ir_grid       = mo_grid
+        ir_selections = lo_model->mo_selections
     ).
   ENDMETHOD.
 
 
   METHOD zif_uitb_alv_adpt_selections~set_current_cell.
-    CHECK mr_grid IS BOUND.
+    CHECK mo_grid IS BOUND.
 
-    DATA(lr_model) = mr_controller->mr_model.
+    DATA(lo_model) = mo_controller->mo_model.
 
     zcl_uitb_alv_metadata_util=>set_current_cell(
-        ir_grid       = mr_grid
-        ir_selections = lr_model->mr_selections
+        ir_grid       = mo_grid
+        ir_selections = lo_model->mo_selections
     ).
   ENDMETHOD.
 
 
   METHOD zif_uitb_alv_adpt_selections~set_selected_cells.
-    CHECK mr_grid IS BOUND.
+    CHECK mo_grid IS BOUND.
 
-    DATA(lr_model) = mr_controller->mr_model.
+    DATA(lo_model) = mo_controller->mo_model.
 
     zcl_uitb_alv_metadata_util=>set_selected_cells(
-        ir_grid       = mr_grid
-        ir_selections = lr_model->mr_selections
+        ir_grid       = mo_grid
+        ir_selections = lo_model->mo_selections
     ).
   ENDMETHOD.
 
 
   METHOD zif_uitb_alv_adpt_selections~set_selected_columns.
-    CHECK mr_grid IS BOUND.
+    CHECK mo_grid IS BOUND.
 
-    DATA(lr_model) = mr_controller->mr_model.
+    DATA(lo_model) = mo_controller->mo_model.
 
     zcl_uitb_alv_metadata_util=>set_selected_cols(
-        ir_grid       = mr_grid
-        ir_selections = lr_model->mr_selections
+        ir_grid       = mo_grid
+        ir_selections = lo_model->mo_selections
     ).
   ENDMETHOD.
 
 
   METHOD zif_uitb_alv_adpt_selections~set_selected_rows.
-    CHECK mr_grid IS BOUND.
+    CHECK mo_grid IS BOUND.
 
-    DATA(lr_model) = mr_controller->mr_model.
+    DATA(lo_model) = mo_controller->mo_model.
 
     zcl_uitb_alv_metadata_util=>set_selected_rows(
-        ir_grid       = mr_grid
-        ir_selections = lr_model->mr_selections
+        ir_grid       = mo_grid
+        ir_selections = lo_model->mo_selections
     ).
   ENDMETHOD.
 ENDCLASS.

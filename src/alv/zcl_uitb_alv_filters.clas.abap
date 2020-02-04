@@ -148,7 +148,7 @@ CLASS zcl_uitb_alv_filters IMPLEMENTATION.
   METHOD constructor.
 
     super->constructor(
-      ir_controller = ir_controller
+      io_controller = ir_controller
       iv_name       = 'FILTERS' ).
 
     mr_columns = ir_columns.
@@ -277,7 +277,7 @@ CLASS zcl_uitb_alv_filters IMPLEMENTATION.
 
   METHOD get_filtered_entry_count.
     TRY.
-        DATA(lo_adapter) = CAST zcl_uitb_alv_controller( mr_controller )->mr_adapter.
+        DATA(lo_adapter) = CAST zcl_uitb_alv_controller( mr_controller )->mo_adapter.
         CHECK lo_adapter IS BOUND.
         DATA(lo_alv) = lo_adapter->get_grid( ).
         CHECK lo_alv IS BOUND.

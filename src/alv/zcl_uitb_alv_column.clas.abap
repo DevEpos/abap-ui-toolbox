@@ -178,7 +178,7 @@ CLASS zcl_uitb_alv_column IMPLEMENTATION.
 
 
   METHOD constructor.
-    super->constructor( ir_controller = ir_controller ).
+    super->constructor( io_controller = ir_controller ).
     ms_data = is_data.
   ENDMETHOD.
 

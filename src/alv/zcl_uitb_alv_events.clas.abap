@@ -147,7 +147,7 @@ ENDCLASS.
 CLASS zcl_uitb_alv_events IMPLEMENTATION.
 
   METHOD get_sender.
-    ro_alv = CAST zcl_uitb_alv_controller( mr_controller )->mr_model.
+    ro_alv = CAST zcl_uitb_alv_controller( mr_controller )->mo_model.
   ENDMETHOD.
 
   METHOD raise_after_function.

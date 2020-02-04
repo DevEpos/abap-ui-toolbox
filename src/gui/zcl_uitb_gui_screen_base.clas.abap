@@ -91,21 +91,21 @@ CLASS zcl_uitb_gui_screen_base DEFINITION
     "! <p class="shorttext synchronized" lang="en">Handler for PBO of Dynpro</p>
     "!
     METHODS on_dynpro_before_output
-          FOR EVENT before_output OF zif_uitb_gui_dynpro_events
+        FOR EVENT before_output OF zif_uitb_gui_dynpro_events
       IMPORTING
-          eo_callback.
+        eo_callback.
     "! <p class="shorttext synchronized" lang="en">Handler for PAI of Dynpro</p>
     "!
     METHODS on_dynpro_user_command
-          FOR EVENT user_command OF zif_uitb_gui_dynpro_events
+        FOR EVENT user_command OF zif_uitb_gui_dynpro_events
       IMPORTING
-          ev_function_id.
+        ev_function_id.
     "! <p class="shorttext synchronized" lang="en">Handler for Exit code of dynpro</p>
     "!
     METHODS on_exit
-          FOR EVENT exit OF zif_uitb_gui_dynpro_events
+        FOR EVENT exit OF zif_uitb_gui_dynpro_events
       IMPORTING
-          eo_callback.
+        eo_callback.
     "! <p class="shorttext synchronized" lang="en">Handler for dynpro was exited</p>
     "!
     METHODS on_exited
@@ -114,18 +114,18 @@ CLASS zcl_uitb_gui_screen_base DEFINITION
     "! <p class="shorttext synchronized" lang="en">Handler for function click of toolbar button</p>
     "!
     METHODS on_toolbar_function
-          FOR EVENT function_selected OF cl_gui_toolbar
+        FOR EVENT function_selected OF cl_gui_toolbar
       IMPORTING
-          fcode.
+        fcode.
     "! <p class="shorttext synchronized" lang="en">Handler for toolbar dropdown click of toolbar</p>
     "!
     METHODS on_toolbar_dropdown
-          FOR EVENT dropdown_clicked OF cl_gui_toolbar
+        FOR EVENT dropdown_clicked OF cl_gui_toolbar
       IMPORTING
-          fcode
-          posx
-          posy
-          sender.
+        fcode
+        posx
+        posy
+        sender.
 ENDCLASS.
 
 
@@ -156,14 +156,17 @@ CLASS zcl_uitb_gui_screen_base IMPLEMENTATION.
       on_exited               FOR lo_dynpro_handler.
 
     IF mf_as_dialog = abap_true.
+      DATA(lv_start_line) = COND #( WHEN iv_top IS INITIAL THEN 2 ELSE iv_top ).
+      DATA(lv_start_column) = COND #( WHEN iv_left IS INITIAL THEN 10 ELSE iv_left ).
+
       CALL FUNCTION 'ZUITB_CALL_GUI_SCREEN'
         EXPORTING
           iv_program_title = CONV cua_tit_tx( mv_title )
           io_callback      = lo_dynpro_handler
-          iv_start_line    = iv_top
-          iv_end_line      = iv_top + iv_height
-          iv_start_column  = iv_left
-          iv_end_column    = iv_left + iv_width.
+          iv_start_line    = lv_start_line
+          iv_end_line      = lv_start_line + iv_height
+          iv_start_column  = lv_start_column
+          iv_end_column    = lv_start_column + iv_width.
     ELSE.
       CALL FUNCTION 'ZUITB_CALL_GUI_SCREEN'
         EXPORTING

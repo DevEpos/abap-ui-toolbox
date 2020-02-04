@@ -6,7 +6,7 @@ CLASS ZCL_UITB_alv_metadata DEFINITION
   PUBLIC SECTION.
     METHODS constructor
       IMPORTING
-        ir_controller TYPE REF TO ZIF_UITB_alv_metadata_ctrller
+        io_controller TYPE REF TO ZIF_UITB_alv_metadata_ctrller
         iv_name       TYPE string OPTIONAL .
   PROTECTED SECTION.
     DATA mr_controller TYPE REF TO ZIF_UITB_alv_metadata_ctrller.
@@ -24,7 +24,7 @@ CLASS ZCL_UITB_ALV_METADATA IMPLEMENTATION.
 
 
   METHOD constructor.
-    mr_controller = ir_controller.
+    mr_controller = io_controller.
     mv_name = iv_name.
   ENDMETHOD.
 

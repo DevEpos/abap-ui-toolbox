@@ -58,7 +58,7 @@ CLASS ZCL_UITB_ALV_LAYOUT IMPLEMENTATION.
 
   METHOD constructor.
     super->constructor(
-      ir_controller = ir_controller
+      io_controller = ir_controller
       iv_name       = 'LAYOUT'
     ).
   ENDMETHOD.
