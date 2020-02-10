@@ -10,7 +10,8 @@ CLASS zcl_uitb_gui_modal_dialog DEFINITION
     "!
     METHODS constructor
       IMPORTING
-        iv_title TYPE string.
+        iv_title TYPE string
+        if_no_modal_dialog type abap_bool optional.
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -26,6 +27,7 @@ CLASS zcl_uitb_gui_modal_dialog IMPLEMENTATION.
         iv_lifetime = cl_gui_control=>lifetime_dynpro
     ).
     mf_as_dialog = abap_true.
+    mf_no_modal_dialog = if_no_modal_dialog.
 
   ENDMETHOD.
 
