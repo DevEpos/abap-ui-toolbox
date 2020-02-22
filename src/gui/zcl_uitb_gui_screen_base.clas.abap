@@ -45,9 +45,7 @@ CLASS zcl_uitb_gui_screen_base DEFINITION
     METHODS create_content
           ABSTRACT
       IMPORTING
-        io_container TYPE REF TO cl_gui_container
-      RAISING
-        zcx_uitb_gui_exception.
+        io_container TYPE REF TO cl_gui_container.
     "! <p class="shorttext synchronized" lang="en">Handle UI before output</p>
     "!
     METHODS do_before_dynpro_output
@@ -75,9 +73,7 @@ CLASS zcl_uitb_gui_screen_base DEFINITION
         !it_button   TYPE ttb_button OPTIONAL
       EXPORTING
         !eo_toolbar  TYPE REF TO cl_gui_toolbar
-        !eo_client   TYPE REF TO cl_gui_container
-      RAISING
-        zcx_uitb_gui_exception .
+        !eo_client   TYPE REF TO cl_gui_container.
     "! <p class="shorttext synchronized" lang="en">Raise the given function as command</p>
     "!
     METHODS trigger_command
@@ -205,14 +201,10 @@ CLASS zcl_uitb_gui_screen_base IMPLEMENTATION.
   METHOD on_dynpro_before_output.
 *.. initialize the controls on first call
     IF mf_screen_is_live = abap_false.
-      TRY.
-          create_container( ).
-          create_content( mo_container ).
-          mf_screen_is_live = abap_true.
-          mf_visible = abap_true.
-        CATCH zcx_uitb_gui_exception INTO DATA(lx_gui_error).
-          MESSAGE lx_gui_error->get_text( ) TYPE 'X'.
-      ENDTRY.
+      create_container( ).
+      create_content( mo_container ).
+      mf_screen_is_live = abap_true.
+      mf_visible = abap_true.
     ENDIF.
 
     do_before_dynpro_output( io_callback = eo_callback ).

@@ -20,9 +20,7 @@ CLASS zcl_uitb_gui_helper DEFINITION
         !it_button   TYPE ttb_button OPTIONAL
       EXPORTING
         !eo_toolbar  TYPE REF TO cl_gui_toolbar
-        !eo_client   TYPE REF TO cl_gui_container
-      RAISING
-        zcx_uitb_gui_exception .
+        !eo_client   TYPE REF TO cl_gui_container.
 
     "! <p class="shorttext synchronized" lang="en">Creates container for a control</p>
     "!
@@ -35,9 +33,7 @@ CLASS zcl_uitb_gui_helper DEFINITION
         !iv_type            TYPE i DEFAULT cl_gui_container=>container_type_simple
           PREFERRED PARAMETER io_parent
       RETURNING
-        VALUE(ro_container) TYPE REF TO cl_gui_container
-      RAISING
-        zcx_uitb_gui_exception .
+        VALUE(ro_container) TYPE REF TO cl_gui_container.
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.

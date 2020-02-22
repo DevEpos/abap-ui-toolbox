@@ -17,9 +17,7 @@ CLASS zcl_uitb_gui_switch_container DEFINITION
       IMPORTING
         iv_id               TYPE string
       RETURNING
-        VALUE(ro_container) TYPE REF TO cl_gui_container
-      RAISING
-        zcx_uitb_gui_exception.
+        VALUE(ro_container) TYPE REF TO cl_gui_container.
     "! <p class="shorttext synchronized" lang="en">Removes the child with the given id</p>
     "!
     METHODS remove_child

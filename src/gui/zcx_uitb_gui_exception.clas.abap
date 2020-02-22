@@ -1,6 +1,6 @@
 CLASS zcx_uitb_gui_exception DEFINITION
   PUBLIC
-  INHERITING FROM zcx_uitb_application_exc
+  INHERITING FROM zcx_uitb_nc_exception
   FINAL
   CREATE PUBLIC .
 
@@ -18,9 +18,7 @@ CLASS zcx_uitb_gui_exception DEFINITION
       END OF zcx_uitb_gui_exception .
 
     "! <p class="shorttext synchronized" lang="en">Raises GUI exception with system variables</p>
-    CLASS-METHODS raise_from_sy
-      RAISING
-        zcx_uitb_gui_exception.
+    CLASS-METHODS raise_from_sy.
     "! <p class="shorttext synchronized" lang="en">Creates new Generic GUI Exception</p>
     METHODS constructor
       IMPORTING

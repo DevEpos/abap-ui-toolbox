@@ -23,17 +23,13 @@ CLASS zcl_uitb_gui_splitter_cont DEFINITION
         iv_elements TYPE i
         iv_size     TYPE string DEFAULT c_default_size
         iv_mode     TYPE i DEFAULT zcl_uitb_gui_splitter_cont=>c_mode-rows
-        io_parent   TYPE REF TO cl_gui_container
-      RAISING
-        zcx_uitb_gui_exception.
+        io_parent   TYPE REF TO cl_gui_container.
 
     "! <p class="shorttext synchronized" lang="en">Set size of a given Cell</p>
     METHODS set_size
       IMPORTING
         iv_index TYPE i
-        iv_size  TYPE i
-      RAISING
-        zcx_uitb_gui_exception.
+        iv_size  TYPE i.
     "! <p class="shorttext synchronized" lang="en">Retrieve container at specific index</p>
     "!
     METHODS get_container
@@ -47,9 +43,7 @@ CLASS zcl_uitb_gui_splitter_cont DEFINITION
       IMPORTING
         iv_index   TYPE i
         if_visible TYPE abap_bool OPTIONAL
-        if_movable TYPE abap_bool OPTIONAL
-      RAISING
-        zcx_uitb_gui_exception.
+        if_movable TYPE abap_bool OPTIONAL.
 
     "! <p class="shorttext synchronized" lang="en">Show/hide element</p>
     "!
@@ -95,9 +89,7 @@ CLASS zcl_uitb_gui_splitter_cont DEFINITION
     "!
     METHODS update_size
       IMPORTING
-        if_initial_update TYPE abap_bool OPTIONAL
-      RAISING
-        zcx_uitb_gui_exception.
+        if_initial_update TYPE abap_bool OPTIONAL.
 
     METHODS set_size_hidden_cells.
     METHODS set_size_visible_cells.
@@ -377,11 +369,7 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
     ENDIF.
 
     IF lf_delta = abap_true.
-      TRY.
-          update_size( ).
-        CATCH zcx_uitb_gui_exception.
-          "handle exception
-      ENDTRY.
+      update_size( ).
     ENDIF.
 
   ENDMETHOD.
@@ -459,7 +447,5 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
 
     rf_has_focus = xsdbool( zif_uitb_gui_control~mr_control = mo_splitter ).
   ENDMETHOD.
-
-
 
 ENDCLASS.
