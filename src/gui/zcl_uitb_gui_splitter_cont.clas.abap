@@ -64,6 +64,13 @@ CLASS zcl_uitb_gui_splitter_cont DEFINITION
         iv_element           TYPE i
       RETURNING
         VALUE(rf_is_visible) TYPE abap_bool.
+
+    "! <p class="shorttext synchronized" lang="en">Toggles visibility of the element at the given position</p>
+    "!
+    "! @parameter iv_element | <p class="shorttext synchronized" lang="en">the positional number of an element in the splitter</p>
+    METHODS toggle_visibility
+      IMPORTING
+        iv_element TYPE i.
   PROTECTED SECTION.
   PRIVATE SECTION.
     CONSTANTS c_true TYPE i VALUE cl_gui_splitter_container=>true.
@@ -379,6 +386,10 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
 
   ENDMETHOD.
 
+  METHOD toggle_visibility.
+    set_element_visibility( iv_element = iv_element if_visible = xsdbool( NOT is_element_visible( iv_element ) ) ).
+  ENDMETHOD.
+
   METHOD is_element_visible.
     rf_is_visible = VALUE #( mt_elements[ iv_element ]-visible OPTIONAL ).
   ENDMETHOD.
@@ -448,5 +459,7 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
 
     rf_has_focus = xsdbool( zif_uitb_gui_control~mr_control = mo_splitter ).
   ENDMETHOD.
+
+
 
 ENDCLASS.
