@@ -1,7 +1,6 @@
 CLASS zcx_uitb_gui_exception DEFINITION
   PUBLIC
   INHERITING FROM zcx_uitb_nc_exception
-  FINAL
   CREATE PUBLIC .
 
   PUBLIC SECTION.

@@ -1,153 +1,153 @@
-class ZCL_UITB_CTM_EVENTS definition
-  public
-  final
-  create public .
+CLASS zcl_uitb_ctm_events DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
 
-public section.
+  PUBLIC SECTION.
 
-  interfaces ZIF_UITB_TREE_MODEL_EVENTS .
+    INTERFACES zif_uitb_tree_model_events .
 
-  aliases BUTTON_CLICK
-    for ZIF_UITB_TREE_MODEL_EVENTS~BUTTON_CLICK .
-  aliases CHECKBOX_CHANGE
-    for ZIF_UITB_TREE_MODEL_EVENTS~CHECKBOX_CHANGE .
-  aliases DRAG
-    for ZIF_UITB_TREE_MODEL_EVENTS~DRAG .
-  aliases DRAG_MULTIPLE
-    for ZIF_UITB_TREE_MODEL_EVENTS~DRAG_MULTIPLE .
-  aliases DROP
-    for ZIF_UITB_TREE_MODEL_EVENTS~DROP .
-  aliases DROP_COMPLETE
-    for ZIF_UITB_TREE_MODEL_EVENTS~DROP_COMPLETE .
-  aliases DROP_COMPLETE_MULTIPLE
-    for ZIF_UITB_TREE_MODEL_EVENTS~DROP_COMPLETE_MULTIPLE .
-  aliases EXPAND_NO_CHILDREN
-    for ZIF_UITB_TREE_MODEL_EVENTS~EXPAND_NO_CHILDREN .
-  aliases ITEM_DOUBLE_CLICK
-    for ZIF_UITB_TREE_MODEL_EVENTS~ITEM_DOUBLE_CLICK .
-  aliases ITEM_KEYPRESS
-    for ZIF_UITB_TREE_MODEL_EVENTS~ITEM_KEYPRESS .
-  aliases LINK_CLICK
-    for ZIF_UITB_TREE_MODEL_EVENTS~LINK_CLICK .
-  aliases NODE_CONTEXT_MENU_REQUEST
-    for ZIF_UITB_TREE_MODEL_EVENTS~NODE_CONTEXT_MENU_REQUEST .
-  aliases NODE_CONTEXT_MENU_SELECT
-    for ZIF_UITB_TREE_MODEL_EVENTS~NODE_CONTEXT_MENU_SELECT .
-  aliases NODE_DOUBLE_CLICK
-    for ZIF_UITB_TREE_MODEL_EVENTS~NODE_DOUBLE_CLICK .
-  aliases NODE_KEYPRESS
-    for ZIF_UITB_TREE_MODEL_EVENTS~NODE_KEYPRESS .
-  aliases SELECTION_CHANGED
-    for ZIF_UITB_TREE_MODEL_EVENTS~SELECTION_CHANGED .
+    ALIASES button_click
+      FOR zif_uitb_tree_model_events~button_click .
+    ALIASES checkbox_change
+      FOR zif_uitb_tree_model_events~checkbox_change .
+    ALIASES drag
+      FOR zif_uitb_tree_model_events~drag .
+    ALIASES drag_multiple
+      FOR zif_uitb_tree_model_events~drag_multiple .
+    ALIASES drop
+      FOR zif_uitb_tree_model_events~drop .
+    ALIASES drop_complete
+      FOR zif_uitb_tree_model_events~drop_complete .
+    ALIASES drop_complete_multiple
+      FOR zif_uitb_tree_model_events~drop_complete_multiple .
+    ALIASES expand_no_children
+      FOR zif_uitb_tree_model_events~expand_no_children .
+    ALIASES item_double_click
+      FOR zif_uitb_tree_model_events~item_double_click .
+    ALIASES item_keypress
+      FOR zif_uitb_tree_model_events~item_keypress .
+    ALIASES link_click
+      FOR zif_uitb_tree_model_events~link_click .
+    ALIASES node_context_menu_request
+      FOR zif_uitb_tree_model_events~node_context_menu_request .
+    ALIASES node_context_menu_select
+      FOR zif_uitb_tree_model_events~node_context_menu_select .
+    ALIASES node_double_click
+      FOR zif_uitb_tree_model_events~node_double_click .
+    ALIASES node_keypress
+      FOR zif_uitb_tree_model_events~node_keypress .
+    ALIASES selection_changed
+      FOR zif_uitb_tree_model_events~selection_changed .
 
-  methods CONSTRUCTOR
-    importing
-      !IR_MODEL type ref to CL_COLUMN_TREE_MODEL
-      !IF_ITEM_SELECTION type ABAP_BOOL
-      !IF_SINGLE_SELECTION type ABAP_BOOL .
-  methods ADD_KEY_FOR_KEYPRESS
-    importing
-      !IV_KEY type I
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods REMOVE_ALL_KEY_STROKES .
+    METHODS constructor
+      IMPORTING
+        !ir_model            TYPE REF TO cl_column_tree_model
+        !if_item_selection   TYPE abap_bool
+        !if_single_selection TYPE abap_bool .
+    METHODS add_key_for_keypress
+      IMPORTING
+        !iv_key TYPE i
+      RAISING
+        zcx_uitb_tree_error .
+    METHODS remove_all_key_strokes .
   PROTECTED SECTION.
-private section.
+  PRIVATE SECTION.
 
-  data MR_MODEL type ref to CL_COLUMN_TREE_MODEL .
+    DATA mr_model TYPE REF TO cl_column_tree_model .
 
-  methods BUILD_EVENTS
-    raising
-      ZCX_UITB_TREE_ERROR .
-  methods ON_NODE_DOUBLE_CLICK
-    for event NODE_DOUBLE_CLICK of CL_COLUMN_TREE_MODEL
-    importing
-      !NODE_KEY .
-  methods ON_TREE_DRAG
-    for event DRAG of CL_COLUMN_TREE_MODEL
-    importing
-      !DRAG_DROP_OBJECT
-      !ITEM_NAME
-      !NODE_KEY .
-  methods ON_TREE_DRAG_MULTIPLE
-    for event DRAG_MULTIPLE of CL_COLUMN_TREE_MODEL
-    importing
-      !DRAG_DROP_OBJECT
-      !ITEM_NAME
-      !NODE_KEY_TABLE .
-  methods ON_DROP_COMPLETE
-    for event DROP_COMPLETE of CL_COLUMN_TREE_MODEL
-    importing
-      !DRAG_DROP_OBJECT
-      !ITEM_NAME
-      !NODE_KEY .
-  methods ON_TREE_DROP_COMPLETE_MULTIPLE
-    for event DROP_COMPLETE_MULTIPLE of CL_COLUMN_TREE_MODEL
-    importing
-      !DRAG_DROP_OBJECT
-      !ITEM_NAME
-      !NODE_KEY_TABLE .
-  methods ON_TREE_DROP
-    for event DROP of CL_COLUMN_TREE_MODEL
-    importing
-      !DRAG_DROP_OBJECT
-      !NODE_KEY
-      !SENDER .
-  methods ON_NODE_CONTEXT_MENU_REQUEST
-    for event NODE_CONTEXT_MENU_REQUEST of CL_COLUMN_TREE_MODEL
-    importing
-      !MENU
-      !NODE_KEY .
-  methods ON_NODE_CONTEXT_MENU_SELECT
-    for event NODE_CONTEXT_MENU_SELECT of CL_COLUMN_TREE_MODEL
-    importing
-      !FCODE
-      !NODE_KEY .
-  methods ON_NODE_KEY_PRESS
-    for event NODE_KEYPRESS of CL_COLUMN_TREE_MODEL
-    importing
-      !KEY
-      !NODE_KEY .
-  methods ON_ITEM_KEY_PRESS
-    for event ITEM_KEYPRESS of CL_COLUMN_TREE_MODEL
-    importing
-      !ITEM_NAME
-      !KEY
-      !NODE_KEY .
-  methods ON_ITEM_DOUBLE_CLICK
-    for event ITEM_DOUBLE_CLICK of CL_COLUMN_TREE_MODEL
-    importing
-      !ITEM_NAME
-      !NODE_KEY .
-  methods ON_EXPAND_NO_CHILDREN
-    for event EXPAND_NO_CHILDREN of CL_COLUMN_TREE_MODEL
-    importing
-      !NODE_KEY .
-  methods ON_SELECTION_CHANGED
-    for event SELECTION_CHANGED of CL_COLUMN_TREE_MODEL
-    importing
-      !NODE_KEY .
-  methods ON_ITEM_BUTTON_CLICK
-    for event BUTTON_CLICK of CL_COLUMN_TREE_MODEL
-    importing
-      !ITEM_NAME
-      !NODE_KEY .
-  methods ON_ITEM_LINK_CLICK
-    for event LINK_CLICK of CL_COLUMN_TREE_MODEL
-    importing
-      !ITEM_NAME
-      !NODE_KEY .
-  methods ON_CHECKBOX_CHANGE
-    for event CHECKBOX_CHANGE of CL_ITEM_TREE_MODEL
-    importing
-      !CHECKED
-      !ITEM_NAME
-      !NODE_KEY .
+    METHODS build_events
+      RAISING
+        zcx_uitb_tree_error .
+    METHODS on_node_double_click
+        FOR EVENT node_double_click OF cl_column_tree_model
+      IMPORTING
+        !node_key .
+    METHODS on_tree_drag
+        FOR EVENT drag OF cl_column_tree_model
+      IMPORTING
+        !drag_drop_object
+        !item_name
+        !node_key .
+    METHODS on_tree_drag_multiple
+        FOR EVENT drag_multiple OF cl_column_tree_model
+      IMPORTING
+        !drag_drop_object
+        !item_name
+        !node_key_table .
+    METHODS on_drop_complete
+        FOR EVENT drop_complete OF cl_column_tree_model
+      IMPORTING
+        !drag_drop_object
+        !item_name
+        !node_key .
+    METHODS on_tree_drop_complete_multiple
+        FOR EVENT drop_complete_multiple OF cl_column_tree_model
+      IMPORTING
+        !drag_drop_object
+        !item_name
+        !node_key_table .
+    METHODS on_tree_drop
+        FOR EVENT drop OF cl_column_tree_model
+      IMPORTING
+        !drag_drop_object
+        !node_key
+        !sender .
+    METHODS on_node_context_menu_request
+        FOR EVENT node_context_menu_request OF cl_column_tree_model
+      IMPORTING
+        !menu
+        !node_key .
+    METHODS on_node_context_menu_select
+        FOR EVENT node_context_menu_select OF cl_column_tree_model
+      IMPORTING
+        !fcode
+        !node_key .
+    METHODS on_node_key_press
+        FOR EVENT node_keypress OF cl_column_tree_model
+      IMPORTING
+        !key
+        !node_key .
+    METHODS on_item_key_press
+        FOR EVENT item_keypress OF cl_column_tree_model
+      IMPORTING
+        !item_name
+        !key
+        !node_key .
+    METHODS on_item_double_click
+        FOR EVENT item_double_click OF cl_column_tree_model
+      IMPORTING
+        !item_name
+        !node_key .
+    METHODS on_expand_no_children
+        FOR EVENT expand_no_children OF cl_column_tree_model
+      IMPORTING
+        !node_key .
+    METHODS on_selection_changed
+        FOR EVENT selection_changed OF cl_column_tree_model
+      IMPORTING
+        !node_key .
+    METHODS on_item_button_click
+        FOR EVENT button_click OF cl_column_tree_model
+      IMPORTING
+        !item_name
+        !node_key .
+    METHODS on_item_link_click
+        FOR EVENT link_click OF cl_column_tree_model
+      IMPORTING
+        !item_name
+        !node_key .
+    METHODS on_checkbox_change
+        FOR EVENT checkbox_change OF cl_item_tree_model
+      IMPORTING
+        !checked
+        !item_name
+        !node_key .
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_CTM_EVENTS IMPLEMENTATION.
+CLASS zcl_uitb_ctm_events IMPLEMENTATION.
 
 
   METHOD add_key_for_keypress.
@@ -164,8 +164,8 @@ CLASS ZCL_UITB_CTM_EVENTS IMPLEMENTATION.
   ENDMETHOD.
 
 
-  method BUILD_EVENTS.
-  endmethod.
+  METHOD build_events.
+  ENDMETHOD.
 
 
   METHOD constructor.
