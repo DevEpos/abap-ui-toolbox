@@ -14,13 +14,14 @@ CLASS zcl_uitb_gui_helper DEFINITION
     "!
     CLASS-METHODS create_control_toolbar
       IMPORTING
-        io_parent    TYPE REF TO cl_gui_container
-        if_show_sash TYPE abap_bool OPTIONAL
-        iv_mode      TYPE i DEFAULT cl_gui_toolbar=>m_mode_horizontal
-        !it_button   TYPE ttb_button OPTIONAL
+        io_parent       TYPE REF TO cl_gui_container
+        if_show_sash    TYPE abap_bool OPTIONAL
+        iv_toolbar_size TYPE i DEFAULT 26
+        iv_mode         TYPE i DEFAULT cl_gui_toolbar=>m_mode_horizontal
+        !it_button      TYPE ttb_button OPTIONAL
       EXPORTING
-        !eo_toolbar  TYPE REF TO cl_gui_toolbar
-        !eo_client   TYPE REF TO cl_gui_container.
+        !eo_toolbar     TYPE REF TO cl_gui_toolbar
+        !eo_client      TYPE REF TO cl_gui_container.
 
     "! <p class="shorttext synchronized" lang="en">Creates container for a control</p>
     "!
@@ -50,7 +51,7 @@ CLASS zcl_uitb_gui_helper IMPLEMENTATION.
 
     DATA(lo_splitter) = NEW zcl_uitb_gui_splitter_cont(
       iv_elements  = 2
-      iv_size      = '26:*'
+      iv_size      = |{ iv_toolbar_size }:*|
       io_parent    = io_parent
     ).
 
