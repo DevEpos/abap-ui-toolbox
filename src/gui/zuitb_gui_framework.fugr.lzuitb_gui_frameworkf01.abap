@@ -21,6 +21,11 @@ CLASS lcl_pbo_callback IMPLEMENTATION.
 
   METHOD zif_uitb_gui_pbo_callback~deactivate_function.
     APPEND iv_function TO mt_function_exclude.
+*.. Also add a possible mapped function to the exclusion list
+    ASSIGN mt_fkey_map[ mapped_function = iv_function ] TO FIELD-SYMBOL(<ls_mapped_fkey>).
+    IF sy-subrc = 0.
+      mt_function_exclude = VALUE #( BASE mt_function_exclude ( <ls_mapped_fkey>-fkey ) ).
+    ENDIF.
   ENDMETHOD.
 
   METHOD zif_uitb_gui_pbo_callback~set_title.
@@ -44,6 +49,13 @@ CLASS lcl_pbo_callback IMPLEMENTATION.
       BASE mt_function_exclude
       ( LINES OF it_functions )
     ).
+
+*.. Also add a possible mapped functions to the exclusion list
+    LOOP AT it_functions ASSIGNING FIELD-SYMBOL(<lv_function>).
+      ASSIGN mt_fkey_map[ mapped_function = <lv_function> ] TO FIELD-SYMBOL(<ls_mapped_fkey>).
+      CHECK sy-subrc = 0.
+      mt_function_exclude = VALUE #( BASE mt_function_exclude ( <ls_mapped_fkey>-fkey ) ).
+    ENDLOOP.
   ENDMETHOD.
 
   METHOD zif_uitb_gui_pbo_callback~map_fkey_function.
