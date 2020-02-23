@@ -7,7 +7,9 @@ CLASS zcl_uitb_selection_dialog DEFINITION
 
   PUBLIC SECTION.
     CONSTANTS: c_mark_default_field TYPE fieldname VALUE 'MARK',
-               c_filtered_field     TYPE fieldname VALUE 'FILTERED'.
+               c_filtered_field     TYPE fieldname VALUE 'FILTERED',
+               c_focus_on_alv       TYPE i VALUE 0,
+               c_focus_on_filter    TYPE i VALUE 1.
 
     "! <p class="shorttext synchronized" lang="en">CONSTRUCTOR</p>
     METHODS constructor
@@ -15,6 +17,7 @@ CLASS zcl_uitb_selection_dialog DEFINITION
         iv_title          TYPE string
         iv_filter_prompt  TYPE string OPTIONAL
         if_multi_select   TYPE abap_bool OPTIONAL
+        iv_initial_focus  TYPE i DEFAULT c_focus_on_alv
         if_use_alv_filter TYPE abap_bool OPTIONAL.
     METHODS zif_uitb_gui_command_handler~execute_command
         REDEFINITION.
@@ -28,6 +31,7 @@ CLASS zcl_uitb_selection_dialog DEFINITION
     DATA mr_t_data TYPE REF TO data.
     DATA mf_use_alv_filter TYPE abap_bool.
     DATA mf_multi_select TYPE abap_bool.
+    DATA mv_selected_row TYPE i.
     DATA mo_filter_input TYPE REF TO cl_gui_input_field.
     DATA mf_data_selected TYPE abap_bool.
 
@@ -101,40 +105,44 @@ CLASS zcl_uitb_selection_dialog DEFINITION
         VALUE(rf_matches) TYPE abap_bool.
     "! <p class="shorttext synchronized" lang="en">Sets the selected element</p>
     "! To be redefined by sub classes
-    METHODS set_selected_element ABSTRACT
+    METHODS set_selected_element
       IMPORTING
         iv_row    TYPE i
         iv_column TYPE lvc_fname.
     "! <p class="shorttext synchronized" lang="en">Handler for submit event of filter input</p>
     METHODS on_filter_submit
-          FOR EVENT submit OF cl_gui_input_field
+        FOR EVENT submit OF cl_gui_input_field
       IMPORTING
-          input.
+        input.
     "! <p class="shorttext synchronized" lang="en">Handler for ALV link click</p>
     METHODS on_alv_link_click
-          FOR EVENT link_click OF zcl_uitb_alv_events
+        FOR EVENT link_click OF zcl_uitb_alv_events
       IMPORTING
-          ev_column
-          ev_row.
+        ev_column
+        ev_row.
     "! <p class="shorttext synchronized" lang="en">Handler for ALV double click</p>
     METHODS on_alv_double_click
-          FOR EVENT double_click OF zcl_uitb_alv_events
+        FOR EVENT double_click OF zcl_uitb_alv_events
       IMPORTING
-          ev_column
-          ev_row.
+        ev_column
+        ev_row.
     "! <p class="shorttext synchronized" lang="en">Handler for ALV User function</p>
     METHODS on_alv_function
-          FOR EVENT function_chosen OF zcl_uitb_alv_events
+        FOR EVENT function_chosen OF zcl_uitb_alv_events
       IMPORTING
-          ev_function
-          ev_tag.
+        ev_function
+        ev_tag.
   PRIVATE SECTION.
     DATA mv_filter_prompt TYPE string.
+    DATA mv_initial_focus TYPE i.
     METHODS select_rows
       IMPORTING
         if_select TYPE abap_bool.
     "! <p class="shorttext synchronized" lang="en">Accept selected data</p>
     METHODS accept_selections.
+    METHODS toggle_selection
+      IMPORTING
+        iv_row TYPE i.
 ENDCLASS.
 
 
@@ -146,6 +154,7 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
     mv_filter_prompt = iv_filter_prompt.
     mf_multi_select = if_multi_select.
     mf_use_alv_filter = if_use_alv_filter.
+    mv_initial_focus = iv_initial_focus.
   ENDMETHOD.
 
   METHOD zif_uitb_gui_command_handler~execute_command.
@@ -188,6 +197,12 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
       on_filter_submit FOR mo_filter_input.
 
     create_alv( lo_splitter->get_container( 2 ) ).
+
+    IF mv_initial_focus = c_focus_on_alv.
+      mo_alv->zif_uitb_gui_control~focus( ).
+    ELSEIF mv_initial_focus = c_focus_on_filter.
+      cl_gui_control=>set_focus( mo_filter_input ).
+    ENDIF.
   ENDMETHOD.
 
 
@@ -211,9 +226,9 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
       IF mf_multi_select = abap_true AND lo_col->get_name( ) = get_mark_field( ).
         lo_col->set_cell_type( zif_uitb_c_alv_cell_types=>checkbox_hotspot ).
         get_mark_field_description(
-            importing ev_short   = data(lv_mark_desc_short)
-                      ev_medium  = data(lv_mark_desc_medium)
-                      ev_long    = data(lv_mark_desc_long)
+            IMPORTING ev_short   = DATA(lv_mark_desc_short)
+                      ev_medium  = DATA(lv_mark_desc_medium)
+                      ev_long    = DATA(lv_mark_desc_long)
         ).
         lo_col->set_descriptions(
             iv_short  = lv_mark_desc_short
@@ -229,12 +244,8 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
     ENDWHILE.
 
     SET HANDLER:
-      on_alv_link_click FOR mo_alv->get_events( ).
-
-    IF mf_multi_select = abap_false.
-      SET HANDLER:
-        on_alv_double_click FOR mo_alv->get_events( ).
-    ENDIF.
+      on_alv_link_click FOR mo_alv->get_events( ),
+      on_alv_double_click FOR mo_alv->get_events( ).
 
     lo_cols->set_single_click_sort( ).
 
@@ -270,7 +281,6 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
 
     TRY.
         mo_alv->display( ).
-        mo_alv->zif_uitb_gui_control~focus( ).
         lo_cols->set_optimized( ).
       CATCH zcx_uitb_alv_error INTO DATA(lx_alv_error).
         MESSAGE lx_alv_error->get_text( ) TYPE 'X'.
@@ -287,6 +297,10 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD adjust_column.
+    RETURN.
+  ENDMETHOD.
+
+  METHOD set_selected_element.
     RETURN.
   ENDMETHOD.
 
@@ -332,16 +346,19 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
       ENDIF.
     ENDIF.
 
+    mo_alv->get_columns( )->set_optimized( ).
     mo_alv->refresh( ).
 
   ENDMETHOD.
 
   METHOD on_alv_link_click.
-    set_selected_element( EXPORTING iv_row    = ev_row
-                                    iv_column = ev_column ).
     IF mf_multi_select = abap_true.
+      toggle_selection( iv_row = ev_row ).
       mo_alv->refresh( if_keep_scroll_position = abap_true ).
     ELSE.
+      mv_selected_row = ev_row.
+      set_selected_element( EXPORTING iv_row    = ev_row
+                                      iv_column = ev_column ).
       leave_screen( ).
     ENDIF.
   ENDMETHOD.
@@ -362,9 +379,15 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD on_alv_double_click.
-    set_selected_element( EXPORTING iv_row    = ev_row
-                                    iv_column = ev_column ).
-    leave_screen( ).
+    IF mf_multi_select = abap_true.
+      toggle_selection( iv_row = ev_row ).
+      mo_alv->refresh( if_keep_scroll_position = abap_true ).
+    ELSE.
+      mv_selected_row = ev_row.
+      set_selected_element( EXPORTING iv_row    = ev_row
+                                      iv_column = ev_column ).
+      leave_screen( ).
+    ENDIF.
   ENDMETHOD.
 
   METHOD do_before_dynpro_output.
@@ -447,6 +470,31 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
       mf_data_selected = abap_true.
       leave_screen( ).
     ENDIF.
+  ENDMETHOD.
+
+
+  METHOD toggle_selection.
+    FIELD-SYMBOLS: <lt_data> TYPE table.
+
+    ASSIGN mr_t_data->* TO <lt_data>.
+    IF sy-subrc <> 0.
+      RETURN.
+    ENDIF.
+
+    ASSIGN <lt_data>[ iv_row ] TO FIELD-SYMBOL(<ls_data>).
+    IF sy-subrc <> 0.
+      RETURN.
+    ENDIF.
+
+    ASSIGN COMPONENT get_mark_field( ) OF STRUCTURE <ls_data> TO FIELD-SYMBOL(<lv_mark>).
+    IF sy-subrc = 0.
+      IF <lv_mark> = abap_true.
+        <lv_mark> = abap_false.
+      ELSE.
+        <lv_mark> = abap_true.
+      ENDIF.
+    ENDIF.
+
   ENDMETHOD.
 
 ENDCLASS.
