@@ -18,6 +18,16 @@ CLASS zcl_uitb_gui_switch_container DEFINITION
         iv_id               TYPE string
       RETURNING
         VALUE(ro_container) TYPE REF TO cl_gui_container.
+    "! <p class="shorttext synchronized" lang="en">Checks if child with id exists</p>
+    "!
+    "! @parameter iv_id | <p class="shorttext synchronized" lang="en">id for a child element</p>
+    "! @parameter rf_has_child | <p class="shorttext synchronized" lang="en">returns 'X' if child exists</p>
+    METHODS has_child
+      IMPORTING
+        iv_id               TYPE string
+      RETURNING
+        VALUE(rf_has_child) TYPE abap_bool.
+
     "! <p class="shorttext synchronized" lang="en">Removes the child with the given id</p>
     "!
     METHODS remove_child
@@ -28,8 +38,8 @@ CLASS zcl_uitb_gui_switch_container DEFINITION
     "!
     METHODS set_child_visible
       IMPORTING
-        iv_id TYPE string
-        if_visible type abap_bool default abap_true.
+        iv_id      TYPE string
+        if_visible TYPE abap_bool DEFAULT abap_true.
   PROTECTED SECTION.
   PRIVATE SECTION.
     TYPES:
@@ -92,6 +102,10 @@ CLASS zcl_uitb_gui_switch_container IMPLEMENTATION.
 
     lr_child->visible = if_visible.
     lr_child->container->set_visible( EXPORTING visible = if_visible EXCEPTIONS OTHERS = 1 ).
+  ENDMETHOD.
+
+  METHOD has_child.
+    rf_has_child = xsdbool( line_exists( mt_children[ id = iv_id ] ) ).
   ENDMETHOD.
 
 ENDCLASS.
