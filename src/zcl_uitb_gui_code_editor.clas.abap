@@ -7,6 +7,10 @@ CLASS zcl_uitb_gui_code_editor DEFINITION
     INTERFACES zif_uitb_gui_control.
 
     CONSTANTS:
+      BEGIN OF c_command_ids,
+        replace_content TYPE ui_func VALUE 'REPLACE_CONTENT',
+      END OF c_command_ids.
+    CONSTANTS:
       BEGIN OF c_dnd_flavor,
         insert  TYPE cndd_flavor VALUE 'INSERT',
         replace TYPE cndd_flavor VALUE 'REPLACE',
@@ -96,23 +100,23 @@ CLASS zcl_uitb_gui_code_editor DEFINITION
         iv_info TYPE string.
   PROTECTED SECTION.
     METHODS on_drop
-          FOR EVENT on_drop OF cl_gui_abapedit
+        FOR EVENT on_drop OF cl_gui_abapedit
       IMPORTING
-          dragdrop_object
-          index
-          line
-          pos.
+        dragdrop_object
+        index
+        line
+        pos.
     METHODS on_context_menu
-          FOR EVENT context_menu OF cl_gui_abapedit
+        FOR EVENT context_menu OF cl_gui_abapedit
       IMPORTING
-          menu
-          menu_type
-          sender.
+        menu
+        menu_type
+        sender.
     METHODS on_context_menu_selected
-          FOR EVENT context_menu_selected OF cl_gui_abapedit
+        FOR EVENT context_menu_selected OF cl_gui_abapedit
       IMPORTING
-          fcode
-          sender.
+        fcode
+        sender.
     METHODS on_f1
         FOR EVENT f1 OF cl_gui_abapedit.
     METHODS register_dnd_flavors
@@ -257,7 +261,7 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
     IF lo_parser IS NOT INITIAL.
       mo_editor->register_event_completion( EXPORTING appl_event = abap_true EXCEPTIONS OTHERS = 1 ).
       IF sy-subrc = 0.
-        SET HANDLER lo_parser->handle_completion_request for mo_editor.
+        SET HANDLER lo_parser->handle_completion_request FOR mo_editor.
 
         mo_editor->register_event_quick_info( EXPORTING appl_event = abap_false EXCEPTIONS OTHERS = 1 ).
         SET HANDLER lo_parser->handle_quickinfo_request FOR mo_editor.
