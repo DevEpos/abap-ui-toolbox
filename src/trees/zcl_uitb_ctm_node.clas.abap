@@ -79,6 +79,10 @@ CLASS zcl_uitb_ctm_node DEFINITION
         VALUE(result) TYPE REF TO zcl_uitb_ctm_node
       RAISING
         zcx_uitb_tree_error .
+    "! <p class="shorttext synchronized" lang="en">Retrieves root key</p>
+    METHODS get_root_key
+      RETURNING
+        VALUE(rv_root_key) TYPE tm_nodekey.
     "! <p class="shorttext synchronized" lang="en">Gets the previous sibling of a node</p>
     METHODS get_previous_sibling
       RETURNING
@@ -464,6 +468,29 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         ir_nodes    = mr_nodes
       ).
     ENDIF.
+  ENDMETHOD.
+
+  METHOD get_root_key.
+    CLEAR rv_root_key.
+    DATA(lv_node_key) = mv_node_key.
+
+    WHILE rv_root_key IS INITIAL.
+      mr_model->node_get_parent(
+        EXPORTING  node_key        = lv_node_key
+        IMPORTING  parent_node_key = DATA(lv_parent)
+        EXCEPTIONS node_not_found  = 1
+                   OTHERS          = 2
+      ).
+      IF sy-subrc = 0.
+        IF lv_parent IS INITIAL.
+          rv_root_key = lv_node_key.
+        ELSE.
+          lv_node_key = lv_parent.
+        ENDIF.
+      ELSE.
+        RETURN.
+      ENDIF.
+    ENDWHILE.
   ENDMETHOD.
 
 

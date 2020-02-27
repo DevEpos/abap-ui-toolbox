@@ -30,9 +30,7 @@ CLASS zcl_uitb_selection_dialog DEFINITION
     DATA mo_alv TYPE REF TO zcl_uitb_alv.
     DATA mr_t_data TYPE REF TO data.
     DATA mf_use_alv_filter TYPE abap_bool.
-    DATA mf_multi_select TYPE abap_bool.
     DATA mv_selected_row TYPE i.
-    DATA mo_filter_input TYPE REF TO cl_gui_input_field.
     DATA mf_data_selected TYPE abap_bool.
 
     "! <p class="shorttext synchronized" lang="en">Returns the field used for Filtering the values</p>
@@ -69,6 +67,10 @@ CLASS zcl_uitb_selection_dialog DEFINITION
     METHODS has_selections
       RETURNING
         VALUE(rf_has_selections) TYPE abap_bool.
+    "! <p class="shorttext synchronized" lang="en">Is multi selection allowed?</p>
+    METHODS is_multi_select
+      RETURNING
+        VALUE(rf_multi) TYPE abap_bool.
     METHODS do_before_dynpro_output
         REDEFINITION.
     "! <p class="shorttext synchronized" lang="en">Creates the output table</p>
@@ -135,6 +137,8 @@ CLASS zcl_uitb_selection_dialog DEFINITION
   PRIVATE SECTION.
     DATA mv_filter_prompt TYPE string.
     DATA mv_initial_focus TYPE i.
+    DATA mf_multi_select TYPE abap_bool.
+    DATA mo_filter_input TYPE REF TO cl_gui_input_field.
     METHODS select_rows
       IMPORTING
         if_select TYPE abap_bool.
@@ -411,6 +415,10 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
     ENDIF.
 
     io_callback->map_fkey_functions( lt_key_map ).
+  ENDMETHOD.
+
+  METHOD is_multi_select.
+    rf_multi = mf_multi_select.
   ENDMETHOD.
 
   METHOD has_selections.

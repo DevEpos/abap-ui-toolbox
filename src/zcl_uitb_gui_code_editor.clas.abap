@@ -23,6 +23,10 @@ CLASS zcl_uitb_gui_code_editor DEFINITION
 
     EVENTS context_menu_selected
       EXPORTING
+        VALUE(ev_function) TYPE ui_func.
+
+    EVENTS context_menu
+      EXPORTING
         VALUE(eo_menu) TYPE REF TO cl_ctmenu.
 
     "! <p class="shorttext synchronized" lang="en">Creates new instance of code editor</p>
@@ -39,7 +43,8 @@ CLASS zcl_uitb_gui_code_editor DEFINITION
     "!
     METHODS set_text
       IMPORTING
-        iv_text TYPE string.
+        iv_text        TYPE string
+        if_new_content TYPE abap_bool OPTIONAL.
     "! <p class="shorttext synchronized" lang="en">Retrieve the selected text in the editor</p>
     "!
     METHODS get_selected_text
@@ -131,6 +136,7 @@ CLASS zcl_uitb_gui_code_editor DEFINITION
     DATA mt_text TYPE string_table.
     DATA mo_editor TYPE REF TO cl_gui_abapedit.
     DATA mo_dragdrop TYPE REF TO cl_dragdrop.
+    DATA: mv_line_count TYPE i.
     METHODS init_control
       IMPORTING
         io_container   TYPE REF TO cl_gui_container
@@ -198,8 +204,18 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
   METHOD set_text.
     DATA: lt_text TYPE string_table.
 
-    SPLIT iv_text AT cl_abap_char_utilities=>cr_lf INTO TABLE lt_text.
-    mo_editor->set_text( lt_text ).
+    IF if_new_content = abap_true.
+      mo_editor->get_line_count( IMPORTING lines = mv_line_count ).
+      mo_editor->select_lines( from_line = 1 to_line = mv_line_count ).
+      mo_editor->set_selected_text_as_stream(
+          selected_text = iv_text
+      ).
+      IF sy-subrc <> 0.
+      ENDIF.
+    ELSE.
+      SPLIT iv_text AT cl_abap_char_utilities=>cr_lf INTO TABLE lt_text.
+      mo_editor->set_text( lt_text ).
+    ENDIF.
   ENDMETHOD.
 
   METHOD get_text.
@@ -306,15 +322,32 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD on_drop.
+
+    mo_editor->get_selection_pos(
+      IMPORTING from_line = DATA(lv_from_line)
+                from_pos  = DATA(lv_from_pos)
+                to_line   = DATA(lv_to_line)
+                to_pos    = DATA(lv_to_pos)
+    ).
+    IF sy-subrc <> 0.
+    ENDIF.
+
     TRY.
         DATA(lo_dnd_object) = CAST zcl_uitb_gui_editor_dnd_object( dragdrop_object->object ).
         CASE dragdrop_object->flavor.
 
           WHEN c_dnd_flavor-insert.
-            mo_editor->set_selected_text_as_stream( selected_text = lo_dnd_object->get_text( ) ).
+            DATA(lv_text) = lo_dnd_object->get_text(
+              iv_line_position = lv_from_pos
+            ).
+            REPLACE ALL OCCURRENCES OF cl_abap_char_utilities=>cr_lf IN lv_text WITH cl_abap_char_utilities=>newline.
+            mo_editor->set_selected_text_as_stream(
+                selected_text = lv_text
+            ).
 
           WHEN c_dnd_flavor-replace.
-            set_text( iv_text = lo_dnd_object->get_text( ) ).
+            set_text( if_new_content = abap_true
+                      iv_text        = lo_dnd_object->get_text( ) ).
 
         ENDCASE.
       CATCH cx_sy_move_cast_error.
@@ -328,7 +361,7 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
        text        = |{ 'Go to Line...' }|
        accelerator = 'O' ).
 
-    RAISE EVENT context_menu_selected
+    RAISE EVENT context_menu
       EXPORTING
         eo_menu = menu.
 
@@ -336,6 +369,9 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD on_context_menu_selected.
+    RAISE EVENT context_menu_selected
+      EXPORTING
+        ev_function = fcode.
     focus( ).
   ENDMETHOD.
 
@@ -435,8 +471,10 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
       iv_pos_x  = lv_pos - 1
       iv_pos_y  = lv_line
     ).
+
     mo_editor->show_completion_results(
         completion_results = lt_completion_results
+        version            = 1
     ).
   ENDMETHOD.
 
