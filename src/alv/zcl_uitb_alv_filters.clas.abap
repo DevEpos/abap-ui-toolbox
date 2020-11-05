@@ -14,8 +14,8 @@ CLASS zcl_uitb_alv_filters DEFINITION
     METHODS add_filter
       IMPORTING
         iv_columnname TYPE lvc_fname
-        iv_option     TYPE selopt-option DEFAULT 'EQ'
-        iv_sign       TYPE selopt-sign DEFAULT 'I'
+        iv_option     TYPE ddoption DEFAULT 'EQ'
+        iv_sign       TYPE ddsign DEFAULT 'I'
         iv_low        TYPE zuitb_generic_range-low OPTIONAL
         iv_high       TYPE zuitb_generic_range-high OPTIONAL
       RETURNING

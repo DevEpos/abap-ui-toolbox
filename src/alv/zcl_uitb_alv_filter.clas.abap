@@ -1,17 +1,17 @@
-CLASS ZCL_UITB_alv_filter DEFINITION
+CLASS zcl_uitb_alv_filter DEFINITION
   PUBLIC
-  INHERITING FROM ZCL_UITB_alv_metadata
+  INHERITING FROM zcl_uitb_alv_metadata
   FINAL
   CREATE PUBLIC
 
-  GLOBAL FRIENDS ZCL_UITB_alv_grid_adapter.
+  GLOBAL FRIENDS zcl_uitb_alv_grid_adapter.
 
   PUBLIC SECTION.
 
     METHODS add_selopt
       IMPORTING
-        iv_sign   TYPE selopt-sign DEFAULT 'I'
-        iv_option TYPE selopt-option DEFAULT 'EQ'
+        iv_sign   TYPE ddsign DEFAULT 'I'
+        iv_option TYPE ddoption DEFAULT 'EQ'
         iv_low    TYPE zuitb_generic_range-low OPTIONAL
         iv_high   TYPE zuitb_generic_range-high OPTIONAL.
 *    returning
@@ -27,18 +27,18 @@ CLASS ZCL_UITB_alv_filter DEFINITION
         VALUE(result) TYPE lvc_fname .
     METHODS constructor
       IMPORTING
-        ir_column     TYPE REF TO ZCL_UITB_alv_column
-        ir_controller TYPE REF TO ZIF_UITB_alv_metadata_ctrller OPTIONAL .
+        ir_column     TYPE REF TO zcl_uitb_alv_column
+        ir_controller TYPE REF TO zif_uitb_alv_metadata_ctrller OPTIONAL .
   PROTECTED SECTION.
   PRIVATE SECTION.
 
-    DATA mr_column TYPE REF TO ZCL_UITB_alv_column.
+    DATA mr_column TYPE REF TO zcl_uitb_alv_column.
     DATA mt_selopts TYPE zuitb_generic_range_itab.
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_ALV_FILTER IMPLEMENTATION.
+CLASS zcl_uitb_alv_filter IMPLEMENTATION.
 
 
   METHOD add_selopt .
