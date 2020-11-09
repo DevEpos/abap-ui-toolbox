@@ -1,19 +1,33 @@
-class ZCL_UITB_DATA_LIST definition
-  public
-  final
-  create public .
+CLASS zcl_uitb_data_list DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PRIVATE .
 
-public section.
+  PUBLIC SECTION.
 
-  interfaces ZIF_UITB_DATA_REF_LIST .
+    INTERFACES zif_uitb_data_ref_list .
 
-  methods CONSTRUCTOR
-    importing
-      !IR_T_DATA type ref to DATA
-      !IT_COMP_EXTEND type ZCL_UITB_RTTI_UTIL=>TT_COMP_TYPE optional .
-  methods EXTEND_TABLE
-    importing
-      !IT_COMP_EXTEND type ZCL_UITB_RTTI_UTIL=>TT_COMP_TYPE optional .
+    "! <p class="shorttext synchronized" lang="en">Creates new list for given table type name</p>
+    CLASS-METHODS create_for_table_type
+      IMPORTING
+        iv_table_type       TYPE tabname
+        !it_comp_extend     TYPE zcl_uitb_rtti_util=>tt_comp_type OPTIONAL
+      RETURNING
+        VALUE(rr_data_list) TYPE REF TO zif_uitb_data_ref_list.
+    "! <p class="shorttext synchronized" lang="en">Creates new list for given table name</p>
+    CLASS-METHODS create_for_table_name
+      IMPORTING
+        iv_table            TYPE tabname
+        it_comp_extend      TYPE zcl_uitb_rtti_util=>tt_comp_type OPTIONAL
+      RETURNING
+        VALUE(rr_data_list) TYPE REF TO zif_uitb_data_ref_list.
+    "! <p class="shorttext synchronized" lang="en">Creates new list for given table ref</p>
+    CLASS-METHODS create_for_table_ref
+      IMPORTING
+        ir_t_data           TYPE REF TO data
+        it_comp_extend      TYPE zcl_uitb_rtti_util=>tt_comp_type OPTIONAL
+      RETURNING
+        VALUE(rr_data_list) TYPE REF TO zif_uitb_data_ref_list.
   PROTECTED SECTION.
     METHODS describe_table.
   PRIVATE SECTION.
@@ -24,20 +38,56 @@ ENDCLASS.
 
 
 
-CLASS ZCL_UITB_DATA_LIST IMPLEMENTATION.
+CLASS zcl_uitb_data_list IMPLEMENTATION.
 
+  METHOD create_for_table_name.
+    DATA(lr_data_list) = NEW zcl_uitb_data_list( ).
 
-  METHOD CONSTRUCTOR.
-    mr_t_list = ir_t_data.
-    describe_table( ).
+    zcl_uitb_rtti_util=>create_table_for_table(
+      EXPORTING iv_tabname    = iv_table
+      IMPORTING er_table_data = lr_data_list->mr_t_list
+                er_line_type  = lr_data_list->mr_line_type
+                er_table_type = lr_data_list->mr_table_type
+    ).
 
     IF it_comp_extend IS NOT INITIAL.
-      extend_table( it_comp_extend ).
+      lr_data_list->zif_uitb_data_ref_list~extend( it_comp_extend ).
     ENDIF.
+
+    rr_data_list = lr_data_list.
   ENDMETHOD.
 
+  METHOD create_for_table_type.
+    DATA(lr_data_list) = NEW zcl_uitb_data_list( ).
 
-  METHOD DESCRIBE_TABLE.
+    zcl_uitb_rtti_util=>create_table_for_table_type(
+      EXPORTING iv_table_type_name = iv_table_type
+      IMPORTING er_table_data      = lr_data_list->mr_t_list
+                er_line_type       = lr_data_list->mr_line_type
+                er_table_type      = lr_data_list->mr_table_type
+    ).
+
+    IF it_comp_extend IS NOT INITIAL.
+      lr_data_list->zif_uitb_data_ref_list~extend( it_comp_extend ).
+    ENDIF.
+
+    rr_data_list = lr_data_list.
+  ENDMETHOD.
+
+  METHOD create_for_table_ref.
+    DATA(lr_data_list) = NEW zcl_uitb_data_list( ).
+
+    lr_data_list->mr_t_list = ir_t_data.
+    lr_data_list->describe_table( ).
+
+    IF it_comp_extend IS NOT INITIAL.
+      lr_data_list->zif_uitb_data_ref_list~extend( it_comp_extend ).
+    ENDIF.
+
+    rr_data_list = lr_data_list.
+  ENDMETHOD.
+
+  METHOD describe_table.
     assign_table mr_t_list table.
 
     zcl_uitb_rtti_util=>describe_table_by_data(
@@ -47,8 +97,23 @@ CLASS ZCL_UITB_DATA_LIST IMPLEMENTATION.
     ).
   ENDMETHOD.
 
+  METHOD zif_uitb_data_ref_list~fill_component.
+    ASSIGN ir_s_element->* TO FIELD-SYMBOL(<ls_element>).
+    IF sy-subrc <> 0.
+      RETURN.
+    ENDIF.
 
-  METHOD EXTEND_TABLE.
+    ASSIGN COMPONENT iv_comp_name OF STRUCTURE <ls_element> TO FIELD-SYMBOL(<lv_value>).
+    IF sy-subrc = 0.
+      IF if_use_corresponding = abap_true.
+        MOVE-CORRESPONDING iv_value TO <lv_value>.
+      ELSE.
+        <lv_value> = iv_value.
+      ENDIF.
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD zif_uitb_data_ref_list~extend.
     assign_table mr_t_list table.
 
     zcl_uitb_rtti_util=>extend_struct_by_components(
@@ -68,38 +133,46 @@ CLASS ZCL_UITB_DATA_LIST IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD ZIF_UITB_DATA_REF_LIST~ADD.
+  METHOD zif_uitb_data_ref_list~add.
     assign_table  mr_t_list     table.
     assign_struct ir_s_element  element.
 
     create_line new.
 
-    MOVE-CORRESPONDING <ls_element> TO <ls_new>.
+    IF if_expand_nested_tables = abap_true.
+      MOVE-CORRESPONDING <ls_element> TO <ls_new> EXPANDING NESTED TABLES.
+    ELSE.
+      MOVE-CORRESPONDING <ls_element> TO <ls_new>.
+    ENDIF.
 
     <lt_table> = VALUE #( BASE <lt_table> ( <ls_new> ) ).
   ENDMETHOD.
 
 
-  METHOD ZIF_UITB_DATA_REF_LIST~ADD_LIST.
+  METHOD zif_uitb_data_ref_list~add_list.
     assign_table ir_t_list new_list.
     assign_table mr_t_list existing_list.
 
     LOOP AT <lt_new_list> ASSIGNING FIELD-SYMBOL(<ls_new_element>).
       create_line new_line.
-      MOVE-CORRESPONDING <ls_new_element> TO <ls_new_line>.
+      IF if_expand_nested_tables = abap_true.
+        MOVE-CORRESPONDING <ls_new_element> TO <ls_new_line> EXPANDING NESTED TABLES.
+      ELSE.
+        MOVE-CORRESPONDING <ls_new_element> TO <ls_new_line>.
+      ENDIF.
 
       APPEND <ls_new_line> TO <lt_existing_list>.
     ENDLOOP.
   ENDMETHOD.
 
 
-  METHOD ZIF_UITB_DATA_REF_LIST~CLEAR.
+  METHOD zif_uitb_data_ref_list~clear.
     assign_table mr_t_list table.
     CLEAR <lt_table>.
   ENDMETHOD.
 
 
-  METHOD ZIF_UITB_DATA_REF_LIST~CREATE_NEW_LINE.
+  METHOD zif_uitb_data_ref_list~create_new_line.
     create_line new.
 
     assign_table mr_t_list table.
@@ -109,12 +182,12 @@ CLASS ZCL_UITB_DATA_LIST IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD ZIF_UITB_DATA_REF_LIST~GET_ALL.
+  METHOD zif_uitb_data_ref_list~get_all.
     rr_t_data = mr_t_list.
   ENDMETHOD.
 
 
-  METHOD ZIF_UITB_DATA_REF_LIST~GET_ELEMENT.
+  METHOD zif_uitb_data_ref_list~get_element.
     assign_table mr_t_list table.
 
     TRY .
@@ -128,7 +201,7 @@ CLASS ZCL_UITB_DATA_LIST IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD ZIF_UITB_DATA_REF_LIST~GET_ITERATOR.
+  METHOD zif_uitb_data_ref_list~get_iterator.
     rr_iterator = zcl_uitb_data_ref_iterator=>create(
         ir_list     = me
         iv_where    = iv_where
@@ -142,7 +215,7 @@ CLASS ZCL_UITB_DATA_LIST IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD ZIF_UITB_DATA_REF_LIST~SIZE.
+  METHOD zif_uitb_data_ref_list~size.
     assign_table mr_t_list table.
     rv_size = lines( <lt_table> ).
   ENDMETHOD.
