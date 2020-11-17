@@ -19,4 +19,4 @@ Install this repository using [abapGit](https://github.com/abapGit/abapGit#abapg
 
 ### SAP NetWeaver compatibility
 
-This repository is compatible with NW 7.40 and greater
+This repository is compatible with NW 7.40 SP08 and greater
