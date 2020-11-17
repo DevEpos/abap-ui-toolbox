@@ -13,6 +13,21 @@ CLASS zcl_uitb_rtti_util DEFINITION
     TYPES:
       tt_comp_type TYPE STANDARD TABLE OF ty_comp_type WITH DEFAULT KEY .
 
+    CLASS-METHODS create_table_for_table_type
+      IMPORTING
+        iv_table_type_name   TYPE tabname
+      EXPORTING
+        VALUE(er_table_data) TYPE REF TO data
+        VALUE(er_line_type)  TYPE REF TO cl_abap_structdescr
+        VALUE(er_table_type) TYPE REF TO cl_abap_tabledescr .
+    CLASS-METHODS create_table_for_table
+      IMPORTING
+        iv_tabname           TYPE tabname
+      EXPORTING
+        VALUE(er_table_data) TYPE REF TO data
+        VALUE(er_line_type)  TYPE REF TO cl_abap_structdescr
+        VALUE(er_table_type) TYPE REF TO cl_abap_tabledescr .
+
     CLASS-METHODS describe_table_by_data
       IMPORTING
         !it_data             TYPE any
@@ -39,6 +54,12 @@ CLASS zcl_uitb_rtti_util DEFINITION
         !iv_tabname            TYPE tabname
       RETURNING
         VALUE(rr_struct_descr) TYPE REF TO cl_abap_structdescr .
+    CLASS-METHODS describe_table_type_by_name
+      IMPORTING
+        iv_table_type        TYPE tabname
+      EXPORTING
+        VALUE(er_line_type)  TYPE REF TO cl_abap_structdescr
+        VALUE(er_table_type) TYPE REF TO cl_abap_tabledescr.
     CLASS-METHODS describe_dtel_by_name
       IMPORTING
         !iv_rollname         TYPE rollname
@@ -77,6 +98,26 @@ ENDCLASS.
 
 CLASS zcl_uitb_rtti_util IMPLEMENTATION.
 
+  METHOD create_table_for_table.
+    er_line_type = describe_table_by_name( iv_tabname ).
+    er_table_type = cl_abap_tabledescr=>create(
+      p_line_type  = er_line_type
+*      p_table_kind = tablekind_std
+*      p_unique     = abap_false
+*      p_key        =
+*      p_key_kind   = keydefkind_default
+    ).
+    CREATE DATA er_table_data TYPE HANDLE er_table_type.
+  ENDMETHOD.
+
+  METHOD create_table_for_table_type.
+    describe_table_type_by_name(
+      EXPORTING iv_table_type = iv_table_type_name
+      IMPORTING er_line_type  = er_line_type
+                er_table_type = er_table_type
+    ).
+    CREATE DATA er_table_type TYPE HANDLE er_table_type.
+  ENDMETHOD.
 
   METHOD describe_class_by_name.
     rr_class_descr = CAST #( cl_abap_typedescr=>describe_by_name( iv_classname ) ) .
@@ -107,7 +148,14 @@ CLASS zcl_uitb_rtti_util IMPLEMENTATION.
 
 
   METHOD describe_table_by_name.
-    rr_struct_descr = CAST cl_abap_structdescr( cl_abap_typedescr=>describe_by_name( iv_tabname ) ) .
+    rr_struct_descr = CAST cl_abap_structdescr( cl_abap_typedescr=>describe_by_name( to_upper( iv_tabname ) ) ) .
+  ENDMETHOD.
+
+  METHOD describe_table_type_by_name.
+    er_table_type = CAST #( cl_abap_typedescr=>describe_by_name( to_upper( iv_table_type ) ) ).
+
+    " get the line type to get the components
+    er_line_type = CAST #( er_table_type->get_table_line_type( ) ).
   ENDMETHOD.
 
 
@@ -173,4 +221,5 @@ CLASS zcl_uitb_rtti_util IMPLEMENTATION.
         ( CORRESPONDING #( comp ) )
     ).
   ENDMETHOD.
+
 ENDCLASS.

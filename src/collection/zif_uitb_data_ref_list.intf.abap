@@ -2,16 +2,25 @@
 INTERFACE zif_uitb_data_ref_list
   PUBLIC .
 
+  "! <p class="shorttext synchronized" lang="en">Fills component of line data</p>
+  METHODS fill_component DEFAULT IGNORE
+    IMPORTING
+      ir_s_element         TYPE REF TO data
+      iv_comp_name         TYPE string
+      iv_value             TYPE any
+      if_use_corresponding TYPE abap_bool OPTIONAL.
   "! <p class="shorttext synchronized" lang="en">Add new entry</p>
   METHODS add
     IMPORTING
-      !ir_s_element         TYPE REF TO data
+      !ir_s_element           TYPE REF TO data
+      if_expand_nested_tables TYPE abap_bool DEFAULT abap_true
     RETURNING
-      VALUE(rr_new_element) TYPE REF TO data .
+      VALUE(rr_new_element)   TYPE REF TO data .
   "! <p class="shorttext synchronized" lang="en">Add Entries from given list (via corresponding)</p>
   METHODS add_list DEFAULT IGNORE
     IMPORTING
-      !ir_t_list TYPE REF TO data .
+      !ir_t_list              TYPE REF TO data
+      if_expand_nested_tables TYPE abap_bool DEFAULT abap_true.
   "! <p class="shorttext synchronized" lang="en">Creates a new entry in the list and returns reference to it</p>
   METHODS create_new_line DEFAULT IGNORE
     RETURNING
@@ -61,4 +70,11 @@ INTERFACE zif_uitb_data_ref_list
   METHODS is_empty DEFAULT IGNORE
     RETURNING
       VALUE(rf_is_empty) TYPE abap_bool.
+
+  "! <p class="shorttext synchronized" lang="en">Extends the table with the given components</p>
+  "!
+  "! @parameter it_comp_extend | <p class="shorttext synchronized" lang="en">List of new table components</p>
+  METHODS extend DEFAULT IGNORE
+    IMPORTING
+      !it_comp_extend TYPE zcl_uitb_rtti_util=>tt_comp_type OPTIONAL .
 ENDINTERFACE.

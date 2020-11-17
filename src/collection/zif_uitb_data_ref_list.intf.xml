@@ -37,6 +37,18 @@
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CLSNAME>ZIF_UITB_DATA_REF_LIST</CLSNAME>
+     <CMPNAME>EXTEND</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Extends the table with the given components</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_DATA_REF_LIST</CLSNAME>
+     <CMPNAME>FILL_COMPONENT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Fills component of line data</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_DATA_REF_LIST</CLSNAME>
      <CMPNAME>GET_ALL</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Retrieve reference to table area</DESCRIPT>
