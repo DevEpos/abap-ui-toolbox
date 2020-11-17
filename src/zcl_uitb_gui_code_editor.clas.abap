@@ -15,6 +15,7 @@ CLASS zcl_uitb_gui_code_editor DEFINITION
         insert  TYPE cndd_flavor VALUE 'INSERT',
         replace TYPE cndd_flavor VALUE 'REPLACE',
       END OF c_dnd_flavor.
+    CLASS-METHODS class_constructor.
 
     ALIASES has_focus
       FOR zif_uitb_gui_control~has_focus.
@@ -105,32 +106,35 @@ CLASS zcl_uitb_gui_code_editor DEFINITION
         iv_info TYPE string.
   PROTECTED SECTION.
     METHODS on_drop
-        FOR EVENT on_drop OF cl_gui_abapedit
+          FOR EVENT on_drop OF cl_gui_abapedit
       IMPORTING
-        dragdrop_object
-        index
-        line
-        pos.
+          dragdrop_object
+          index
+          line
+          pos.
     METHODS on_context_menu
-        FOR EVENT context_menu OF cl_gui_abapedit
+          FOR EVENT context_menu OF cl_gui_abapedit
       IMPORTING
-        menu
-        menu_type
-        sender.
+          menu
+          menu_type
+          sender.
     METHODS on_context_menu_selected
-        FOR EVENT context_menu_selected OF cl_gui_abapedit
+          FOR EVENT context_menu_selected OF cl_gui_abapedit
       IMPORTING
-        fcode
-        sender.
+          fcode
+          sender.
     METHODS on_f1
-        FOR EVENT f1 OF cl_gui_abapedit.
+         FOR EVENT f1 OF cl_gui_abapedit.
     METHODS register_dnd_flavors
       IMPORTING
         io_dragdrop TYPE REF TO cl_dragdrop.
   PRIVATE SECTION.
     ALIASES mr_control
       FOR zif_uitb_gui_control~mr_control.
-
+    CLASS-DATA:
+      BEGIN OF gs_constructor_params,
+        source_type TYPE abap_bool,
+      END OF gs_constructor_params.
     DATA mv_read_only TYPE i.
     DATA mv_line_width TYPE i.
     DATA mt_text TYPE string_table.
@@ -147,6 +151,25 @@ ENDCLASS.
 
 
 CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
+
+  METHOD class_constructor.
+    " check some constructor parameters of cl_gui_abapedit for existence
+    DATA(ls_parkey) = VALUE seoscokey(
+        clsname = 'CL_GUI_ABAPEDIT'
+        cmpname = 'CONSTRUCTOR'
+        sconame = 'SOURCE_TYPE'
+    ).
+    CALL FUNCTION 'SEO_PARAMETER_GET'
+      EXPORTING
+        parkey       = ls_parkey
+      EXCEPTIONS
+        not_existing = 1
+        deleted      = 2
+        is_exception = 3
+        OTHERS       = 4.
+    gs_constructor_params-source_type = xsdbool( sy-subrc = 0 ).
+  ENDMETHOD.
+
   METHOD constructor.
     DATA: lt_text TYPE STANDARD TABLE OF char140.
 
@@ -285,8 +308,8 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
         mo_editor->register_event_insert_pattern( EXPORTING appl_event = abap_false EXCEPTIONS OTHERS = 1 ).
         SET HANDLER lo_parser->handle_insertion_request FOR mo_editor.
 
-*        mo_editor->register_event_f1( EXPORTING appl_event = abap_false EXCEPTIONS OTHERS = 1 ).
-*        SET HANDLER on_f1 FOR mo_editor.
+        mo_editor->register_event_f1( EXPORTING appl_event = abap_false EXCEPTIONS OTHERS = 1 ).
+        SET HANDLER on_f1 FOR mo_editor.
       ENDIF.
 
     ENDIF.
@@ -302,11 +325,18 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
 
   METHOD init_control.
 
-    mo_editor = NEW #(
-        parent           = io_container
-        source_type      = iv_source_type
-        max_number_chars = mv_line_width
-    ).
+    IF gs_constructor_params-source_type = abap_true.
+      CREATE OBJECT mo_editor TYPE ('CL_GUI_ABAPEDIT')
+        EXPORTING
+          parent           = io_container
+          max_number_chars = mv_line_width
+          source_type      = iv_source_type.
+    ELSE.
+      CREATE OBJECT mo_editor TYPE ('CL_GUI_ABAPEDIT')
+        EXPORTING
+          parent           = io_container
+          max_number_chars = mv_line_width.
+    ENDIF.
 
     mo_editor->upload_properties( EXCEPTIONS OTHERS = 1 ).
     mo_editor->init_completer( ).
@@ -394,6 +424,8 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
   METHOD on_f1.
     DATA: lt_tokens TYPE abapdocu_tokens.
 
+    FIELD-SYMBOLS: <lv_docu_mode> TYPE any.
+
 *    cl_gui_cfw=>set_new_ok_code( EXPORTING new_code = 'HELP' ).
 
     mo_editor->get_selection_pos(
@@ -414,14 +446,23 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
                 column = lv_from_pos
       IMPORTING tokens = lt_tokens ).
 
-    cl_abap_docu=>start(
+    DATA(lv_first_word) = VALUE #( lt_tokens[ 1 ]-token DEFAULT to_upper( lv_keyword ) ).
+
+    ASSIGN ('IF_ABAP_DOCU=>ABAP') TO FIELD-SYMBOL(<lv_mode_abap>).
+    IF sy-subrc = 0.
+      ASSIGN <lv_mode_abap> TO <lv_docu_mode>.
+    ELSE.
+      ASSIGN 'ABAP' TO <lv_docu_mode>.
+    ENDIF.
+
+    CALL METHOD cl_abap_docu=>('START')
       EXPORTING
-        word           = to_upper( lv_keyword )
-*        first_word     = to_upper( lv_keyword )
-*        tokens         = lt_tokens
-        mode           = 'ABAP'
+        word       = to_upper( lv_keyword )
+        first_word = lv_first_word
+        tokens     = lt_tokens
+        mode       = <lv_docu_mode>
       EXCEPTIONS
-        OTHERS         = 1 ).
+        OTHERS     = 1.
   ENDMETHOD.
 
   METHOD set_editable.
@@ -474,7 +515,6 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
 
     mo_editor->show_completion_results(
         completion_results = lt_completion_results
-        version            = 1
     ).
   ENDMETHOD.
 
