@@ -1,7 +1,7 @@
 INTERFACE zif_uitb_gui_command
   PUBLIC .
   "! <p class="shorttext synchronized" lang="en">Type of command</p>
-  TYPES: ty_command_type TYPE i.
+  TYPES ty_command_type TYPE i.
 
   CONSTANTS:
     BEGIN OF c_command_type,

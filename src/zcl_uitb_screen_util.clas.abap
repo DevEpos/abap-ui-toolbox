@@ -86,12 +86,12 @@ CLASS zcl_uitb_screen_util DEFINITION
     "!
     CLASS-METHODS set_current_command
       IMPORTING
-        io_command TYPE REF TO zif_uitb_gui_command_exec OPTIONAL.
+        io_command TYPE REF TO zif_uitb_gui_command_executor OPTIONAL.
     "! <p class="shorttext synchronized" lang="en">Get current gui command object</p>
     "!
     CLASS-METHODS get_current_command
       RETURNING
-        VALUE(ro_command) TYPE REF TO zif_uitb_gui_command_exec.
+        VALUE(ro_command) TYPE REF TO zif_uitb_gui_command_executor.
     "! <p class="shorttext synchronized" lang="en">Executes possible GUI command</p>
     "!
     CLASS-METHODS handle_gui_command
@@ -102,7 +102,7 @@ CLASS zcl_uitb_screen_util DEFINITION
     CLASS-METHODS raise_gui_command.
   PROTECTED SECTION.
   PRIVATE SECTION.
-    CLASS-DATA go_current_command TYPE REF TO zif_uitb_gui_command_exec.
+    CLASS-DATA go_current_command TYPE REF TO zif_uitb_gui_command_executor.
 ENDCLASS.
 
 
@@ -378,7 +378,7 @@ CLASS zcl_uitb_screen_util IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD raise_gui_command.
-    cl_gui_cfw=>set_new_ok_code( EXPORTING new_code = zif_uitb_gui_command_exec=>c_ucomm_prefix
+    cl_gui_cfw=>set_new_ok_code( EXPORTING new_code = zif_uitb_gui_command_executor=>c_ucomm_prefix
                                  IMPORTING rc       = DATA(lv_subrc) ).
 *.. Remove command if rc <> 0 ???
   ENDMETHOD.

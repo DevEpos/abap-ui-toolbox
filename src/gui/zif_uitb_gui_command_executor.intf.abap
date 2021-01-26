@@ -1,5 +1,5 @@
 "! <p class="shorttext synchronized" lang="en">Executable GUI Command</p>
-INTERFACE zif_uitb_gui_command_exec
+INTERFACE zif_uitb_gui_command_executor
   PUBLIC .
   CONSTANTS c_ucomm_prefix TYPE ui_func VALUE '_&EXC_'.
 
