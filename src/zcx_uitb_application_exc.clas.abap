@@ -1,4 +1,4 @@
-CLASS ZCX_UITB_APPLICATION_EXC DEFINITION
+CLASS zcx_uitb_application_exc DEFINITION
   PUBLIC
   INHERITING FROM cx_static_check
   CREATE PUBLIC .
@@ -32,13 +32,22 @@ CLASS ZCX_UITB_APPLICATION_EXC DEFINITION
         !msgv3    TYPE sy-msgv3 OPTIONAL
         !msgv4    TYPE sy-msgv4 OPTIONAL .
 
+    CLASS-METHODS raise_appl_err_sy
+      RAISING
+        zcx_uitb_application_exc.
+    CLASS-METHODS raise_appl_error
+      IMPORTING
+        !iv_text    TYPE string
+        ix_previous TYPE REF TO cx_root OPTIONAL
+      RAISING
+        zcx_uitb_application_exc.
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
 
 
 
-CLASS ZCX_UITB_APPLICATION_EXC IMPLEMENTATION.
+CLASS zcx_uitb_application_exc IMPLEMENTATION.
 
 
   METHOD constructor ##ADT_SUPPRESS_GENERATION.
@@ -84,5 +93,43 @@ CLASS ZCX_UITB_APPLICATION_EXC IMPLEMENTATION.
         iv_msgv3        = msgv3
         iv_msgv4        = msgv4
     ).
+  ENDMETHOD.
+
+  METHOD raise_appl_err_sy.
+    RAISE EXCEPTION TYPE zcx_uitb_application_exc
+      EXPORTING
+        textid = VALUE scx_t100key(
+           msgid = sy-msgid
+           msgno = sy-msgno
+           attr1 = 'ATTR1'
+           attr2 = 'ATTR2'
+           attr3 = 'ATTR3'
+           attr4 = 'ATTR4' )
+        msgv1  = sy-msgv1
+        msgv2  = sy-msgv2
+        msgv3  = sy-msgv3
+        msgv4  = sy-msgv4.
+  ENDMETHOD.
+
+
+  METHOD raise_appl_error.
+    zcl_uitb_appl_util=>split_string_for_message(
+      EXPORTING
+        iv_string = iv_text
+      IMPORTING
+        ev_msgv1  = DATA(lv_msgv1)
+        ev_msgv2  = DATA(lv_msgv2)
+        ev_msgv3  = DATA(lv_msgv3)
+        ev_msgv4  = DATA(lv_msgv4)
+    ).
+
+    RAISE EXCEPTION TYPE zcx_uitb_application_exc
+      EXPORTING
+        textid   = general_error
+        previous = ix_previous
+        msgv1    = lv_msgv1
+        msgv2    = lv_msgv2
+        msgv3    = lv_msgv3
+        msgv4    = lv_msgv4.
   ENDMETHOD.
 ENDCLASS.
