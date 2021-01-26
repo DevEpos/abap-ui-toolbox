@@ -175,11 +175,12 @@ CLASS zcl_uitb_gui_screen_base IMPLEMENTATION.
 
 
   METHOD create_container.
+    " creates the root container of the view
     mo_container = NEW cl_gui_container(
         clsid      = 'SAPGUI.CONTAINERCTRL.1'
-        parent     = cl_gui_container=>default_screen
+        name       = 'CONTAINER'
         lifetime   = mv_lifetime
-        autoalign  = abap_true
+        autoalign  = abap_true " needed, so that the container fills whole screen
     ).
   ENDMETHOD.
 
