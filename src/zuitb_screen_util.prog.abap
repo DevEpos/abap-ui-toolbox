@@ -1,7 +1,7 @@
 *&---------------------------------------------------------------------*
 *&  Include           ZDBBR_SCREEN_UTIL
 *&---------------------------------------------------------------------*
-CLASS cl_screen_util DEFINITION.
+CLASS lcl_screen_util DEFINITION.
   PUBLIC SECTION.
     "! <p class="shorttext synchronized" lang="en">Calls the given Screen </p>
     "!
@@ -15,7 +15,7 @@ CLASS cl_screen_util DEFINITION.
         iv_end_column       TYPE i OPTIONAL.
 ENDCLASS.
 
-CLASS cl_screen_util IMPLEMENTATION.
+CLASS lcl_screen_util IMPLEMENTATION.
   METHOD call_screen.
 
     IF iv_start_column IS NOT INITIAL AND iv_start_line IS NOT INITIAL.

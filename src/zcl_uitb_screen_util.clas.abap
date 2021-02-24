@@ -121,7 +121,7 @@ CLASS zcl_uitb_screen_util IMPLEMENTATION.
       ).
     ENDLOOP.
 
-    DATA(lv_class) = |\\PROGRAM={ iv_report_id }\\CLASS=CL_SCREEN_UTIL|.
+    DATA(lv_class) = |\\PROGRAM={ iv_report_id }\\CLASS=LCL_SCREEN_UTIL|.
 
     CALL METHOD (lv_class)=>call_screen
       EXPORTING
