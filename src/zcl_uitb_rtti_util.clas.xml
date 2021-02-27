@@ -15,14 +15,8 @@
     <SEOCOMPOTX>
      <CLSNAME>ZCL_UITB_RTTI_UTIL</CLSNAME>
      <CMPNAME>GET_STRUCT_COMPONENTS</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Liefert Komponenten einer Struktur</DESCRIPT>
-    </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_RTTI_UTIL</CLSNAME>
-     <CMPNAME>GET_STRUCT_COMPONENTS</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Liefert Komponenten einer Struktur</DESCRIPT>
+     <DESCRIPT>Returns components of structure</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
   </asx:values>
