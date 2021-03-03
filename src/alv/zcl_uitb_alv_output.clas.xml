@@ -11,26 +11,6 @@
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
    </VSEOCLASS>
-   <DESCRIPTIONS>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_ALV_OUTPUT</CLSNAME>
-     <CMPNAME>HAS_SELECTED_COLUMNS</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Gibt &apos;X&apos; zurück wenn mind. 1 Spalte selektiert ist</DESCRIPT>
-    </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_ALV_OUTPUT</CLSNAME>
-     <CMPNAME>OPTIMIZE_COLUMNS</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Optimiert die Spaltenbreite</DESCRIPT>
-    </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_ALV_OUTPUT</CLSNAME>
-     <CMPNAME>SORTED_FIELDS_CHANGED</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Sortierte Felder haben sich geändert</DESCRIPT>
-    </SEOCOMPOTX>
-   </DESCRIPTIONS>
   </asx:values>
  </asx:abap>
 </abapGit>

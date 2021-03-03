@@ -11,20 +11,6 @@
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
    </VSEOCLASS>
-   <DESCRIPTIONS>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_ALV_CELL_STYLE</CLSNAME>
-     <CMPNAME>SET_MAX_LENGTH</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Setzt maximale Länge der Zelle</DESCRIPT>
-    </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_ALV_CELL_STYLE</CLSNAME>
-     <CMPNAME>SET_STYLE</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Setzt Stil für Zelle</DESCRIPT>
-    </SEOCOMPOTX>
-   </DESCRIPTIONS>
   </asx:values>
  </asx:abap>
 </abapGit>

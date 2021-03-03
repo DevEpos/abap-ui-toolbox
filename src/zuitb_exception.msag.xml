@@ -81,16 +81,6 @@
      <TEXT>Error in GUI Framework</TEXT>
     </T100>
    </T100>
-   <I18N_LANGS>
-    <LANGU>D</LANGU>
-   </I18N_LANGS>
-   <T100T>
-    <T100T>
-     <SPRSL>D</SPRSL>
-     <ARBGB>ZUITB_EXCEPTION</ARBGB>
-     <STEXT>Nachrichten für Ausnahmen</STEXT>
-    </T100T>
-   </T100T>
   </asx:values>
  </asx:abap>
 </abapGit>

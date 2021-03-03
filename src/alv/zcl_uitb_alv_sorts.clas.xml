@@ -12,62 +12,6 @@
     <UNICODE>X</UNICODE>
     <RSTAT>P</RSTAT>
    </VSEOCLASS>
-   <DESCRIPTIONS>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_ALV_SORTS</CLSNAME>
-     <CMPNAME>ADD_SORT</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Sortierungsobjekt einer Spalte hinzufügen</DESCRIPT>
-    </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_ALV_SORTS</CLSNAME>
-     <CMPNAME>CLEAR</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Alle Sortierungsobjekte löschen</DESCRIPT>
-    </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_ALV_SORTS</CLSNAME>
-     <CMPNAME>CONSTRUCTOR</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Konstruktor</DESCRIPT>
-    </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_ALV_SORTS</CLSNAME>
-     <CMPNAME>GET</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Alle Sortierungsobjekte holen</DESCRIPT>
-    </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_ALV_SORTS</CLSNAME>
-     <CMPNAME>GET_SORT</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Sortierungsobjekt einer Spalte holen</DESCRIPT>
-    </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_ALV_SORTS</CLSNAME>
-     <CMPNAME>GET_SUBTOTALS</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Zwischensummen Spalten holen</DESCRIPT>
-    </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_ALV_SORTS</CLSNAME>
-     <CMPNAME>IS_SORT_DEFINED</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Prüfen, ob eine Sortierung vorhanden ist</DESCRIPT>
-    </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_ALV_SORTS</CLSNAME>
-     <CMPNAME>REMOVE_SORT</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Sortierungsobjekt einer Spalte entfernen</DESCRIPT>
-    </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_ALV_SORTS</CLSNAME>
-     <CMPNAME>SET_POSITION</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Sortierreihenfolge der Spalten setzen</DESCRIPT>
-    </SEOCOMPOTX>
-   </DESCRIPTIONS>
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -11,20 +11,6 @@
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
    </VSEOCLASS>
-   <DESCRIPTIONS>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_LOG</CLSNAME>
-     <CMPNAME>MT_SPROT_U</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Tabellentyp für SPROT_U</DESCRIPT>
-    </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_LOG</CLSNAME>
-     <CMPNAME>PROTOCOL_WRITE</CMPNAME>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Ausgabe der Protokolltabelle</DESCRIPT>
-    </SEOCOMPOTX>
-   </DESCRIPTIONS>
   </asx:values>
  </asx:abap>
 </abapGit>
