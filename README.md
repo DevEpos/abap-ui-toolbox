@@ -1,4 +1,4 @@
-![](https://img.shields.io/badge/ABAP-v740sp08+-orange)
+![](https://img.shields.io/badge/ABAP-v7.40sp08+-orange)
 # ABAP UI Toolbox
 
 Tools for ABAP SAP GUI Development
