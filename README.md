@@ -1,3 +1,4 @@
+![](https://img.shields.io/badge/ABAP-v740sp08+-orange)
 # ABAP UI Toolbox
 
 Tools for ABAP SAP GUI Development
@@ -17,7 +18,3 @@ Tools for ABAP SAP GUI Development
 ## Installation
 
 Install this repository using [abapGit](https://github.com/abapGit/abapGit#abapgit).
-
-### SAP NetWeaver compatibility
-
-This repository is compatible with v740sp08 and greater
