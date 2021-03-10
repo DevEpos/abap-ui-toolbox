@@ -80,6 +80,24 @@
      <MSGNR>011</MSGNR>
      <TEXT>Error in GUI Framework</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <MSGNR>012</MSGNR>
+     <TEXT>The element was not found</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <MSGNR>013</MSGNR>
+     <TEXT>The element with index &amp;1 does not exist in the list</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZUITB_EXCEPTION</ARBGB>
+     <MSGNR>014</MSGNR>
+     <TEXT>The element with condition &amp;1 does not exist at index &amp;2</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>
