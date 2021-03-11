@@ -1,4 +1,4 @@
-FUNCTION ZUITB_CALL_GUI_SCREEN.
+FUNCTION zuitb_call_gui_screen.
 *"----------------------------------------------------------------------
 *"*"Local Interface:
 *"  IMPORTING
@@ -8,16 +8,7 @@ FUNCTION ZUITB_CALL_GUI_SCREEN.
 *"     REFERENCE(IV_START_COLUMN) TYPE  I OPTIONAL
 *"     REFERENCE(IV_END_LINE) TYPE  I OPTIONAL
 *"     REFERENCE(IV_END_COLUMN) TYPE  I OPTIONAL
-*"     REFERENCE(IF_NO_MODAL_DIALOG) TYPE  ABAP_BOOL OPTIONAL
 *"----------------------------------------------------------------------
-  DATA: lv_dialog_screen TYPE sy-dynnr.
-
-  IF if_no_modal_dialog = abap_true.
-    lv_dialog_screen = 0100.
-  ELSE.
-    lv_dialog_screen = 0101.
-  ENDIF.
-
   " save current controller
   IF gs_view_data IS NOT INITIAL.
     INSERT gs_view_data INTO gt_view_controller INDEX 1.
@@ -32,9 +23,9 @@ FUNCTION ZUITB_CALL_GUI_SCREEN.
     gs_view_data-as_dialog = abap_true.
 
     IF iv_end_column IS INITIAL OR iv_end_line IS INITIAL.
-      CALL SCREEN lv_dialog_screen STARTING AT iv_start_column iv_start_line.
+      CALL SCREEN 0100 STARTING AT iv_start_column iv_start_line.
     ELSE.
-      CALL SCREEN lv_dialog_screen STARTING AT iv_start_column iv_start_line ENDING AT iv_end_column iv_end_line.
+      CALL SCREEN 0100 STARTING AT iv_start_column iv_start_line ENDING AT iv_end_column iv_end_line.
     ENDIF.
   ELSE.
     CALL SCREEN 0100.

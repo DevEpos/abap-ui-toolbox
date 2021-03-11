@@ -31,7 +31,6 @@ CLASS zcl_uitb_gui_screen_base DEFINITION
     DATA mv_title TYPE string.
     DATA mf_screen_is_live TYPE abap_bool.
     DATA mf_as_dialog TYPE abap_bool.
-    DATA mf_no_modal_dialog TYPE abap_bool.
 
     DATA mo_container TYPE REF TO cl_gui_container.
 
@@ -163,8 +162,7 @@ CLASS zcl_uitb_gui_screen_base IMPLEMENTATION.
           iv_start_line      = lv_start_line
           iv_end_line        = lv_start_line + iv_height
           iv_start_column    = lv_start_column
-          iv_end_column      = lv_start_column + iv_width
-          if_no_modal_dialog = mf_no_modal_dialog.
+          iv_end_column      = lv_start_column + iv_width.
     ELSE.
       CALL FUNCTION 'ZUITB_CALL_GUI_SCREEN'
         EXPORTING
