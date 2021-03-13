@@ -35,8 +35,21 @@ CLASS zcl_uitb_gui_helper DEFINITION
           PREFERRED PARAMETER io_parent
       RETURNING
         VALUE(ro_container) TYPE REF TO cl_gui_container.
+
+    "! <p class="shorttext synchronized" lang="en">Checks if given control has the focus</p>
+    CLASS-METHODS has_focus
+      IMPORTING
+        io_control      TYPE REF TO cl_gui_control
+      RETURNING
+        VALUE(rf_focus) TYPE abap_bool.
+
+    "! <p class="shorttext synchronized" lang="en">Sets focus to control</p>
+    CLASS-METHODS set_focus
+      IMPORTING
+        io_control TYPE REF TO cl_gui_control.
   PROTECTED SECTION.
   PRIVATE SECTION.
+    CLASS-DATA go_temp_ctrl TYPE REF TO cl_gui_control.
 ENDCLASS.
 
 
@@ -198,4 +211,32 @@ CLASS zcl_uitb_gui_helper IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
+
+  METHOD has_focus.
+    CHECK io_control IS BOUND.
+
+    cl_gui_control=>get_focus(
+      IMPORTING
+        control           = go_temp_ctrl
+      EXCEPTIONS
+        cntl_error        = 1
+        cntl_system_error = 2
+        OTHERS            = 3 ).
+    IF sy-subrc = 0.
+      rf_focus = xsdbool( go_temp_ctrl = io_control ).
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD set_focus.
+    CHECK io_control IS BOUND.
+
+    cl_gui_container=>set_focus(
+      EXPORTING
+        control           = io_control
+      EXCEPTIONS
+        cntl_error        = 1
+        cntl_system_error = 2
+        OTHERS            = 3 ).
+  ENDMETHOD.
+
 ENDCLASS.

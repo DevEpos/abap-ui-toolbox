@@ -30,6 +30,18 @@
      <LANGU>E</LANGU>
      <DESCRIPT>Creates Menu from button table</DESCRIPT>
     </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_HELPER</CLSNAME>
+     <CMPNAME>HAS_FOCUS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Checks if given control has the focus</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_HELPER</CLSNAME>
+     <CMPNAME>SET_FOCUS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Sets focus to control</DESCRIPT>
+    </SEOCOMPOTX>
    </DESCRIPTIONS>
   </asx:values>
  </asx:abap>
