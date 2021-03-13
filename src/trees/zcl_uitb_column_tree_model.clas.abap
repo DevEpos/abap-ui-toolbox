@@ -8,15 +8,15 @@ CLASS zcl_uitb_column_tree_model DEFINITION
     INTERFACES zif_uitb_content_searcher .
     INTERFACES zif_uitb_gui_control .
 
-    aliases mr_control
-      for zif_uitb_gui_control~mr_control.
-
     CONSTANTS c_single_selection TYPE i VALUE cl_tree_model=>node_sel_mode_single ##NO_TEXT.
     CONSTANTS c_multiple_selection TYPE i VALUE cl_tree_model=>node_sel_mode_multiple ##NO_TEXT.
     CONSTANTS c_dnd_move TYPE i VALUE cl_dragdrop=>move ##NO_TEXT.
     CONSTANTS c_dnd_copy TYPE i VALUE cl_dragdrop=>copy ##NO_TEXT.
     CONSTANTS c_dnd_none TYPE i VALUE cl_dragdrop=>none ##NO_TEXT.
     CONSTANTS c_hierarchy_column TYPE tv_itmname VALUE 'HIERARCHY' ##NO_TEXT.
+
+    ALIASES has_focus
+      for zif_uitb_gui_control~has_focus.
 
     METHODS constructor
       IMPORTING
@@ -31,9 +31,6 @@ CLASS zcl_uitb_column_tree_model DEFINITION
       IMPORTING
         iv_position TYPE i DEFAULT cl_tree_model=>scroll_home.
     METHODS create_tree_control .
-    METHODS has_focus
-      RETURNING
-        VALUE(result) TYPE abap_bool .
     "! <p class="shorttext synchronized" lang="en">Get toolbar of tree (only bound for if_with_toolbar = 'X')</p>
     METHODS get_toolbar
       RETURNING
@@ -69,6 +66,7 @@ CLASS zcl_uitb_column_tree_model DEFINITION
     DATA ms_hierarchy_header TYPE treemhhdr .
     DATA mr_tree_model TYPE REF TO cl_column_tree_model .
     DATA mr_tree_container TYPE REF TO zcl_uitb_tree_container .
+    data mo_tree_ctrl type ref to cl_gui_control.
     DATA mr_parent TYPE REF TO cl_gui_container .
     DATA mr_toolbar_model TYPE REF TO zcl_uitb_toolbar_model .
     DATA mf_with_toolbar TYPE abap_bool .
@@ -109,7 +107,7 @@ CLASS zcl_uitb_column_tree_model IMPLEMENTATION.
         ir_tree_model     = mr_tree_model
     ).
     " create tree control from model
-    mr_control = mr_tree_container->get_tree( ).
+    mo_tree_ctrl = mr_tree_container->get_tree( ).
 
     IF mf_with_toolbar = abap_true.
       DATA(lr_toolbar) = mr_tree_container->get_toolbar( ).
@@ -202,22 +200,6 @@ CLASS zcl_uitb_column_tree_model IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD has_focus.
-    cl_gui_control=>get_focus(
-        IMPORTING control = mr_temp_control
-        EXCEPTIONS cntl_error        = 1
-                   cntl_system_error = 2
-                   OTHERS            = 3
-    ).
-
-    IF sy-subrc = 0.
-      result = xsdbool( mr_temp_control IS NOT INITIAL AND
-                        mr_control IS BOUND AND
-                        mr_temp_control = mr_control ).
-    ENDIF.
-  ENDMETHOD.
-
-
   METHOD update_view.
     mr_tree_model->update_view(
       EXCEPTIONS
@@ -259,26 +241,12 @@ CLASS zcl_uitb_column_tree_model IMPLEMENTATION.
 
 
   METHOD zif_uitb_gui_control~focus.
-    CHECK mr_control IS BOUND.
-
-    cl_gui_control=>set_focus( mr_control ).
+    zcl_uitb_gui_helper=>set_focus( mo_tree_ctrl ).
   ENDMETHOD.
 
 
   METHOD zif_uitb_gui_control~has_focus.
-    cl_gui_control=>get_focus(
-      IMPORTING
-        control           = mr_temp_control
-      EXCEPTIONS
-        cntl_error        = 1
-        cntl_system_error = 2
-        OTHERS            = 3
-    ).
-    IF sy-subrc = 0.
-      IF mr_temp_control = mr_control.
-        rf_has_focus = abap_true.
-      ENDIF.
-    ENDIF.
+    rf_has_focus = zcl_uitb_gui_helper=>has_focus( mo_tree_ctrl ).
   ENDMETHOD.
 
   METHOD scroll_to.

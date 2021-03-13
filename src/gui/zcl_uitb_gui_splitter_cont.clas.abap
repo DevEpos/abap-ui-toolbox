@@ -440,16 +440,11 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_uitb_gui_control~focus.
-    CHECK mo_splitter IS BOUND.
-
-    cl_gui_control=>set_focus( mo_splitter ).
+    zcl_uitb_gui_helper=>set_focus( mo_splitter ).
   ENDMETHOD.
 
   METHOD zif_uitb_gui_control~has_focus.
-    CHECK mo_splitter IS BOUND.
-    cl_gui_control=>get_focus( IMPORTING control = zif_uitb_gui_control~mr_control ).
-
-    rf_has_focus = xsdbool( zif_uitb_gui_control~mr_control = mo_splitter ).
+    rf_has_focus = zcl_uitb_gui_helper=>has_focus( mo_splitter ).
   ENDMETHOD.
 
 ENDCLASS.

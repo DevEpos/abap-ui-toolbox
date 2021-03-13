@@ -1,8 +1,6 @@
 "! <p class="shorttext synchronized" lang="en">GUI Control</p>
 INTERFACE zif_uitb_gui_control
   PUBLIC .
-  DATA mr_control TYPE REF TO cl_gui_control.
-
   "! <p class="shorttext synchronized" lang="en">Set focus to control</p>
   "!
   METHODS focus.

@@ -129,8 +129,6 @@ CLASS zcl_uitb_gui_code_editor DEFINITION
       IMPORTING
         io_dragdrop TYPE REF TO cl_dragdrop.
   PRIVATE SECTION.
-    ALIASES mr_control
-      FOR zif_uitb_gui_control~mr_control.
     CLASS-DATA:
       BEGIN OF gs_constructor_params,
         source_type TYPE abap_bool,
@@ -280,16 +278,11 @@ CLASS zcl_uitb_gui_code_editor IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_uitb_gui_control~focus.
-    CHECK mo_editor IS BOUND.
-
-    cl_gui_control=>set_focus( mo_editor ).
+    zcl_uitb_gui_helper=>set_focus( mo_editor ).
   ENDMETHOD.
 
   METHOD zif_uitb_gui_control~has_focus.
-    CHECK mo_editor IS BOUND.
-
-    cl_gui_control=>get_focus( IMPORTING control = mr_control ).
-    rf_has_focus = xsdbool( mo_editor = mr_control ).
+    rf_has_focus = zcl_uitb_gui_helper=>has_focus( mo_editor ).
   ENDMETHOD.
 
 
