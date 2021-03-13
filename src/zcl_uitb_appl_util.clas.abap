@@ -1,95 +1,97 @@
-class ZCL_UITB_APPL_UTIL definition
-  public
-  final
-  create public .
+CLASS zcl_uitb_appl_util DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
 
-public section.
+  PUBLIC SECTION.
 
-  types:
-    tt_input_val TYPE STANDARD TABLE OF sval WITH DEFAULT KEY .
+    TYPES:
+      tt_input_val TYPE STANDARD TABLE OF sval WITH EMPTY KEY .
 
-  class-methods TOGGLE
-    changing
-      !VALUE type ABAP_BOOL .
-  class-methods GET_PROGRAM_VARIABLES
-    importing
-      !IV_REPID type SY-REPID
-    returning
-      value(RT_VARIABLES) type SCOMPOTAB .
-  class-methods BUILD_SELOPT
-    importing
-      !IV_VALUE type ANY
-    returning
-      value(RT_SELOPT_TABLE) type ZUITB_GENERIC_RANGE_ITAB .
-  class-methods BUILD_SELOPT_TAB_FROM_TABLE
-    importing
-      !IT_TABLE_DATA type STANDARD TABLE
-      !IV_COMPNAME_FOR_LOW type FIELDNAME
-    returning
-      value(RT_SELOPT) type ZUITB_GENERIC_RANGE_ITAB .
-  class-methods SPLIT_STRING_FOR_MESSAGE
-    importing
-      !IV_STRING type STRING
-    exporting
-      !EV_MSGV1 type SY-MSGV1
-      !EV_MSGV2 type SY-MSGV2
-      !EV_MSGV3 type SY-MSGV3
-      !EV_MSGV4 type SY-MSGV4 .
-  class-methods GET_DOCU_TEXT
-    importing
-      !IV_CLASS type DOKHL-ID default 'DT'
-      !IV_OBJECT type DOKHL-OBJECT
-    returning
-      value(RV_TEXT) type STRING .
-  class-methods GET_CURRENT_DATETIME
-    exporting
-      !EV_TIME type T
-      !EV_DATE type D .
-  class-methods PRINT_EXC_MESSAGE
-    importing
-      !IS_TEXTID type SCX_T100KEY
-      !IF_TO_SCREEN type ABAP_BOOL default ABAP_TRUE
-      !IR_PREVIOUS type ref to CX_ROOT
-      !IV_DISPLAY_TYPE type SYST_MSGTY default 'I'
-      !IV_MESSAGE_TYPE type SYST_MSGTY default 'E'
-      !IR_EXC_MESSAGE type ref to ZIF_UITB_EXCEPTION_MESSAGE
-      !IV_MSGV1 type SY-MSGV1 optional
-      !IV_MSGV2 type SY-MSGV2 optional
-      !IV_MSGV3 type SY-MSGV3 optional
-      !IV_MSGV4 type SY-MSGV4 optional
-    returning
-      value(RV_MESSAGE) type STRING .
-  class-methods CONVERT_STRING_TAB_TO_STRING
-    importing
-      !IT_LINES type STRING_TABLE
-    returning
-      value(RV_STRING) type STRING .
-  class-methods POPUP_TO_CONFIRM
-    importing
-      !IV_TITLE type STRING default SPACE
-      !IV_QUERY type STRING
-      !IF_DISPLAY_CANCEL_BUTTON type BOOLEAN default ABAP_TRUE
-      !IV_TEXT_BUTTON1 type any default 'Yes'(001)
-      !IV_TEXT_BUTTON2 type any default 'No'(002)
-      !IV_QUICKINFO_BUTTON1 type TEXT132 optional
-      !IV_QUICKINFO_BUTTON2 type TEXT132 optional
-      !IV_ICON_TYPE type ICONNAME
-    returning
-      value(RV_RESULT) type CHAR1 .
-  class-methods POPUP_GET_VALUES
-    importing
-      !IV_TITLE type STRING optional
-    changing
-      !CT_FIELDS type TT_INPUT_VAL
-    returning
-      value(RF_SUCCESS) type ABAP_BOOL .
+    CLASS-METHODS toggle
+      CHANGING
+        !value TYPE abap_bool .
+    CLASS-METHODS get_program_variables
+      IMPORTING
+        !iv_repid           TYPE sy-repid
+      RETURNING
+        VALUE(rt_variables) TYPE scompotab .
+    CLASS-METHODS build_selopt
+      IMPORTING
+        !iv_value              TYPE any
+      RETURNING
+        VALUE(rt_selopt_table) TYPE zuitb_generic_range_itab .
+    CLASS-METHODS build_selopt_tab_from_table
+      IMPORTING
+        !it_table_data       TYPE STANDARD TABLE
+        !iv_compname_for_low TYPE fieldname
+      RETURNING
+        VALUE(rt_selopt)     TYPE zuitb_generic_range_itab .
+    CLASS-METHODS split_string_for_message
+      IMPORTING
+        !iv_string TYPE string
+      EXPORTING
+        !ev_msgv1  TYPE sy-msgv1
+        !ev_msgv2  TYPE sy-msgv2
+        !ev_msgv3  TYPE sy-msgv3
+        !ev_msgv4  TYPE sy-msgv4 .
+    CLASS-METHODS get_docu_text
+      IMPORTING
+        !iv_class      TYPE dokhl-id DEFAULT 'DT'
+        !iv_object     TYPE dokhl-object
+      RETURNING
+        VALUE(rv_text) TYPE string .
+    CLASS-METHODS get_current_datetime
+      EXPORTING
+        !ev_time TYPE t
+        !ev_date TYPE d .
+    CLASS-METHODS print_exc_message
+      IMPORTING
+        !is_textid        TYPE scx_t100key
+        !if_to_screen     TYPE abap_bool DEFAULT abap_true
+        !ir_previous      TYPE REF TO cx_root
+        !iv_display_type  TYPE syst_msgty DEFAULT 'I'
+        !iv_message_type  TYPE syst_msgty DEFAULT 'E'
+        !ir_exc_message   TYPE REF TO zif_uitb_exception_message
+        !iv_msgv1         TYPE sy-msgv1 OPTIONAL
+        !iv_msgv2         TYPE sy-msgv2 OPTIONAL
+        !iv_msgv3         TYPE sy-msgv3 OPTIONAL
+        !iv_msgv4         TYPE sy-msgv4 OPTIONAL
+      RETURNING
+        VALUE(rv_message) TYPE string .
+    CLASS-METHODS convert_string_tab_to_string
+      IMPORTING
+        !it_lines        TYPE string_table
+      RETURNING
+        VALUE(rv_string) TYPE string .
+    CLASS-METHODS popup_to_confirm
+      IMPORTING
+        !iv_title                 TYPE string DEFAULT space
+        !iv_query                 TYPE string
+        !if_display_cancel_button TYPE boolean DEFAULT abap_true
+        !iv_text_button1          TYPE any DEFAULT 'Yes'(001)
+        !iv_text_button2          TYPE any DEFAULT 'No'(002)
+        !iv_quickinfo_button1     TYPE text132 OPTIONAL
+        !iv_quickinfo_button2     TYPE text132 OPTIONAL
+        !iv_icon_type             TYPE iconname
+      RETURNING
+        VALUE(rv_result)          TYPE char1 .
+
+    "! <p class="shorttext synchronized" lang="en">Popup with multiple input fields</p>
+    CLASS-METHODS popup_get_values
+      IMPORTING
+        !iv_title         TYPE string OPTIONAL
+      CHANGING
+        !ct_fields        TYPE tt_input_val
+      RETURNING
+        VALUE(rf_success) TYPE abap_bool .
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
 
 
 
-CLASS ZCL_UITB_APPL_UTIL IMPLEMENTATION.
+CLASS zcl_uitb_appl_util IMPLEMENTATION.
 
 
   METHOD build_selopt.
