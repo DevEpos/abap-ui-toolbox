@@ -72,10 +72,11 @@ CLASS zcl_uitb_gui_splitter_cont DEFINITION
 
     TYPES:
       BEGIN OF ty_s_element,
-        base_size    TYPE i,
-        size         TYPE i,
-        visible      TYPE abap_bool,
-        sash_visible TYPE abap_bool,
+        base_size       TYPE i,
+        size            TYPE i,
+        visible         TYPE abap_bool,
+        sash_visible    TYPE abap_bool,
+        stretch_content TYPE abap_bool,
       END OF ty_s_element.
 
     DATA mt_elements TYPE STANDARD TABLE OF ty_s_element WITH EMPTY KEY.
@@ -99,11 +100,12 @@ ENDCLASS.
 
 CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
   METHOD constructor.
-    DATA: lv_rows  TYPE i,
-          lv_size  TYPE i,
-          lv_total TYPE i,
-          lt_size  TYPE STANDARD TABLE OF string,
-          lv_cols  TYPE i.
+    DATA: lv_rows            TYPE i,
+          lv_size            TYPE i,
+          lv_total           TYPE i,
+          lt_size            TYPE STANDARD TABLE OF string,
+          lv_cols            TYPE i,
+          lf_stretch_content TYPE abap_bool.
 
     SPLIT iv_size AT c_size_separator INTO TABLE lt_size.
 
@@ -124,8 +126,11 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
 *.. Determine elements with sizes
     LOOP AT lt_size INTO DATA(lv_size_string).
       DATA(lv_tabix) = sy-tabix.
+      CLEAR lf_stretch_content.
+
       IF lv_size_string = '*'.
         mv_size_mode = cl_gui_splitter_container=>mode_absolute.
+        lf_stretch_content = abap_true.
         lv_size = 0.
       ELSE.
         TRY.
@@ -138,10 +143,10 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
 
       mt_elements = VALUE #(
         BASE mt_elements
-        ( base_size    = lv_size
-          visible      = abap_true
-          sash_visible = abap_true )
-      ).
+        ( base_size       = lv_size
+          visible         = abap_true
+          sash_visible    = abap_true
+          stretch_content = lf_stretch_content ) ).
 
     ENDLOOP.
 
@@ -224,7 +229,7 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
         IF if_movable IS SUPPLIED.
           mo_splitter->set_column_sash(
             EXPORTING
-              id                = 1
+              id                = iv_index
               type              = cl_gui_splitter_container=>type_movable
               value             = lv_movable
             EXCEPTIONS
@@ -239,7 +244,7 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
         IF if_visible IS SUPPLIED.
           mo_splitter->set_column_sash(
             EXPORTING
-              id                = 1
+              id                = iv_index
               type              = cl_gui_splitter_container=>type_sashvisible
               value             = lv_visible
             EXCEPTIONS
@@ -256,7 +261,7 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
         IF if_movable IS SUPPLIED.
           mo_splitter->set_row_sash(
             EXPORTING
-              id                = 1
+              id                = iv_index
               type              = cl_gui_splitter_container=>type_movable
               value             = lv_movable
             EXCEPTIONS
@@ -271,7 +276,7 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
         IF if_visible IS SUPPLIED.
           mo_splitter->set_row_sash(
             EXPORTING
-              id                = 1
+              id                = iv_index
               type              = cl_gui_splitter_container=>type_sashvisible
               value             = lv_visible
             EXCEPTIONS
@@ -396,13 +401,12 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
     LOOP AT mt_elements ASSIGNING <ls_element> WHERE visible = abap_true.
       lv_tabix = sy-tabix.
 
-      CHECK ( mv_size_mode = cl_gui_splitter_container=>mode_relative OR
-              ( mv_size_mode = cl_gui_splitter_container=>mode_absolute AND lv_tabix < mv_elements_count ) ).
-
-      set_size(
-          iv_index = lv_tabix
-          iv_size  = <ls_element>-base_size
-      ).
+      IF <ls_element>-stretch_content = abap_false.
+        set_size(
+            iv_index = lv_tabix
+            iv_size  = <ls_element>-base_size
+        ).
+      ENDIF.
 
       CHECK lv_tabix < mv_elements_count.
 
