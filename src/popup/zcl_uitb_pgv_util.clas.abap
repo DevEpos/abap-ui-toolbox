@@ -51,28 +51,6 @@ ENDCLASS.
 
 CLASS zcl_uitb_pgv_util IMPLEMENTATION.
 
-  METHOD popup_get_values.
-    DATA: lv_rcode(1).
-
-    rf_success = abap_true.
-
-    CALL FUNCTION 'POPUP_GET_VALUES'
-      EXPORTING
-        popup_title  = iv_title
-        start_column = '12'
-        start_row    = '5'
-      IMPORTING
-        returncode   = lv_rcode
-      TABLES
-        fields       = ct_fields
-      EXCEPTIONS
-        OTHERS       = 1.
-
-    IF sy-subrc <> 0 OR lv_rcode = 'A'.
-      rf_success = abap_true.
-    ENDIF.
-  ENDMETHOD.
-
 
   METHOD popup_get_value.
     DATA: lv_rcode(1),
@@ -102,6 +80,30 @@ CLASS zcl_uitb_pgv_util IMPLEMENTATION.
 
   ENDMETHOD.
 
+
+  METHOD popup_get_values.
+    DATA: lv_rcode(1).
+
+    rf_success = abap_true.
+
+    CALL FUNCTION 'POPUP_GET_VALUES'
+      EXPORTING
+        popup_title  = iv_title
+        start_column = '12'
+        start_row    = '5'
+      IMPORTING
+        returncode   = lv_rcode
+      TABLES
+        fields       = ct_fields
+      EXCEPTIONS
+        OTHERS       = 1.
+
+    IF sy-subrc <> 0 OR lv_rcode = 'A'.
+      rf_success = abap_true.
+    ENDIF.
+  ENDMETHOD.
+
+
   METHOD popup_get_values_w_check.
     DATA: lv_rcode(1).
 
@@ -125,6 +127,7 @@ CLASS zcl_uitb_pgv_util IMPLEMENTATION.
       rf_success = abap_true.
     ENDIF.
   ENDMETHOD.
+
 
   METHOD popup_get_value_w_check.
     DATA: lv_rcode(1),
@@ -152,5 +155,4 @@ CLASS zcl_uitb_pgv_util IMPLEMENTATION.
       ev_result = CONV string( lt_fields[ 1 ]-value ).
     ENDIF.
   ENDMETHOD.
-
 ENDCLASS.
