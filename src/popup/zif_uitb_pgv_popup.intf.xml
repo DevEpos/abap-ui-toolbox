@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_INTF" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOINTERF>
+    <CLSNAME>ZIF_UITB_PGV_POPUP</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Popup for data input</DESCRIPT>
+    <EXPOSURE>2</EXPOSURE>
+    <STATE>1</STATE>
+    <UNICODE>X</UNICODE>
+   </VSEOINTERF>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_PGV_POPUP</CLSNAME>
+     <CMPNAME>ADD_FIELD</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Adds new field to the popup</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_PGV_POPUP</CLSNAME>
+     <CMPNAME>ADD_FIELDS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Adds list of fields to dialog</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_PGV_POPUP</CLSNAME>
+     <CMPNAME>CANCELLED</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Returns &apos;X&apos; if the dialog was cancelled</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_PGV_POPUP</CLSNAME>
+     <CMPNAME>GET_FIELD_VALUE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Retrieves the new table field value</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_PGV_POPUP</CLSNAME>
+     <CMPNAME>GET_FIELD_VAL_BY_INDEX</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Retrieves field value by table index</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_PGV_POPUP</CLSNAME>
+     <CMPNAME>GET_FIRST_FIELD_VALUE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Returns value of first field</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_PGV_POPUP</CLSNAME>
+     <CMPNAME>SHOW</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Displays the popup dialog</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_PGV_POPUP</CLSNAME>
+     <CMPNAME>TT_DIALOG_FIELD</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>List of dialog fields</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_PGV_POPUP</CLSNAME>
+     <CMPNAME>TT_DIALOG_FIELD_EXT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>List of dialog extended fields</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_PGV_POPUP</CLSNAME>
+     <CMPNAME>TT_VALIDATION_CONFIG</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>List of validation configurations</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_PGV_POPUP</CLSNAME>
+     <CMPNAME>TY_DIALOG_FIELD_EXT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Field on popup dialog</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZIF_UITB_PGV_POPUP</CLSNAME>
+     <CMPNAME>TY_VALIDATION_CONFIG</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Validation configuration for field validation</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

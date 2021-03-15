@@ -76,15 +76,6 @@ CLASS zcl_uitb_appl_util DEFINITION
         !iv_icon_type             TYPE iconname
       RETURNING
         VALUE(rv_result)          TYPE char1 .
-
-    "! <p class="shorttext synchronized" lang="en">Popup with multiple input fields</p>
-    CLASS-METHODS popup_get_values
-      IMPORTING
-        !iv_title         TYPE string OPTIONAL
-      CHANGING
-        !ct_fields        TYPE tt_input_val
-      RETURNING
-        VALUE(rf_success) TYPE abap_bool .
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -208,29 +199,6 @@ CLASS zcl_uitb_appl_util IMPLEMENTATION.
 
     DELETE rt_variables WHERE name CP '<*' OR
                                type <> 'D'.
-  ENDMETHOD.
-
-
-  METHOD popup_get_values.
-    DATA: lv_rcode(1).
-
-    rf_success = abap_true.
-
-    CALL FUNCTION 'POPUP_GET_VALUES'
-      EXPORTING
-        popup_title  = iv_title
-        start_column = '12'
-        start_row    = '5'
-      IMPORTING
-        returncode   = lv_rcode
-      TABLES
-        fields       = ct_fields
-      EXCEPTIONS
-        OTHERS       = 1.
-
-    IF sy-subrc <> 0 OR lv_rcode = 'A'.
-      rf_success = abap_true.
-    ENDIF.
   ENDMETHOD.
 
 

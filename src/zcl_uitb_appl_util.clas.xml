@@ -38,12 +38,6 @@
      <LANGU>E</LANGU>
      <DESCRIPT>Erstellt selopt-Tabelle aus Tabelle</DESCRIPT>
     </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_APPL_UTIL</CLSNAME>
-     <CMPNAME>POPUP_GET_VALUES</CMPNAME>
-     <LANGU>E</LANGU>
-     <DESCRIPT>Popup with multiple input fields</DESCRIPT>
-    </SEOCOMPOTX>
    </DESCRIPTIONS>
   </asx:values>
  </asx:abap>

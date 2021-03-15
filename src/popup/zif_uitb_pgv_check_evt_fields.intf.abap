@@ -1,13 +1,13 @@
-"! <p class="shorttext synchronized" lang="en">Field in popup_get_values function</p>
-INTERFACE zif_uitb_pgv_fields
+"! <p class="shorttext synchronized" lang="en">Fields in check event of Input dialog</p>
+INTERFACE zif_uitb_pgv_check_evt_fields
   PUBLIC .
 
-  types tt_fields type STANDARD TABLE OF sval with empty key.
+  TYPES tt_fields TYPE STANDARD TABLE OF sval WITH EMPTY KEY.
 
   "! <p class="shorttext synchronized" lang="en">Returns the fields with the current values</p>
   METHODS get_fields
-    returning
-      value(rt_fields) type tt_fields.
+    RETURNING
+      VALUE(rt_fields) TYPE tt_fields.
 
   "! <p class="shorttext synchronized" lang="en">Sets validation error</p>
   METHODS set_validation_error

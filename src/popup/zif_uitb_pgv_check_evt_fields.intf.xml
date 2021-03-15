@@ -3,22 +3,22 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOINTERF>
-    <CLSNAME>ZIF_UITB_PGV_FIELDS</CLSNAME>
+    <CLSNAME>ZIF_UITB_PGV_CHECK_EVT_FIELDS</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>Field in popup_get_values function</DESCRIPT>
+    <DESCRIPT>Fields in check event of Input dialog</DESCRIPT>
     <EXPOSURE>2</EXPOSURE>
     <STATE>1</STATE>
     <UNICODE>X</UNICODE>
    </VSEOINTERF>
    <DESCRIPTIONS>
     <SEOCOMPOTX>
-     <CLSNAME>ZIF_UITB_PGV_FIELDS</CLSNAME>
+     <CLSNAME>ZIF_UITB_PGV_CHECK_EVT_FIELDS</CLSNAME>
      <CMPNAME>GET_FIELDS</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Returns the fields with the current values</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
-     <CLSNAME>ZIF_UITB_PGV_FIELDS</CLSNAME>
+     <CLSNAME>ZIF_UITB_PGV_CHECK_EVT_FIELDS</CLSNAME>
      <CMPNAME>SET_VALIDATION_ERROR</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Sets validation error</DESCRIPT>
