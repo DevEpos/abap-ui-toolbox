@@ -42,7 +42,7 @@ CLASS zcl_uitb_gui_screen_base DEFINITION
     "! <p class="shorttext synchronized" lang="en">Create content of screen</p>
     "!
     METHODS create_content
-          ABSTRACT
+      ABSTRACT
       IMPORTING
         io_container TYPE REF TO cl_gui_container.
     "! <p class="shorttext synchronized" lang="en">Handle UI before output</p>
@@ -58,13 +58,13 @@ CLASS zcl_uitb_gui_screen_base DEFINITION
     "! <p class="shorttext synchronized" lang="en">Register handlers for the given toolbar</p>
     "!
     METHODS register_toolbar
-          FINAL
+      FINAL
       IMPORTING
         io_toolbar TYPE REF TO cl_gui_toolbar.
     "! <p class="shorttext synchronized" lang="en">Creates control toolbar</p>
     "!
     METHODS create_control_toolbar
-          FINAL
+      FINAL
       IMPORTING
         io_parent    TYPE REF TO cl_gui_container
         iv_mode      TYPE i DEFAULT cl_gui_toolbar=>m_mode_horizontal
@@ -76,7 +76,7 @@ CLASS zcl_uitb_gui_screen_base DEFINITION
     "! <p class="shorttext synchronized" lang="en">Raise the given function as command</p>
     "!
     METHODS trigger_command
-          FINAL
+      FINAL
       IMPORTING
         iv_function TYPE ui_func.
 
@@ -87,19 +87,19 @@ CLASS zcl_uitb_gui_screen_base DEFINITION
     "! <p class="shorttext synchronized" lang="en">Handler for PBO of Dynpro</p>
     "!
     METHODS on_dynpro_before_output
-        FOR EVENT before_output OF zif_uitb_gui_dynpro_events
+      FOR EVENT before_output OF zif_uitb_gui_dynpro_events
       IMPORTING
         eo_callback.
     "! <p class="shorttext synchronized" lang="en">Handler for PAI of Dynpro</p>
     "!
     METHODS on_dynpro_user_command
-        FOR EVENT user_command OF zif_uitb_gui_dynpro_events
+      FOR EVENT user_command OF zif_uitb_gui_dynpro_events
       IMPORTING
         ev_function_id.
     "! <p class="shorttext synchronized" lang="en">Handler for Exit code of dynpro</p>
     "!
     METHODS on_exit
-        FOR EVENT exit OF zif_uitb_gui_dynpro_events
+      FOR EVENT exit OF zif_uitb_gui_dynpro_events
       IMPORTING
         eo_callback.
     "! <p class="shorttext synchronized" lang="en">Handler for dynpro was exited</p>
@@ -110,13 +110,13 @@ CLASS zcl_uitb_gui_screen_base DEFINITION
     "! <p class="shorttext synchronized" lang="en">Handler for function click of toolbar button</p>
     "!
     METHODS on_toolbar_function
-        FOR EVENT function_selected OF cl_gui_toolbar
+      FOR EVENT function_selected OF cl_gui_toolbar
       IMPORTING
         fcode.
     "! <p class="shorttext synchronized" lang="en">Handler for toolbar dropdown click of toolbar</p>
     "!
     METHODS on_toolbar_dropdown
-        FOR EVENT dropdown_clicked OF cl_gui_toolbar
+      FOR EVENT dropdown_clicked OF cl_gui_toolbar
       IMPORTING
         fcode
         posx
@@ -157,12 +157,12 @@ CLASS zcl_uitb_gui_screen_base IMPLEMENTATION.
 
       CALL FUNCTION 'ZUITB_CALL_GUI_SCREEN'
         EXPORTING
-          iv_program_title   = CONV cua_tit_tx( mv_title )
-          io_callback        = lo_dynpro_handler
-          iv_start_line      = lv_start_line
-          iv_end_line        = lv_start_line + iv_height
-          iv_start_column    = lv_start_column
-          iv_end_column      = lv_start_column + iv_width.
+          iv_program_title = CONV cua_tit_tx( mv_title )
+          io_callback      = lo_dynpro_handler
+          iv_start_line    = lv_start_line
+          iv_end_line      = lv_start_line + iv_height
+          iv_start_column  = lv_start_column
+          iv_end_column    = lv_start_column + iv_width.
     ELSE.
       CALL FUNCTION 'ZUITB_CALL_GUI_SCREEN'
         EXPORTING
@@ -173,13 +173,12 @@ CLASS zcl_uitb_gui_screen_base IMPLEMENTATION.
 
 
   METHOD create_container.
-    " creates the root container of the view
+    " 'autoalign = abap_true' needed, so that the container fills whole screen
     mo_container = NEW cl_gui_container(
-        clsid      = 'SAPGUI.CONTAINERCTRL.1'
-        name       = 'CONTAINER'
-        lifetime   = mv_lifetime
-        autoalign  = abap_true " needed, so that the container fills whole screen
-    ).
+      clsid      = 'SAPGUI.CONTAINERCTRL.1'
+      name       = 'CONTAINER'
+      lifetime   = mv_lifetime
+      autoalign  = abap_true ).
   ENDMETHOD.
 
   METHOD create_control_toolbar.
@@ -191,8 +190,7 @@ CLASS zcl_uitb_gui_screen_base IMPLEMENTATION.
         it_button    = it_button
       IMPORTING
         eo_toolbar   = eo_toolbar
-        eo_client    = eo_client
-    ).
+        eo_client    = eo_client ).
 
     register_toolbar( eo_toolbar ).
   ENDMETHOD.
@@ -211,7 +209,7 @@ CLASS zcl_uitb_gui_screen_base IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD on_dynpro_user_command.
-    execute_command( NEW cl_ui_command(
+    execute_command( NEW lcl_simple_ui_command(
       iv_type     = zif_uitb_gui_command=>c_command_type-dynpro
       iv_function = ev_function_id  )
     ).
@@ -242,10 +240,10 @@ CLASS zcl_uitb_gui_screen_base IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD on_toolbar_dropdown.
-    DATA(lo_command) = NEW cl_ui_command(
+    DATA(lo_command) = NEW lcl_simple_ui_command(
       iv_type     = zif_uitb_gui_command=>c_command_type-request_menu
-      iv_function = fcode
-    ).
+      iv_function = fcode ).
+
     execute_command( lo_command ).
 
     IF lo_command->mo_menu IS BOUND.
@@ -256,18 +254,14 @@ CLASS zcl_uitb_gui_screen_base IMPLEMENTATION.
           posy         = posy
         EXCEPTIONS
           ctmenu_error = 1
-          OTHERS       = 2
-      ).
-      IF sy-subrc <> 0.
-      ENDIF.
+          OTHERS       = 2 ).
     ENDIF.
   ENDMETHOD.
 
   METHOD on_toolbar_function.
-    execute_command( NEW cl_ui_command(
+    execute_command( NEW lcl_simple_ui_command(
       iv_type     = zif_uitb_gui_command=>c_command_type-normal
-      iv_function = fcode  )
-    ).
+      iv_function = fcode  ) ).
   ENDMETHOD.
 
   METHOD handle_exit_request.
@@ -283,10 +277,9 @@ CLASS zcl_uitb_gui_screen_base IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD trigger_command.
-    execute_command( io_command = NEW cl_ui_command(
+    execute_command( io_command = NEW lcl_simple_ui_command(
       iv_type     = zif_uitb_gui_command=>c_command_type-normal
-      iv_function = iv_function
-    ) ).
+      iv_function = iv_function ) ).
   ENDMETHOD.
 
 
