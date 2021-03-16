@@ -20,13 +20,14 @@ CLASS zcl_uitb_gui_splitter_cont DEFINITION
     "!
     METHODS constructor
       IMPORTING
-        iv_elements TYPE i
-        iv_size     TYPE string DEFAULT c_default_size
-        iv_mode     TYPE i DEFAULT zcl_uitb_gui_splitter_cont=>c_mode-rows
-        io_parent   TYPE REF TO cl_gui_container.
+        io_parent    TYPE REF TO cl_gui_container
+        iv_elements  TYPE i
+        iv_size      TYPE string DEFAULT c_default_size
+        iv_mode      TYPE i DEFAULT zcl_uitb_gui_splitter_cont=>c_mode-rows
+        if_no_border TYPE abap_bool OPTIONAL.
 
     "! <p class="shorttext synchronized" lang="en">Set size of a given Cell</p>
-    METHODS set_size
+    METHODS set_element_size
       IMPORTING
         iv_index TYPE i
         iv_size  TYPE i.
@@ -45,6 +46,13 @@ CLASS zcl_uitb_gui_splitter_cont DEFINITION
         if_visible TYPE abap_bool OPTIONAL
         if_movable TYPE abap_bool OPTIONAL.
 
+    "! <p class="shorttext synchronized" lang="en">Sets properties for all sashes</p>
+    METHODS set_all_sash_properties
+      IMPORTING
+        if_visible         TYPE abap_bool OPTIONAL
+        if_movable         TYPE abap_bool OPTIONAL
+      RETURNING
+        VALUE(ro_splitter) TYPE REF TO zcl_uitb_gui_splitter_cont.
     "! <p class="shorttext synchronized" lang="en">Show/hide element</p>
     "!
     METHODS set_element_visibility
@@ -92,6 +100,18 @@ CLASS zcl_uitb_gui_splitter_cont DEFINITION
       IMPORTING
         if_initial_update TYPE abap_bool OPTIONAL.
 
+    METHODS set_column_sash
+      IMPORTING
+        iv_index TYPE i
+        iv_type  TYPE i
+        iv_value TYPE i.
+
+    METHODS set_row_sash
+      IMPORTING
+        iv_index TYPE i
+        iv_type  TYPE i
+        iv_value TYPE i.
+
     METHODS set_size_hidden_cells.
     METHODS set_size_visible_cells.
 ENDCLASS.
@@ -99,6 +119,7 @@ ENDCLASS.
 
 
 CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
+
   METHOD constructor.
     DATA: lv_rows            TYPE i,
           lv_size            TYPE i,
@@ -199,7 +220,7 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
 *.. Hide the border
     mo_splitter->set_border(
       EXPORTING
-        border            = abap_false
+        border            = xsdbool( if_no_border = abap_false )
       EXCEPTIONS
         cntl_error        = 1
         cntl_system_error = 2
@@ -212,11 +233,35 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
     update_size( if_initial_update = abap_true ).
   ENDMETHOD.
 
+  METHOD zif_uitb_gui_control~free.
+    CHECK mo_splitter IS BOUND.
+    mo_splitter->free( EXCEPTIONS OTHERS = 1 ).
+  ENDMETHOD.
+
+  METHOD zif_uitb_gui_control~focus.
+    zcl_uitb_gui_helper=>set_focus( mo_splitter ).
+  ENDMETHOD.
+
+  METHOD zif_uitb_gui_control~has_focus.
+    rf_has_focus = zcl_uitb_gui_helper=>has_focus( mo_splitter ).
+  ENDMETHOD.
+
   METHOD get_container.
     ro_container = mo_splitter->get_container(
       row    = COND #( WHEN mv_mode = c_mode-cols THEN 1 ELSE iv_index )
       column = COND #( WHEN mv_mode = c_mode-rows THEN 1 ELSE iv_index )
     ).
+  ENDMETHOD.
+
+  METHOD set_all_sash_properties.
+    DO lines( mt_elements ) - 1 TIMES.
+      set_sash_properties(
+        iv_index   = sy-index
+        if_visible = if_visible
+        if_movable = if_movable ).
+    ENDDO.
+
+    ro_splitter = me.
   ENDMETHOD.
 
   METHOD set_sash_properties.
@@ -227,71 +272,35 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
 
       WHEN c_mode-cols.
         IF if_movable IS SUPPLIED.
-          mo_splitter->set_column_sash(
-            EXPORTING
-              id                = iv_index
-              type              = cl_gui_splitter_container=>type_movable
-              value             = lv_movable
-            EXCEPTIONS
-              cntl_error        = 1
-              cntl_system_error = 2
-              OTHERS            = 3
-          ).
-          IF sy-subrc NE 0.
-            zcx_uitb_gui_exception=>raise_from_sy( ).
-          ENDIF.
+          set_column_sash(
+            iv_index = iv_index
+            iv_type  = cl_gui_splitter_container=>type_movable
+            iv_value = lv_movable ).
         ENDIF.
         IF if_visible IS SUPPLIED.
-          mo_splitter->set_column_sash(
-            EXPORTING
-              id                = iv_index
-              type              = cl_gui_splitter_container=>type_sashvisible
-              value             = lv_visible
-            EXCEPTIONS
-              cntl_error        = 1
-              cntl_system_error = 2
-              OTHERS            = 3
-          ).
-          IF sy-subrc NE 0.
-            zcx_uitb_gui_exception=>raise_from_sy( ).
-          ENDIF.
+          set_column_sash(
+            iv_index = iv_index
+            iv_type  = cl_gui_splitter_container=>type_sashvisible
+            iv_value = lv_visible ).
         ENDIF.
 
       WHEN c_mode-rows.
         IF if_movable IS SUPPLIED.
-          mo_splitter->set_row_sash(
-            EXPORTING
-              id                = iv_index
-              type              = cl_gui_splitter_container=>type_movable
-              value             = lv_movable
-            EXCEPTIONS
-              cntl_error        = 1
-              cntl_system_error = 2
-              OTHERS            = 3
-          ).
-          IF sy-subrc NE 0.
-            zcx_uitb_gui_exception=>raise_from_sy( ).
-          ENDIF.
+          set_row_sash(
+            iv_index = iv_index
+            iv_type  = cl_gui_splitter_container=>type_movable
+            iv_value = lv_movable ).
         ENDIF.
         IF if_visible IS SUPPLIED.
-          mo_splitter->set_row_sash(
-            EXPORTING
-              id                = iv_index
-              type              = cl_gui_splitter_container=>type_sashvisible
-              value             = lv_visible
-            EXCEPTIONS
-              cntl_error        = 1
-              cntl_system_error = 2
-              OTHERS            = 3
-          ).
-          IF sy-subrc NE 0.
-            zcx_uitb_gui_exception=>raise_from_sy( ).
-          ENDIF.
+          set_row_sash(
+            iv_index = iv_index
+            iv_type  = cl_gui_splitter_container=>type_sashvisible
+            iv_value = lv_visible ).
         ENDIF.
     ENDCASE.
   ENDMETHOD.
 
-  METHOD set_size.
+  METHOD set_element_size.
     CASE mv_mode.
 
       WHEN c_mode-cols.
@@ -402,49 +411,65 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
       lv_tabix = sy-tabix.
 
       IF <ls_element>-stretch_content = abap_false.
-        set_size(
-            iv_index = lv_tabix
-            iv_size  = <ls_element>-base_size
-        ).
+        set_element_size(
+          iv_index = lv_tabix
+          iv_size  = <ls_element>-base_size ).
       ENDIF.
 
       CHECK lv_tabix < mv_elements_count.
 
       set_sash_properties(
-          iv_index   = lv_tabix
-          if_visible = <ls_element>-sash_visible
-      ).
+        iv_index   = lv_tabix
+        if_visible = abap_true ).
     ENDLOOP.
+
   ENDMETHOD.
 
   METHOD set_size_hidden_cells.
+
     LOOP AT mt_elements ASSIGNING FIELD-SYMBOL(<ls_element>) WHERE visible = abap_false.
       DATA(lv_tabix) = sy-tabix.
-      set_size(
+      set_element_size(
           iv_index = lv_tabix
           iv_size  = 0
       ).
       CHECK lv_tabix < mv_elements_count.
 
       set_sash_properties(
-          iv_index   = lv_tabix
-          if_visible = <ls_element>-sash_visible
-      ).
-
+        iv_index   = lv_tabix
+        if_visible = abap_false ).
     ENDLOOP.
+
   ENDMETHOD.
 
-  METHOD zif_uitb_gui_control~free.
-    CHECK mo_splitter IS BOUND.
-    mo_splitter->free( EXCEPTIONS OTHERS = 1 ).
+  METHOD set_column_sash.
+    mo_splitter->set_column_sash(
+      EXPORTING
+        id                = iv_index
+        type              = iv_type
+        value             = iv_value
+      EXCEPTIONS
+        cntl_error        = 1
+        cntl_system_error = 2
+        OTHERS            = 3 ).
+    IF sy-subrc <> 0.
+      zcx_uitb_gui_exception=>raise_from_sy( ).
+    ENDIF.
   ENDMETHOD.
 
-  METHOD zif_uitb_gui_control~focus.
-    zcl_uitb_gui_helper=>set_focus( mo_splitter ).
-  ENDMETHOD.
-
-  METHOD zif_uitb_gui_control~has_focus.
-    rf_has_focus = zcl_uitb_gui_helper=>has_focus( mo_splitter ).
+  METHOD set_row_sash.
+    mo_splitter->set_row_sash(
+      EXPORTING
+        id                = iv_index
+        type              = iv_type
+        value             = iv_value
+      EXCEPTIONS
+        cntl_error        = 1
+        cntl_system_error = 2
+        OTHERS            = 3 ).
+    IF sy-subrc <> 0.
+      zcx_uitb_gui_exception=>raise_from_sy( ).
+    ENDIF.
   ENDMETHOD.
 
 ENDCLASS.
