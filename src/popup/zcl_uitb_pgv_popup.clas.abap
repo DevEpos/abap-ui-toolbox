@@ -205,6 +205,8 @@ CLASS zcl_uitb_pgv_popup IMPLEMENTATION.
         ASSIGN mt_fields[ sy-tabix ] TO FIELD-SYMBOL(<ls_field>).
         MOVE-CORRESPONDING <ls_changed_field> TO <ls_field>.
       ENDLOOP.
+    ELSE.
+      mf_cancelled = abap_true.
     ENDIF.
 
   ENDMETHOD.
