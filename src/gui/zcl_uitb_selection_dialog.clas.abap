@@ -186,17 +186,15 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
 
     DATA(lo_splitter) = NEW zcl_uitb_gui_splitter_cont(
       iv_elements = 2
-      iv_size     = '30:*'
-      io_parent   = io_container
-    ).
+      iv_size     = |{ zcl_uitb_gui_helper=>get_default_ctrl_height( ) }:*|
+      io_parent   = io_container ).
 
     mo_filter_input = NEW cl_gui_input_field(
       parent               = lo_splitter->get_container( 1 )
       input_prompt_text    = COND #( WHEN mv_filter_prompt IS NOT INITIAL THEN mv_filter_prompt ELSE |{ 'Enter Filter'(007) }| )
       label_text           = 'Filter'(006)
       label_width          = 10
-      activate_find_button = abap_true
-    ).
+      activate_find_button = abap_true ).
     SET HANDLER:
       on_filter_submit FOR mo_filter_input.
 

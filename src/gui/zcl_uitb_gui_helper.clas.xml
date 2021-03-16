@@ -32,9 +32,27 @@
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CLSNAME>ZCL_UITB_GUI_HELPER</CLSNAME>
+     <CMPNAME>GET_DEFAULT_CTRL_HEIGHT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Returns default width/height for control container</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_HELPER</CLSNAME>
+     <CMPNAME>GET_DEFAULT_CTRL_WIDTH</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Returns default width/height for control container</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_HELPER</CLSNAME>
      <CMPNAME>HAS_FOCUS</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Checks if given control has the focus</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_HELPER</CLSNAME>
+     <CMPNAME>IS_BELIZE_THEME</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Returns &apos;X&apos; if belize theme is active</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CLSNAME>ZCL_UITB_GUI_HELPER</CLSNAME>

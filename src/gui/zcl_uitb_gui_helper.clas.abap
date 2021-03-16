@@ -16,7 +16,7 @@ CLASS zcl_uitb_gui_helper DEFINITION
       IMPORTING
         io_parent       TYPE REF TO cl_gui_container
         if_show_sash    TYPE abap_bool OPTIONAL
-        iv_toolbar_size TYPE i DEFAULT 26
+        iv_toolbar_size TYPE i OPTIONAL
         iv_mode         TYPE i DEFAULT cl_gui_toolbar=>m_mode_horizontal
         !it_button      TYPE ttb_button OPTIONAL
       EXPORTING
@@ -47,9 +47,28 @@ CLASS zcl_uitb_gui_helper DEFINITION
     CLASS-METHODS set_focus
       IMPORTING
         io_control TYPE REF TO cl_gui_control.
+
+    "! <p class="shorttext synchronized" lang="en">Returns 'X' if belize theme is active</p>
+    CLASS-METHODS is_belize_theme
+      RETURNING
+        VALUE(rf_is_belize) TYPE abap_bool.
+
+    "! <p class="shorttext synchronized" lang="en">Returns default width/height for control container</p>
+    "! Returns the optimum width/height of a container that contains only GUI Buttons
+    "! dependent on the current theme. <br/>
+    CLASS-METHODS get_default_ctrl_height
+      RETURNING
+        VALUE(rv_size) TYPE i.
+    "! <p class="shorttext synchronized" lang="en">Returns default width/height for control container</p>
+    "! Returns the optimum width/height of a container that contains only GUI Buttons
+    "! dependent on the current theme. <br/>
+    CLASS-METHODS get_default_ctrl_width
+      RETURNING
+        VALUE(rv_size) TYPE i.
   PROTECTED SECTION.
   PRIVATE SECTION.
     CLASS-DATA go_temp_ctrl TYPE REF TO cl_gui_control.
+    CLASS-DATA gv_sap_gui_theme TYPE string.
 ENDCLASS.
 
 
@@ -62,17 +81,23 @@ CLASS zcl_uitb_gui_helper IMPLEMENTATION.
           lt_event     TYPE cntl_simple_events,
           ls_event     TYPE cntl_simple_event.
 
+    DATA(lv_toolbar_size) = iv_toolbar_size.
+
+    IF lv_toolbar_size IS INITIAL.
+      lv_toolbar_size = SWITCH #( iv_mode
+        WHEN zcl_uitb_gui_splitter_cont=>c_mode-cols THEN get_default_ctrl_width( )
+        WHEN zcl_uitb_gui_splitter_cont=>c_mode-rows THEN get_default_ctrl_height( ) ).
+    ENDIF.
+
     DATA(lo_splitter) = NEW zcl_uitb_gui_splitter_cont(
       iv_elements  = 2
-      iv_size      = |{ iv_toolbar_size }:*|
-      io_parent    = io_parent
-    ).
+      iv_size      = |{ lv_toolbar_size }:*|
+      io_parent    = io_parent ).
 
     lo_splitter->set_sash_properties(
-        iv_index   = 1
-        if_visible = if_show_sash
-        if_movable = abap_false
-    ).
+      iv_index   = 1
+      if_visible = if_show_sash
+      if_movable = abap_false ).
 
     lo_container = lo_splitter->get_container( iv_index = 1 ).
 *.. Create the toolbar object
@@ -237,6 +262,24 @@ CLASS zcl_uitb_gui_helper IMPLEMENTATION.
         cntl_error        = 1
         cntl_system_error = 2
         OTHERS            = 3 ).
+  ENDMETHOD.
+
+  METHOD is_belize_theme.
+    IF gv_sap_gui_theme IS INITIAL.
+      cl_gui_resources=>get_themename( IMPORTING themename = gv_sap_gui_theme ).
+    ENDIF.
+
+    rf_is_belize = xsdbool(
+      gv_sap_gui_theme = 'Belize' OR
+      gv_sap_gui_theme CP 'sap_belize*'  ).
+  ENDMETHOD.
+
+  METHOD get_default_ctrl_height.
+    rv_size = COND #( WHEN is_belize_theme( ) THEN 28 ELSE 21 ).
+  ENDMETHOD.
+
+  METHOD get_default_ctrl_width.
+    rv_size = COND #( WHEN is_belize_theme( ) THEN 28 ELSE 26 ).
   ENDMETHOD.
 
 ENDCLASS.
