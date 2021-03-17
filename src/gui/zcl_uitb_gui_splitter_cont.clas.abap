@@ -17,7 +17,6 @@ CLASS zcl_uitb_gui_splitter_cont DEFINITION
       END OF c_mode.
 
     "! <p class="shorttext synchronized" lang="en">Creates new GUI Splitter Container</p>
-    "!
     METHODS constructor
       IMPORTING
         io_parent    TYPE REF TO cl_gui_container
@@ -31,26 +30,35 @@ CLASS zcl_uitb_gui_splitter_cont DEFINITION
       IMPORTING
         iv_index TYPE i
         iv_size  TYPE i.
+
     "! <p class="shorttext synchronized" lang="en">Retrieve container at specific index</p>
-    "!
     METHODS get_container
       IMPORTING
         iv_index            TYPE i
       RETURNING
         VALUE(ro_container) TYPE REF TO cl_gui_container.
-    "! <p class="shorttext synchronized" lang="en">Sets the sash properties for a given element</p>
-    "!
-    METHODS set_sash_properties
+
+    "! <p class="shorttext synchronized" lang="en">Sets the sash movable for a given element</p>
+    METHODS set_sash_movable
       IMPORTING
-        iv_index   TYPE i
-        if_visible TYPE abap_bool OPTIONAL
-        if_movable TYPE abap_bool OPTIONAL.
+        iv_index           TYPE i
+        if_movable         TYPE abap_bool DEFAULT abap_true
+      RETURNING
+        VALUE(ro_splitter) TYPE REF TO zcl_uitb_gui_splitter_cont.
+
+    "! <p class="shorttext synchronized" lang="en">Sets the sash visible for a given element</p>
+    METHODS set_sash_visible
+      IMPORTING
+        iv_index           TYPE i
+        if_visible         TYPE abap_bool DEFAULT abap_true
+      RETURNING
+        VALUE(ro_splitter) TYPE REF TO zcl_uitb_gui_splitter_cont.
 
     "! <p class="shorttext synchronized" lang="en">Sets properties for all sashes</p>
     METHODS set_all_sash_properties
       IMPORTING
-        if_visible         TYPE abap_bool OPTIONAL
-        if_movable         TYPE abap_bool OPTIONAL
+        if_visible         TYPE abap_bool DEFAULT abap_true
+        if_movable         TYPE abap_bool DEFAULT abap_true
       RETURNING
         VALUE(ro_splitter) TYPE REF TO zcl_uitb_gui_splitter_cont.
     "! <p class="shorttext synchronized" lang="en">Show/hide element</p>
@@ -254,50 +262,59 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD set_all_sash_properties.
+
     DO lines( mt_elements ) - 1 TIMES.
-      set_sash_properties(
+      set_sash_movable(
+        iv_index    = sy-index
+        if_movable  = if_movable ).
+      set_sash_visible(
         iv_index   = sy-index
-        if_visible = if_visible
-        if_movable = if_movable ).
+        if_visible = if_visible ).
     ENDDO.
 
     ro_splitter = me.
   ENDMETHOD.
 
-  METHOD set_sash_properties.
+  METHOD set_sash_movable.
     DATA(lv_movable) = COND i( WHEN if_movable = abap_true THEN c_true ELSE c_false ).
+
+    CASE mv_mode.
+
+      WHEN c_mode-cols.
+        set_column_sash(
+          iv_index = iv_index
+          iv_type  = cl_gui_splitter_container=>type_movable
+          iv_value = lv_movable ).
+
+      WHEN c_mode-rows.
+        set_row_sash(
+          iv_index = iv_index
+          iv_type  = cl_gui_splitter_container=>type_movable
+          iv_value = lv_movable ).
+    ENDCASE.
+
+    ro_splitter = me.
+  ENDMETHOD.
+
+  METHOD set_sash_visible.
     DATA(lv_visible) = COND i( WHEN if_visible = abap_true THEN c_true ELSE c_false ).
 
     CASE mv_mode.
 
       WHEN c_mode-cols.
-        IF if_movable IS SUPPLIED.
-          set_column_sash(
-            iv_index = iv_index
-            iv_type  = cl_gui_splitter_container=>type_movable
-            iv_value = lv_movable ).
-        ENDIF.
-        IF if_visible IS SUPPLIED.
-          set_column_sash(
-            iv_index = iv_index
-            iv_type  = cl_gui_splitter_container=>type_sashvisible
-            iv_value = lv_visible ).
-        ENDIF.
+        set_column_sash(
+          iv_index = iv_index
+          iv_type  = cl_gui_splitter_container=>type_sashvisible
+          iv_value = lv_visible ).
 
       WHEN c_mode-rows.
-        IF if_movable IS SUPPLIED.
-          set_row_sash(
-            iv_index = iv_index
-            iv_type  = cl_gui_splitter_container=>type_movable
-            iv_value = lv_movable ).
-        ENDIF.
-        IF if_visible IS SUPPLIED.
-          set_row_sash(
-            iv_index = iv_index
-            iv_type  = cl_gui_splitter_container=>type_sashvisible
-            iv_value = lv_visible ).
-        ENDIF.
+        set_row_sash(
+          iv_index = iv_index
+          iv_type  = cl_gui_splitter_container=>type_sashvisible
+          iv_value = lv_visible ).
     ENDCASE.
+
+    ro_splitter = me.
   ENDMETHOD.
 
   METHOD set_element_size.
@@ -418,9 +435,9 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
 
       CHECK lv_tabix < mv_elements_count.
 
-      set_sash_properties(
-        iv_index   = lv_tabix
-        if_visible = abap_true ).
+      set_sash_visible(
+        iv_index    = lv_tabix
+        if_visible  = abap_false ).
     ENDLOOP.
 
   ENDMETHOD.
@@ -435,9 +452,9 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
       ).
       CHECK lv_tabix < mv_elements_count.
 
-      set_sash_properties(
-        iv_index   = lv_tabix
-        if_visible = abap_false ).
+      set_sash_visible(
+        iv_index    = lv_tabix
+        if_visible  = abap_false ).
     ENDLOOP.
 
   ENDMETHOD.

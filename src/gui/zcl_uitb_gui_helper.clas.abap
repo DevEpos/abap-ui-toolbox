@@ -90,14 +90,12 @@ CLASS zcl_uitb_gui_helper IMPLEMENTATION.
     ENDIF.
 
     DATA(lo_splitter) = NEW zcl_uitb_gui_splitter_cont(
-      iv_elements  = 2
-      iv_size      = |{ lv_toolbar_size }:*|
-      io_parent    = io_parent ).
-
-    lo_splitter->set_sash_properties(
-      iv_index   = 1
-      if_visible = if_show_sash
-      if_movable = abap_false ).
+        iv_elements  = 2
+        iv_size      = |{ lv_toolbar_size }:*|
+        io_parent    = io_parent
+      )->set_all_sash_properties(
+        if_visible = if_show_sash
+        if_movable = abap_false ).
 
     lo_container = lo_splitter->get_container( iv_index = 1 ).
 *.. Create the toolbar object

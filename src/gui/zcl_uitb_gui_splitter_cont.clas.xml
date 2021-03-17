@@ -56,9 +56,15 @@
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CLSNAME>ZCL_UITB_GUI_SPLITTER_CONT</CLSNAME>
-     <CMPNAME>SET_SASH_PROPERTIES</CMPNAME>
+     <CMPNAME>SET_SASH_MOVABLE</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Sets the sash properties for a given element</DESCRIPT>
+     <DESCRIPT>Sets the sash movable for a given element</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CLSNAME>ZCL_UITB_GUI_SPLITTER_CONT</CLSNAME>
+     <CMPNAME>SET_SASH_VISIBLE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Sets the sash visible for a given element</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CLSNAME>ZCL_UITB_GUI_SPLITTER_CONT</CLSNAME>
