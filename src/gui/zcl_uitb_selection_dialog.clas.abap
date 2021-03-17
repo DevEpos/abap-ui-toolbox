@@ -113,24 +113,24 @@ CLASS zcl_uitb_selection_dialog DEFINITION
         iv_column TYPE lvc_fname.
     "! <p class="shorttext synchronized" lang="en">Handler for submit event of filter input</p>
     METHODS on_filter_submit
-        FOR EVENT submit OF cl_gui_input_field
+      FOR EVENT submit OF cl_gui_input_field
       IMPORTING
         input.
     "! <p class="shorttext synchronized" lang="en">Handler for ALV link click</p>
     METHODS on_alv_link_click
-        FOR EVENT link_click OF zcl_uitb_alv_events
+      FOR EVENT link_click OF zcl_uitb_alv_events
       IMPORTING
         ev_column
         ev_row.
     "! <p class="shorttext synchronized" lang="en">Handler for ALV double click</p>
     METHODS on_alv_double_click
-        FOR EVENT double_click OF zcl_uitb_alv_events
+      FOR EVENT double_click OF zcl_uitb_alv_events
       IMPORTING
         ev_column
         ev_row.
     "! <p class="shorttext synchronized" lang="en">Handler for ALV User function</p>
     METHODS on_alv_function
-        FOR EVENT function_chosen OF zcl_uitb_alv_events
+      FOR EVENT function_chosen OF zcl_uitb_alv_events
       IMPORTING
         ev_function
         ev_tag.
@@ -195,8 +195,8 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
       label_text           = 'Filter'(006)
       label_width          = 10
       activate_find_button = abap_true ).
-    SET HANDLER:
-      on_filter_submit FOR mo_filter_input.
+
+    SET HANDLER on_filter_submit FOR mo_filter_input.
 
     create_alv( lo_splitter->get_container( 2 ) ).
 
@@ -209,6 +209,9 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
 
 
   METHOD create_alv.
+    DATA: lo_col         TYPE REF TO zcl_uitb_alv_column,
+          lt_ignore_cols TYPE RANGE OF lvc_fname,
+          lx_alv_error   TYPE REF TO zcx_uitb_alv_error.
 
     FIELD-SYMBOLS: <lt_output_data>   TYPE table,
                    <lt_filtered_data> TYPE table.
@@ -217,75 +220,80 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
     ASSERT mr_t_data IS BOUND.
 
     mo_alv = zcl_uitb_alv=>create_alv(
-       ir_data      = mr_t_data
-       ir_container = io_container
-    ).
+      ir_data      = mr_t_data
+      if_editable  = abap_true
+      ir_container = io_container ).
     DATA(lo_cols) = mo_alv->get_columns( ).
     DATA(lo_col_iterator) = lo_cols->zif_uitb_list~get_iterator( ).
 
-    WHILE lo_col_iterator->has_next( ).
-      DATA(lo_col) = CAST zcl_uitb_alv_column( lo_col_iterator->get_next( ) ).
-      IF mf_multi_select = abap_true AND lo_col->get_name( ) = get_mark_field( ).
-        lo_col->set_cell_type( zif_uitb_c_alv_cell_types=>checkbox_hotspot ).
-        get_mark_field_description(
+    lt_ignore_cols = VALUE #( ( sign = 'I' option = 'EQ' low = get_filtered_column( ) ) ).
+
+    TRY.
+        IF mf_multi_select = abap_true.
+          DATA(lv_mark_field) = get_mark_field( ).
+          lo_col = lo_cols->get_column( lv_mark_field ).
+          APPEND VALUE #( sign = 'I' option = 'EQ' low = get_mark_field( ) ) TO lt_ignore_cols.
+          lo_col->set_editable( abap_true ).
+          mo_alv->get_data_changes( )->set_change_event( cl_gui_alv_grid=>mc_evt_modified ).
+          lo_col->set_cell_type( zif_uitb_c_alv_cell_types=>checkbox ).
+          get_mark_field_description(
             IMPORTING ev_short   = DATA(lv_mark_desc_short)
                       ev_medium  = DATA(lv_mark_desc_medium)
-                      ev_long    = DATA(lv_mark_desc_long)
-        ).
-        lo_col->set_descriptions(
+                      ev_long    = DATA(lv_mark_desc_long) ).
+          lo_col->set_descriptions(
             iv_short  = lv_mark_desc_short
             iv_medium = lv_mark_desc_medium
             iv_long   = lv_mark_desc_long ).
-        lo_col->set_optimized( ).
-        lo_col->set_style( zif_uitb_c_alv_cell_style=>enabled ).
-      ELSEIF mf_use_alv_filter = abap_true AND lo_col->get_name( ) = get_filtered_column( ).
-        lo_col->set_technical( ).
-      ELSE.
-        adjust_column( lo_col ).
-      ENDIF.
-    ENDWHILE.
+          lo_col->set_optimized( ).
+        ENDIF.
 
-    SET HANDLER:
-      on_alv_link_click FOR mo_alv->get_events( ),
-      on_alv_double_click FOR mo_alv->get_events( ).
+        IF mf_use_alv_filter = abap_true.
+          lo_col = lo_cols->get_column( get_filtered_column( ) ).
+          lo_col->set_technical( ).
+        ENDIF.
 
-    lo_cols->set_single_click_sort( ).
+        WHILE lo_col_iterator->has_next( ).
+          lo_col = CAST zcl_uitb_alv_column( lo_col_iterator->get_next( ) ).
+          CHECK lo_col->get_name( ) NOT IN lt_ignore_cols.
+          adjust_column( lo_col ).
+        ENDWHILE.
 
-    DATA(lo_functions) = mo_alv->get_functions( ).
-    lo_functions->set_all( abap_false ).
-    lo_functions->set_function( zif_uitb_c_alv_functions=>column_optimze ).
+        lo_cols->set_single_click_sort( ).
 
-    IF mf_multi_select = abap_true.
-      SET HANDLER:
-        on_alv_function FOR mo_alv->get_events( ).
+        DATA(lo_functions) = mo_alv->get_functions( ).
+        lo_functions->set_all( abap_false ).
+        lo_functions->set_function( zif_uitb_c_alv_functions=>column_optimze ).
 
-      mo_alv->get_selections( )->set_mode( zif_uitb_c_alv_selection=>cell ).
+        DATA(lo_events) = mo_alv->get_events( ).
+        IF mf_multi_select = abap_true.
+          SET HANDLER on_alv_function FOR lo_events.
 
-      lo_functions->add_function(
-          iv_name    = c_func_accept_selections
-          iv_icon    = |{ icon_okay }|
-          iv_tooltip = |{ TEXT-003 }|
-      ).
-      lo_functions->add_function(
-          iv_type = zcl_uitb_alv_functions=>separator
-      ).
-      lo_functions->add_function(
-          iv_name    = c_func_select_all
-          iv_icon    = |{ icon_select_all }|
-          iv_tooltip = |{ 'Select all'(004) }|
-      ).
-      lo_functions->add_function(
-          iv_name    = c_func_unselect_all
-          iv_icon    = |{ icon_deselect_all }|
-          iv_tooltip = |{ 'Unselect All'(005) }|
-      ).
-    ENDIF.
+          lo_functions->add_function(
+            iv_name    = c_func_accept_selections
+            iv_icon    = |{ icon_okay }|
+            iv_tooltip = |{ TEXT-003 }| ).
+          lo_functions->add_function(
+            iv_type = zcl_uitb_alv_functions=>separator ).
+          lo_functions->add_function(
+            iv_name    = c_func_select_all
+            iv_icon    = |{ icon_select_all }|
+            iv_tooltip = |{ 'Select all'(004) }| ).
+          lo_functions->add_function(
+            iv_name    = c_func_unselect_all
+            iv_icon    = |{ icon_deselect_all }|
+            iv_tooltip = |{ 'Unselect All'(005) }| ).
+        ELSE.
+          SET HANDLER:
+            on_alv_double_click FOR lo_events,
+            on_alv_link_click FOR lo_events.
+        ENDIF.
 
-    TRY.
         mo_alv->display( ).
         lo_cols->set_optimized( ).
-      CATCH zcx_uitb_alv_error INTO DATA(lx_alv_error).
-        MESSAGE lx_alv_error->get_text( ) TYPE 'X'.
+      CATCH zcx_uitb_alv_error INTO lx_alv_error.
+        RAISE EXCEPTION TYPE zcx_uitb_exception
+          EXPORTING
+            previous = lx_alv_error.
     ENDTRY.
 
   ENDMETHOD.
@@ -319,9 +327,8 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
       IF input IS NOT INITIAL.
         TRY.
             lo_filters->add_filter(
-                iv_columnname = get_filtered_column( )
-                iv_low        = |{ abap_true }|
-            ).
+              iv_columnname = get_filtered_column( )
+              iv_low        = |{ abap_true }| ).
           CATCH zcx_uitb_alv_error.
             MESSAGE |{ 'Column'(010) } { get_filtered_column( ) } { 'not found in table'(011) }| TYPE 'X'.
         ENDTRY.
@@ -341,7 +348,7 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
       DATA(lr_t_filtered_data) = get_filtered_data( input ).
       IF lr_t_filtered_data IS BOUND.
         ASSIGN lr_t_filtered_data->* TO <lt_filtered_data>.
-        IF  <lt_filtered_data> IS ASSIGNED AND
+        IF <lt_filtered_data> IS ASSIGNED AND
             <lt_output_data> IS ASSIGNED.
           MOVE-CORRESPONDING <lt_filtered_data> TO <lt_output_data>.
         ENDIF.
@@ -354,15 +361,10 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD on_alv_link_click.
-    IF mf_multi_select = abap_true.
-      toggle_selection( iv_row = ev_row ).
-      mo_alv->refresh( if_keep_scroll_position = abap_true ).
-    ELSE.
-      mv_selected_row = ev_row.
-      set_selected_element( EXPORTING iv_row    = ev_row
-                                      iv_column = ev_column ).
-      leave_screen( ).
-    ENDIF.
+    mv_selected_row = ev_row.
+    set_selected_element( EXPORTING iv_row    = ev_row
+                                    iv_column = ev_column ).
+    leave_screen( ).
   ENDMETHOD.
 
   METHOD on_alv_function.
@@ -401,15 +403,23 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
 
     IF mf_multi_select = abap_false.
       lt_key_map = VALUE #(
-        ( fkey = zif_uitb_c_gui_screen=>c_functions-f6 mapped_function = c_func_focus_alv          text = |{ 'Set focus to ALV'(001) }| )
-        ( fkey = zif_uitb_c_gui_screen=>c_functions-f5 mapped_function = c_func_focus_input        text = |{ 'Set focus to filter field'(002) }| )
-      ).
+        ( fkey            = zif_uitb_c_gui_screen=>c_functions-f6
+          mapped_function = c_func_focus_alv
+          text            = |{ 'Set focus to ALV'(001) }| )
+        ( fkey            = zif_uitb_c_gui_screen=>c_functions-f5
+          mapped_function = c_func_focus_input
+          text            = |{ 'Set focus to filter field'(002) }| ) ).
     ELSE.
       lt_key_map = VALUE #( BASE lt_key_map
-        ( fkey = zif_uitb_c_gui_screen=>c_functions-f5 mapped_function = c_func_select_all         text = |{ TEXT-004 }| )
-        ( fkey = zif_uitb_c_gui_screen=>c_functions-f6 mapped_function = c_func_unselect_all       text = |{ TEXT-005 }| )
-        ( fkey = zif_uitb_c_gui_screen=>c_functions-f8 mapped_function = c_func_accept_selections  text = |{ 'Accept Selections'(003) }| )
-      ).
+        ( fkey            = zif_uitb_c_gui_screen=>c_functions-f5
+          mapped_function = c_func_select_all
+          text            = |{ TEXT-004 }| )
+        ( fkey            = zif_uitb_c_gui_screen=>c_functions-f6
+          mapped_function = c_func_unselect_all
+          text            = |{ TEXT-005 }| )
+        ( fkey            = zif_uitb_c_gui_screen=>c_functions-f8
+          mapped_function = c_func_accept_selections
+          text            = |{ 'Accept Selections'(003) }| ) ).
     ENDIF.
 
     io_callback->map_fkey_functions( lt_key_map ).
@@ -445,8 +455,8 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
 
   METHOD get_mark_field_description.
     ev_short =
-    ev_medium =
-    ev_long = |{ 'Select?'(013) }|.
+      ev_medium =
+      ev_long = |{ 'Select?'(013) }|.
   ENDMETHOD.
 
 
