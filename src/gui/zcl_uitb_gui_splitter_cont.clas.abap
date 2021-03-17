@@ -437,7 +437,7 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
 
       set_sash_visible(
         iv_index    = lv_tabix
-        if_visible  = abap_false ).
+        if_visible  = abap_true ).
     ENDLOOP.
 
   ENDMETHOD.
