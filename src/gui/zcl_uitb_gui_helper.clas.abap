@@ -109,7 +109,7 @@ CLASS zcl_uitb_gui_helper IMPLEMENTATION.
         cntb_wrong_version = 3
         OTHERS             = 4.
     IF sy-subrc NE 0.
-      zcx_uitb_gui_exception=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
     ENDIF.
     IF it_button IS NOT INITIAL.
       eo_toolbar->add_button_group(
@@ -118,18 +118,16 @@ CLASS zcl_uitb_gui_helper IMPLEMENTATION.
         EXCEPTIONS
           dp_error         = 1
           cntb_error_fcode = 2
-          OTHERS           = 3
-      ).
+          OTHERS           = 3 ).
     ENDIF.
     IF sy-subrc NE 0.
-      zcx_uitb_gui_exception=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
     ENDIF.
 
 *.. request toolbar events
     lt_event = VALUE #(
       ( eventid = cl_gui_toolbar=>m_id_function_selected )
-      ( eventid = cl_gui_toolbar=>m_id_dropdown_clicked  )
-    ).
+      ( eventid = cl_gui_toolbar=>m_id_dropdown_clicked  ) ).
 
 *.. Return respective controls back to caller
     eo_toolbar->set_registered_events( lt_event ).
@@ -145,10 +143,9 @@ CLASS zcl_uitb_gui_helper IMPLEMENTATION.
         ro_menu->add_separator( ).
       ELSE.
         ro_menu->add_function(
-            fcode = <ls_button>-function
-            text  = <ls_button>-text
-            icon  = |{ <ls_button>-icon }|
-        ).
+          fcode = <ls_button>-function
+          text  = <ls_button>-text
+          icon  = |{ <ls_button>-icon }| ).
       ENDIF.
     ENDLOOP.
   ENDMETHOD.
@@ -169,7 +166,7 @@ CLASS zcl_uitb_gui_helper IMPLEMENTATION.
           cntl_system_error = 2
           OTHERS            = 3.
       IF sy-subrc NE 0.
-        zcx_uitb_gui_exception=>raise_from_sy( ).
+        RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
       ENDIF.
     ELSEIF iv_area IS NOT INITIAL.
       CREATE OBJECT ro_container
@@ -183,14 +180,12 @@ CLASS zcl_uitb_gui_helper IMPLEMENTATION.
           cntl_system_error = 2
           OTHERS            = 3.
       IF sy-subrc NE 0.
-        zcx_uitb_gui_exception=>raise_from_sy( ).
+        RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
       ENDIF.
     ELSE.
       CASE iv_type.
         WHEN cl_gui_container=>container_type_docking.
-          CREATE OBJECT ro_container
-            TYPE
-            cl_gui_docking_container
+          CREATE OBJECT ro_container TYPE cl_gui_docking_container
             EXPORTING
               style             = iv_style
               lifetime          = iv_lifetime
@@ -199,12 +194,10 @@ CLASS zcl_uitb_gui_helper IMPLEMENTATION.
               cntl_system_error = 2
               OTHERS            = 3.
           IF sy-subrc NE 0.
-            zcx_uitb_gui_exception=>raise_from_sy( ).
+            RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
           ENDIF.
         WHEN cl_gui_container=>container_type_dialogbox.
-          CREATE OBJECT ro_container
-            TYPE
-            cl_gui_docking_container
+          CREATE OBJECT ro_container TYPE cl_gui_docking_container
             EXPORTING
               parent            = io_parent
               lifetime          = iv_lifetime
@@ -213,12 +206,10 @@ CLASS zcl_uitb_gui_helper IMPLEMENTATION.
               cntl_system_error = 2
               OTHERS            = 3.
           IF sy-subrc NE 0.
-            zcx_uitb_gui_exception=>raise_from_sy( ).
+            RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
           ENDIF.
         WHEN OTHERS.
-          CREATE OBJECT ro_container
-            TYPE
-            cl_gui_container
+          CREATE OBJECT ro_container TYPE cl_gui_container
             EXPORTING
               clsid                   = 'SAPGUI.CONTAINERCTRL.1'
               parent                  = cl_gui_container=>default_screen
@@ -228,7 +219,7 @@ CLASS zcl_uitb_gui_helper IMPLEMENTATION.
             EXCEPTIONS
               OTHERS                  = 1.
           IF sy-subrc NE 0.
-            zcx_uitb_gui_exception=>raise_from_sy( ).
+            RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
           ENDIF.
       ENDCASE.
     ENDIF.

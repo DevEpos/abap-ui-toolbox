@@ -107,7 +107,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_UITB_CTM_ITEM IMPLEMENTATION.
+CLASS zcl_uitb_ctm_item IMPLEMENTATION.
 
 
   METHOD constructor.
@@ -143,10 +143,9 @@ CLASS ZCL_UITB_CTM_ITEM IMPLEMENTATION.
       EXCEPTIONS
         node_not_found = 1
         item_not_found = 2
-        OTHERS         = 3
-    ).
+        OTHERS         = 3 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ENDIF.
   ENDMETHOD.
 
@@ -182,10 +181,9 @@ CLASS ZCL_UITB_CTM_ITEM IMPLEMENTATION.
         node_not_found       = 1
         item_not_found       = 2
         chosen_not_supported = 3
-        OTHERS               = 4
-    ).
+        OTHERS               = 4 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       ms_item-chosen = value.
     ENDIF.
@@ -204,10 +202,9 @@ CLASS ZCL_UITB_CTM_ITEM IMPLEMENTATION.
         node_not_found    = 1
         item_not_found    = 2
         no_item_selection = 3
-        OTHERS            = 4
-    ).
+        OTHERS            = 4 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       ms_item-disabled = value.
     ENDIF.
@@ -227,10 +224,9 @@ CLASS ZCL_UITB_CTM_ITEM IMPLEMENTATION.
         item_not_found         = 2
         editable_not_supported = 3
         no_item_selection      = 4
-        OTHERS                 = 5
-    ).
+        OTHERS                 = 5 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       ms_item-editable = value.
     ENDIF.
@@ -248,10 +244,9 @@ CLASS ZCL_UITB_CTM_ITEM IMPLEMENTATION.
       EXCEPTIONS
         node_not_found = 1
         item_not_found = 2
-        OTHERS         = 3
-    ).
+        OTHERS         = 3 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       ms_item-font = value.
     ENDIF.
@@ -269,10 +264,9 @@ CLASS ZCL_UITB_CTM_ITEM IMPLEMENTATION.
       EXCEPTIONS
         node_not_found = 1
         item_not_found = 2
-        OTHERS         = 3
-    ).
+        OTHERS         = 3 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       ms_item-hidden = value.
     ENDIF.
@@ -290,10 +284,9 @@ CLASS ZCL_UITB_CTM_ITEM IMPLEMENTATION.
       EXCEPTIONS
         node_not_found = 1
         item_not_found = 2
-        OTHERS         = 3
-    ).
+        OTHERS         = 3 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       ms_item-t_image = value.
     ENDIF.
@@ -311,10 +304,9 @@ CLASS ZCL_UITB_CTM_ITEM IMPLEMENTATION.
       EXCEPTIONS
         node_not_found = 1
         item_not_found = 2
-        OTHERS         = 3
-    ).
+        OTHERS         = 3 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       ms_item-style = value.
     ENDIF.
@@ -331,10 +323,9 @@ CLASS ZCL_UITB_CTM_ITEM IMPLEMENTATION.
       EXCEPTIONS
         node_not_found = 1
         item_not_found = 2
-        OTHERS         = 3
-    ).
+        OTHERS         = 3 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       ms_item-text = value.
     ENDIF.

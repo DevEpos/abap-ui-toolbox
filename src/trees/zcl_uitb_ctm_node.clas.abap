@@ -245,10 +245,9 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         node_key_table = DATA(lt_children)
       EXCEPTIONS
         node_not_found = 1
-        OTHERS         = 2
-    ).
+        OTHERS         = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       CHECK lt_children IS NOT INITIAL.
       mr_model->delete_nodes( lt_children ).
@@ -264,10 +263,9 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         node_key_table = DATA(lt_children)
       EXCEPTIONS
         node_not_found = 1
-        OTHERS         = 2
-    ).
+        OTHERS         = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       CHECK lt_children IS NOT INITIAL.
 
@@ -276,8 +274,7 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
           ( NEW zcl_uitb_ctm_node(
               iv_node_key   = <lv_node>
               ir_model      = mr_model
-              ir_nodes      = mr_nodes ) )
-        ).
+              ir_nodes      = mr_nodes ) ) ).
       ENDLOOP.
     ENDIF.
   ENDMETHOD.
@@ -296,17 +293,15 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         child_node_key  = DATA(lv_child)
       EXCEPTIONS
         node_not_found  = 1
-        OTHERS          = 2
-    ).
+        OTHERS          = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       CHECK lv_child IS NOT INITIAL.
       result = NEW #(
         iv_node_key = lv_child
         ir_model    = mr_model
-        ir_nodes    = mr_nodes
-      ).
+        ir_nodes    = mr_nodes ).
     ENDIF.
   ENDMETHOD.
 
@@ -326,17 +321,15 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
       EXCEPTIONS
         node_not_found = 1
         item_not_found = 2
-        OTHERS         = 3
-    ).
+        OTHERS         = 3 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       rr_item = NEW zcl_uitb_ctm_item(
-          ir_model           = mr_model
-          iv_node_key        = mv_node_key
-          iv_item_name       = iv_item_name
-          is_item_properties = ls_item
-      ).
+        ir_model           = mr_model
+        iv_node_key        = mv_node_key
+        iv_item_name       = iv_item_name
+        is_item_properties = ls_item ).
     ENDIF.
   ENDMETHOD.
 
@@ -349,21 +342,18 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         item_table     = DATA(lt_items)
       EXCEPTIONS
         node_not_found = 1
-        OTHERS         = 2
-    ).
+        OTHERS         = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       LOOP AT lt_items ASSIGNING FIELD-SYMBOL(<ls_item>).
         result = VALUE #(
-         BASE result
-         ( NEW zcl_uitb_ctm_item(
+          BASE result
+          ( NEW zcl_uitb_ctm_item(
               ir_model           = mr_model
               iv_node_key        = mv_node_key
               iv_item_name       = <ls_item>-item_name
-              is_item_properties = <ls_item> )
-         )
-        ).
+              is_item_properties = <ls_item> ) ) ).
       ENDLOOP.
     ENDIF.
   ENDMETHOD.
@@ -377,17 +367,15 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         child_node_key  = DATA(lv_child)
       EXCEPTIONS
         node_not_found  = 1
-        OTHERS          = 2
-    ).
+        OTHERS          = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       CHECK lv_child IS NOT INITIAL.
       result = NEW #(
         iv_node_key = lv_child
         ir_model    = mr_model
-        ir_nodes    = mr_nodes
-      ).
+        ir_nodes    = mr_nodes ).
     ENDIF.
   ENDMETHOD.
 
@@ -416,18 +404,16 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         sibling_node_key = DATA(lv_sibling)
       EXCEPTIONS
         node_not_found  = 1
-        OTHERS          = 2
-    ).
+        OTHERS          = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       CHECK lv_sibling IS NOT INITIAL.
 
       result = NEW #(
         iv_node_key = lv_sibling
         ir_model    = mr_model
-        ir_nodes    = mr_nodes
-      ).
+        ir_nodes    = mr_nodes ).
     ENDIF.
   ENDMETHOD.
 
@@ -440,10 +426,9 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         nr_of_children = result
       EXCEPTIONS
         node_not_found = 1
-        OTHERS         = 2
-    ).
+        OTHERS         = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ENDIF.
   ENDMETHOD.
 
@@ -456,17 +441,15 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         parent_node_key = DATA(lv_parent)
       EXCEPTIONS
         node_not_found  = 1
-        OTHERS          = 2
-    ).
+        OTHERS          = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       CHECK lv_parent IS NOT INITIAL.
       result = NEW #(
         iv_node_key = lv_parent
         ir_model    = mr_model
-        ir_nodes    = mr_nodes
-      ).
+        ir_nodes    = mr_nodes ).
     ENDIF.
   ENDMETHOD.
 
@@ -479,8 +462,7 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         EXPORTING  node_key        = lv_node_key
         IMPORTING  parent_node_key = DATA(lv_parent)
         EXCEPTIONS node_not_found  = 1
-                   OTHERS          = 2
-      ).
+                   OTHERS          = 2 ).
       IF sy-subrc = 0.
         IF lv_parent IS INITIAL.
           rv_root_key = lv_node_key.
@@ -502,17 +484,15 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         sibling_node_key = DATA(lv_sibling)
       EXCEPTIONS
         node_not_found  = 1
-        OTHERS          = 2
-    ).
+        OTHERS          = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       CHECK lv_sibling IS NOT INITIAL.
       result = NEW #(
         iv_node_key = lv_sibling
         ir_model    = mr_model
-        ir_nodes    = mr_nodes
-      ).
+        ir_nodes    = mr_nodes ).
     ENDIF.
   ENDMETHOD.
 
@@ -525,10 +505,9 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         properties     = result
       EXCEPTIONS
         node_not_found = 1
-        OTHERS         = 2
-    ).
+        OTHERS         = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       ms_properties = result.
     ENDIF.
@@ -543,10 +522,9 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         user_object    = result
       EXCEPTIONS
         node_not_found = 1
-        OTHERS         = 2
-    ).
+        OTHERS         = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ENDIF.
   ENDMETHOD.
 
@@ -621,10 +599,9 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         move_error              = 6
         relative_node_not_found = 7
         illegal_relationship    = 8
-        OTHERS                  = 9
-    ).
+        OTHERS                  = 9 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ENDIF.
   ENDMETHOD.
 
@@ -636,10 +613,9 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         disabled       = value
       EXCEPTIONS
         node_not_found = 1
-        OTHERS         = 2
-    ).
+        OTHERS         = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ENDIF.
 
   ENDMETHOD.
@@ -652,10 +628,9 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         exp_image      = value
       EXCEPTIONS
         node_not_found = 1
-        OTHERS         = 2
-    ).
+        OTHERS         = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ENDIF.
 
   ENDMETHOD.
@@ -668,10 +643,9 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         expander       = value
       EXCEPTIONS
         node_not_found = 1
-        OTHERS         = 2
-    ).
+        OTHERS         = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ENDIF.
 
   ENDMETHOD.
@@ -684,10 +658,9 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         is_folder      = value
       EXCEPTIONS
         node_not_found = 1
-        OTHERS         = 2
-    ).
+        OTHERS         = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ENDIF.
 
   ENDMETHOD.
@@ -700,10 +673,9 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         image          = value
       EXCEPTIONS
         node_not_found = 1
-        OTHERS         = 2
-    ).
+        OTHERS         = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ENDIF.
 
   ENDMETHOD.
@@ -716,10 +688,9 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         style          = iv_style
       EXCEPTIONS
         node_not_found = 1
-        OTHERS         = 2
-    ).
+        OTHERS         = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ENDIF.
   ENDMETHOD.
 
@@ -731,10 +702,9 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
         user_object    = value
       EXCEPTIONS
         node_not_found = 1
-        OTHERS         = 2
-    ).
+        OTHERS         = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ENDIF.
 
   ENDMETHOD.
@@ -746,13 +716,9 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
     DATA(lt_expanded) = mr_nodes->get_expanded_nodes( ).
 
     IF  line_exists( lt_expanded[ table_line = mv_node_key ] ).
-      mr_nodes->collapse_node(
-          iv_node_key = mv_node_key
-      ).
+      mr_nodes->collapse_node( iv_node_key = mv_node_key ).
     ELSE.
-      mr_nodes->expand_node(
-          iv_node_key = mv_node_key
-      ).
+      mr_nodes->expand_node( iv_node_key = mv_node_key ).
     ENDIF.
   ENDMETHOD.
 
@@ -765,9 +731,8 @@ CLASS zcl_uitb_ctm_node IMPLEMENTATION.
 
   METHOD set_user_data.
     mr_nodes->update_node_user_data(
-        iv_node_key  = mv_node_key
-        ir_user_data = value
-    ).
+      iv_node_key  = mv_node_key
+      ir_user_data = value ).
     mr_user_data = value.
   ENDMETHOD.
 

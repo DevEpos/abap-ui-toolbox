@@ -216,10 +216,9 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
         illegal_relationship    = 3
         relative_node_not_found = 4
         error_in_item_table     = 5
-        OTHERS                  = 6
-    ).
+        OTHERS                  = 6 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       rr_node = get_node( lv_node_key ).
       IF ir_user_data IS SUPPLIED.
@@ -235,10 +234,9 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
         node_table          = it_node_table
       EXCEPTIONS
         error_in_node_table = 1
-        OTHERS              = 2
-    ).
+        OTHERS              = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ENDIF.
 
     mr_model->add_items(
@@ -247,10 +245,9 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
       EXCEPTIONS
         node_not_found      = 1
         error_in_item_table = 2
-        OTHERS              = 3
-    ).
+        OTHERS              = 3 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ENDIF.
   ENDMETHOD.
 
@@ -263,8 +260,7 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
   METHOD collapse_node.
     mr_model->collapse_node(
         node_key         = iv_node_key
-        collapse_subtree = if_collapse_subtree
-    ).
+        collapse_subtree = if_collapse_subtree ).
   ENDMETHOD.
 
 
@@ -286,10 +282,9 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
         node_key       = iv_node_key    " Schlüssel des Knotens
       EXCEPTIONS
         node_not_found = 1
-        OTHERS         = 2
-    ).
+        OTHERS         = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       DELETE mt_node_data WHERE node_key = iv_node_key.
     ENDIF.
@@ -304,10 +299,9 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
         node_key_table          = it_node_key_table    " Tabelle mit Knotenschlüsseln
       EXCEPTIONS
         error_in_node_key_table = 1
-        OTHERS                  = 2
-    ).
+        OTHERS                  = 2 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ELSE.
       lt_node_range = VALUE #( LET i = 'I' eq = 'EQ' IN FOR node IN it_node_key_table ( sign = i option = eq low = node ) ).
       DELETE mt_node_data WHERE node_key IN lt_node_range.
@@ -323,8 +317,7 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
         expand_subtree      = if_expand_subtree    " 'X': alle Nachfahren expandieren
         level_count         = iv_level_count    " Anzahl zu expandierende Nachfolgeebenen
       EXCEPTIONS
-        OTHERS              = 1
-    ).
+        OTHERS              = 1 ).
   ENDMETHOD.
 
 
@@ -333,19 +326,17 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
       EXPORTING
         node_key_table = it_node_key
       EXCEPTIONS
-        OTHERS              = 1
-    ).
+        OTHERS              = 1 ).
   ENDMETHOD.
 
 
   METHOD expand_root_nodes.
     mr_model->expand_root_nodes(
       EXPORTING
-        expand_subtree      = if_expand_subtree
-        level_count         = iv_level_count
+        expand_subtree = if_expand_subtree
+        level_count    = iv_level_count
       EXCEPTIONS
-        OTHERS              = 1
-    ).
+        OTHERS         = 1 ).
   ENDMETHOD.
 
 
@@ -353,8 +344,7 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
     mr_model->get_expanded_nodes(
       EXPORTING no_hidden_nodes = if_no_hidden_nodes
       IMPORTING node_key_table  = result
-      exceptions others         = 1
-    ).
+      EXCEPTIONS OTHERS         = 1 ).
   ENDMETHOD.
 
 
@@ -381,14 +371,12 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
         node_key       = iv_node_key
       EXCEPTIONS
         node_not_found = 1
-        OTHERS         = 2
-    ).
+        OTHERS         = 2 ).
     IF sy-subrc = 0.
       rr_node = NEW #(
         ir_model    = mr_model
         iv_node_key = iv_node_key
-        ir_nodes    = me
-      ).
+        ir_nodes    = me ).
     ENDIF.
 
   ENDMETHOD.
@@ -417,8 +405,7 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
         control_dead         = 2
         cntl_system_error    = 3
         failed               = 4
-        OTHERS               = 5
-    ).
+        OTHERS               = 5 ).
     IF sy-subrc = 0.
       CHECK lv_top_node IS NOT INITIAL.
       rr_node = get_node( lv_top_node ).
@@ -458,10 +445,9 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
           collapse_subtree = if_collapse_sub_tree
         EXCEPTIONS
           node_not_found   = 1
-          OTHERS           = 2
-      ).
+          OTHERS           = 2 ).
       IF sy-subrc <> 0.
-        zcx_uitb_tree_error=>raise_from_sy( ).
+        RAISE EXCEPTION TYPE zcx_uitb_tree_error.
       ENDIF.
     ENDLOOP.
   ENDMETHOD.
@@ -469,9 +455,8 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
   METHOD expand_selected_nodes.
     LOOP AT get_selected_nodes( ) ASSIGNING FIELD-SYMBOL(<lv_node>).
       expand_node(
-          iv_node_key        = <lv_node>
-          if_expand_subtree  = if_expand_sub_tree
-      ).
+        iv_node_key        = <lv_node>
+        if_expand_subtree  = if_expand_sub_tree ).
     ENDLOOP.
   ENDMETHOD.
 
@@ -487,10 +472,9 @@ CLASS zcl_uitb_ctm_nodes IMPLEMENTATION.
         cntl_system_error            = 3
         failed                       = 4
         multiple_node_selection_only = 5
-        OTHERS                       = 6
-    ).
+        OTHERS                       = 6 ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ENDIF.
 
   ENDMETHOD.

@@ -60,85 +60,85 @@ CLASS zcl_uitb_ctm_events DEFINITION
       RAISING
         zcx_uitb_tree_error .
     METHODS on_node_double_click
-        FOR EVENT node_double_click OF cl_column_tree_model
+      FOR EVENT node_double_click OF cl_column_tree_model
       IMPORTING
         !node_key .
     METHODS on_tree_drag
-        FOR EVENT drag OF cl_column_tree_model
+      FOR EVENT drag OF cl_column_tree_model
       IMPORTING
         !drag_drop_object
         !item_name
         !node_key .
     METHODS on_tree_drag_multiple
-        FOR EVENT drag_multiple OF cl_column_tree_model
+      FOR EVENT drag_multiple OF cl_column_tree_model
       IMPORTING
         !drag_drop_object
         !item_name
         !node_key_table .
     METHODS on_drop_complete
-        FOR EVENT drop_complete OF cl_column_tree_model
+      FOR EVENT drop_complete OF cl_column_tree_model
       IMPORTING
         !drag_drop_object
         !item_name
         !node_key .
     METHODS on_tree_drop_complete_multiple
-        FOR EVENT drop_complete_multiple OF cl_column_tree_model
+      FOR EVENT drop_complete_multiple OF cl_column_tree_model
       IMPORTING
         !drag_drop_object
         !item_name
         !node_key_table .
     METHODS on_tree_drop
-        FOR EVENT drop OF cl_column_tree_model
+      FOR EVENT drop OF cl_column_tree_model
       IMPORTING
         !drag_drop_object
         !node_key
         !sender .
     METHODS on_node_context_menu_request
-        FOR EVENT node_context_menu_request OF cl_column_tree_model
+      FOR EVENT node_context_menu_request OF cl_column_tree_model
       IMPORTING
         !menu
         !node_key .
     METHODS on_node_context_menu_select
-        FOR EVENT node_context_menu_select OF cl_column_tree_model
+      FOR EVENT node_context_menu_select OF cl_column_tree_model
       IMPORTING
         !fcode
         !node_key .
     METHODS on_node_key_press
-        FOR EVENT node_keypress OF cl_column_tree_model
+      FOR EVENT node_keypress OF cl_column_tree_model
       IMPORTING
         !key
         !node_key .
     METHODS on_item_key_press
-        FOR EVENT item_keypress OF cl_column_tree_model
+      FOR EVENT item_keypress OF cl_column_tree_model
       IMPORTING
         !item_name
         !key
         !node_key .
     METHODS on_item_double_click
-        FOR EVENT item_double_click OF cl_column_tree_model
+      FOR EVENT item_double_click OF cl_column_tree_model
       IMPORTING
         !item_name
         !node_key .
     METHODS on_expand_no_children
-        FOR EVENT expand_no_children OF cl_column_tree_model
+      FOR EVENT expand_no_children OF cl_column_tree_model
       IMPORTING
         !node_key .
     METHODS on_selection_changed
-        FOR EVENT selection_changed OF cl_column_tree_model
+      FOR EVENT selection_changed OF cl_column_tree_model
       IMPORTING
         !node_key .
     METHODS on_item_button_click
-        FOR EVENT button_click OF cl_column_tree_model
+      FOR EVENT button_click OF cl_column_tree_model
       IMPORTING
         !item_name
         !node_key .
     METHODS on_item_link_click
-        FOR EVENT link_click OF cl_column_tree_model
+      FOR EVENT link_click OF cl_column_tree_model
       IMPORTING
         !item_name
         !node_key .
     METHODS on_checkbox_change
-        FOR EVENT checkbox_change OF cl_item_tree_model
+      FOR EVENT checkbox_change OF cl_item_tree_model
       IMPORTING
         !checked
         !item_name
@@ -159,7 +159,7 @@ CLASS zcl_uitb_ctm_events IMPLEMENTATION.
         OTHERS      = 2
     ).
     IF sy-subrc <> 0.
-      zcx_uitb_tree_error=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_tree_error.
     ENDIF.
   ENDMETHOD.
 

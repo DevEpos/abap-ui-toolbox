@@ -193,7 +193,7 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
         cntl_system_error       = 2
         OTHERS                  = 3.
     IF sy-subrc <> 0.
-      zcx_uitb_gui_exception=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
     ENDIF.
 
     CASE mv_mode.
@@ -205,10 +205,9 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
           EXCEPTIONS
             cntl_error        = 1
             cntl_system_error = 2
-            OTHERS            = 3
-        ).
+            OTHERS            = 3 ).
         IF sy-subrc <> 0.
-          zcx_uitb_gui_exception=>raise_from_sy( ).
+          RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
         ENDIF.
 
       WHEN c_mode-rows.
@@ -218,10 +217,9 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
           EXCEPTIONS
             cntl_error        = 1
             cntl_system_error = 2
-            OTHERS            = 3
-        ).
+            OTHERS            = 3 ).
         IF sy-subrc <> 0.
-          zcx_uitb_gui_exception=>raise_from_sy( ).
+          RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
         ENDIF.
     ENDCASE.
 
@@ -232,10 +230,9 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
       EXCEPTIONS
         cntl_error        = 1
         cntl_system_error = 2
-        OTHERS            = 3
-    ).
+        OTHERS            = 3 ).
     IF sy-subrc NE 0.
-      zcx_uitb_gui_exception=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
     ENDIF.
 
     update_size( if_initial_update = abap_true ).
@@ -257,8 +254,7 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
   METHOD get_container.
     ro_container = mo_splitter->get_container(
       row    = COND #( WHEN mv_mode = c_mode-cols THEN 1 ELSE iv_index )
-      column = COND #( WHEN mv_mode = c_mode-rows THEN 1 ELSE iv_index )
-    ).
+      column = COND #( WHEN mv_mode = c_mode-rows THEN 1 ELSE iv_index ) ).
   ENDMETHOD.
 
   METHOD set_all_sash_properties.
@@ -328,10 +324,9 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
           EXCEPTIONS
             cntl_error        = 1
             cntl_system_error = 2
-            OTHERS            = 3
-        ).
+            OTHERS            = 3 ).
         IF sy-subrc <> 0.
-          zcx_uitb_gui_exception=>raise_from_sy( ).
+          RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
         ENDIF.
 
       WHEN c_mode-rows.
@@ -342,10 +337,9 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
           EXCEPTIONS
             cntl_error        = 1
             cntl_system_error = 2
-            OTHERS            = 3
-        ).
+            OTHERS            = 3 ).
         IF sy-subrc <> 0.
-          zcx_uitb_gui_exception=>raise_from_sy( ).
+          RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
         ENDIF.
     ENDCASE.
 
@@ -448,8 +442,7 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
       DATA(lv_tabix) = sy-tabix.
       set_element_size(
           iv_index = lv_tabix
-          iv_size  = 0
-      ).
+          iv_size  = 0 ).
       CHECK lv_tabix < mv_elements_count.
 
       set_sash_visible(
@@ -470,7 +463,7 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
         cntl_system_error = 2
         OTHERS            = 3 ).
     IF sy-subrc <> 0.
-      zcx_uitb_gui_exception=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
     ENDIF.
   ENDMETHOD.
 
@@ -485,7 +478,7 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
         cntl_system_error = 2
         OTHERS            = 3 ).
     IF sy-subrc <> 0.
-      zcx_uitb_gui_exception=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
     ENDIF.
   ENDMETHOD.
 

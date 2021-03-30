@@ -197,7 +197,7 @@ CLASS zcl_uitb_pgv_popup IMPLEMENTATION.
   METHOD post_dialog_close.
 
     IF sy-subrc <> 0.
-      zcx_uitb_exception=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_exception.
     ENDIF.
 
     IF iv_rcode <> c_cancelled_subrc.

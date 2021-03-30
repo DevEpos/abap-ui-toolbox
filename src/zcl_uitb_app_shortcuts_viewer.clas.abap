@@ -22,8 +22,8 @@ CLASS zcl_uitb_app_shortcuts_viewer DEFINITION
              sort_key TYPE i,
            END OF ty_s_fkey_sort.
     TYPES: BEGIN OF ty_s_fkey_map_with_sort.
-        INCLUDE TYPE zif_uitb_ty_gui_screen=>ty_s_fkey_map.
-    TYPES: sort_key TYPE i.
+             INCLUDE TYPE zif_uitb_ty_gui_screen=>ty_s_fkey_map.
+    TYPES:   sort_key TYPE i.
     TYPES: END OF ty_s_fkey_map_with_sort.
 
     DATA mt_output TYPE string_table.
@@ -60,8 +60,7 @@ ENDCLASS.
 CLASS zcl_uitb_app_shortcuts_viewer IMPLEMENTATION.
   METHOD display_shortcuts.
     DATA(lr_code_viewer) = NEW zcl_uitb_app_shortcuts_viewer(
-      it_shortcuts = it_shortcuts
-    ).
+      it_shortcuts = it_shortcuts ).
 
     lr_code_viewer->build_shortcuts_content( ).
     lr_code_viewer->create_document( ).
@@ -69,8 +68,7 @@ CLASS zcl_uitb_app_shortcuts_viewer IMPLEMENTATION.
       iv_top    = 5
       iv_left   = 30
       iv_width  = 100
-      iv_height = 20
-    ).
+      iv_height = 20 ).
   ENDMETHOD.
 
   METHOD constructor.
@@ -125,8 +123,7 @@ CLASS zcl_uitb_app_shortcuts_viewer IMPLEMENTATION.
       ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f9  )
       ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f10 )
       ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f11 )
-      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f12 )
-    ).
+      ( fkey = zif_uitb_c_gui_screen=>c_functions-ctrl_shift_f12 ) ).
     LOOP AT gt_fkey_sort ASSIGNING FIELD-SYMBOL(<ls_fkey_sort>).
       <ls_fkey_sort>-sort_key = sy-tabix.
     ENDLOOP.
@@ -139,8 +136,7 @@ CLASS zcl_uitb_app_shortcuts_viewer IMPLEMENTATION.
   METHOD create_content.
     mr_html_viewer = NEW #(
         parent               = io_container
-        query_table_disabled = abap_true
-    ).
+        query_table_disabled = abap_true ).
 
     " load html code into control
     mr_html_viewer->load_data(
@@ -151,20 +147,18 @@ CLASS zcl_uitb_app_shortcuts_viewer IMPLEMENTATION.
       CHANGING
         data_table   = mt_html_raw    " data table
       EXCEPTIONS
-        OTHERS       = 1
-    ).
+        OTHERS       = 1 ).
     IF sy-subrc <> 0.
-      zcx_uitb_gui_exception=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
     ENDIF.
 
     mr_html_viewer->show_data(
       EXPORTING
         url      = mv_html_url    " URL
       EXCEPTIONS
-        OTHERS   = 1
-    ).
+        OTHERS   = 1 ).
     IF sy-subrc <> 0.
-      zcx_uitb_gui_exception=>raise_from_sy( ).
+      RAISE EXCEPTION TYPE zcx_uitb_gui_exception.
     ENDIF.
   ENDMETHOD.
 
@@ -172,20 +166,20 @@ CLASS zcl_uitb_app_shortcuts_viewer IMPLEMENTATION.
     mo_shortcuts_content = NEW #( ).
 
     mo_shortcuts_content->start_table(
-    )->start_table_row(
-    )->add_table_header_cell(
+      )->start_table_row(
+      )->add_table_header_cell(
         iv_text = |{ 'Shortcut'(001) }|
-    )->add_table_header_cell(
+      )->add_table_header_cell(
         iv_text = |{ 'Defined User function'(002) }|
-    )->end_table_row( ).
+      )->end_table_row( ).
 
     LOOP AT mt_shortcuts ASSIGNING FIELD-SYMBOL(<ls_shortcut>).
       mo_shortcuts_content->start_table_row(
-      )->add_table_body_cell(
+        )->add_table_body_cell(
           iv_text = |<code>{ get_shortcut_text( <ls_shortcut>-fkey ) }</code>|
-      )->add_table_body_cell(
+        )->add_table_body_cell(
           iv_text = |{ <ls_shortcut>-text }|
-      )->end_table_row( ).
+        )->end_table_row( ).
     ENDLOOP.
 
     mo_shortcuts_content->end_table( ).
@@ -202,11 +196,10 @@ CLASS zcl_uitb_app_shortcuts_viewer IMPLEMENTATION.
       ENDIF.
 
       rv_shortcut_text = rv_shortcut_text &&
-         SWITCH #( lv_part
-            WHEN 'S' THEN |{ 'Shift' }|
-            WHEN 'C' THEN |{ 'Ctrl' }|
-            ELSE lv_part
-         ).
+        SWITCH #( lv_part
+          WHEN 'S' THEN |{ 'Shift' }|
+          WHEN 'C' THEN |{ 'Ctrl' }|
+          ELSE lv_part ).
     ENDLOOP.
   ENDMETHOD.
 
@@ -252,8 +245,7 @@ CLASS zcl_uitb_app_shortcuts_viewer IMPLEMENTATION.
      ( |<body>| )
      ( LINES OF VALUE #( FOR html IN mo_shortcuts_content->get_content( ) ( |{ html-line }| ) ) )
      ( |</body>| )
-     ( |</html>| )
-    ).
+     ( |</html>| ) ).
 
     CONCATENATE LINES OF mt_output INTO lv_string SEPARATED BY cl_abap_char_utilities=>newline.
 
