@@ -221,7 +221,7 @@ CLASS zcl_uitb_selection_dialog IMPLEMENTATION.
 
     mo_alv = zcl_uitb_alv=>create_alv(
       ir_data      = mr_t_data
-      if_editable  = abap_true
+      if_editable  = mf_multi_select
       ir_container = io_container ).
     DATA(lo_cols) = mo_alv->get_columns( ).
     DATA(lo_col_iterator) = lo_cols->zif_uitb_list~get_iterator( ).
