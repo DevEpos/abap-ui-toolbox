@@ -163,36 +163,10 @@ CLASS zcl_uitb_pgv_popup IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD on_user_field_check.
-    DATA: lt_check_range TYPE ty_fld_check_range.
-
-    APPEND INITIAL LINE TO lt_check_range ASSIGNING FIELD-SYMBOL(<ls_check_range>).
-    <ls_check_range>-sign = 'I'.
-
-    LOOP AT eo_fields->get_fields( ) ASSIGNING FIELD-SYMBOL(<ls_input_field>).
-      ASSIGN mt_fields[
-        fieldname = <ls_input_field>-fieldname
-        tabname   = <ls_input_field>-tabname ] TO FIELD-SYMBOL(<ls_field_config>).
-
-      CHECK sy-subrc = 0.
-      CHECK <ls_field_config>-validation IS NOT INITIAL.
-      <ls_check_range>-option = <ls_field_config>-validation-comparator.
-      <ls_check_range>-low = <ls_field_config>-validation-value_low.
-      <ls_check_range>-high = <ls_field_config>-validation-value_high.
-
-      DATA(lv_value) = condense( <ls_input_field>-value ).
-
-      IF lv_value NOT IN lt_check_range.
-        eo_fields->set_validation_error( VALUE #(
-          errorfield = <ls_input_field>-fieldname
-          errortab   = <ls_input_field>-tabname
-          msgid      = '00'
-          msgno      = '001'
-          msgv1      = 'Invalid field value' ) ).
-      ENDIF.
-    ENDLOOP.
-
+    NEW zcl_uitb_pgv_default_checks(
+      io_evt_fields = eo_fields
+      it_fields     = mt_fields )->check_fields( ).
   ENDMETHOD.
-
 
   METHOD post_dialog_close.
 
