@@ -158,6 +158,7 @@ CLASS zcl_uitb_gui_screen_base IMPLEMENTATION.
       CALL FUNCTION 'ZUITB_CALL_GUI_SCREEN'
         EXPORTING
           iv_program_title = CONV cua_tit_tx( mv_title )
+          if_modal         = abap_true
           io_callback      = lo_dynpro_handler
           iv_start_line    = lv_start_line
           iv_end_line      = lv_start_line + iv_height

@@ -21,6 +21,12 @@
        <TYP>CUA_TIT_TX</TYP>
       </RSIMP>
       <RSIMP>
+       <PARAMETER>IF_MODAL</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <REFERENCE>X</REFERENCE>
+       <TYP>ABAP_BOOL</TYP>
+      </RSIMP>
+      <RSIMP>
        <PARAMETER>IO_CALLBACK</PARAMETER>
        <REFERENCE>X</REFERENCE>
        <TYP>REF TO ZCL_UITB_GUI_DYNPRO_HANDLER</TYP>
@@ -57,6 +63,10 @@
        <KIND>P</KIND>
       </RSFDO>
       <RSFDO>
+       <PARAMETER>IF_MODAL</PARAMETER>
+       <KIND>P</KIND>
+      </RSFDO>
+      <RSFDO>
        <PARAMETER>IO_CALLBACK</PARAMETER>
        <KIND>P</KIND>
       </RSFDO>
@@ -88,6 +98,70 @@
       <DESCRIPT>Template</DESCRIPT>
       <TYPE>N</TYPE>
       <NEXTSCREEN>0100</NEXTSCREEN>
+      <LINES>200</LINES>
+      <COLUMNS>255</COLUMNS>
+      <NO_TOOLBAR>X</NO_TOOLBAR>
+     </HEADER>
+     <CONTAINERS>
+      <RPY_DYCATT>
+       <TYPE>SCREEN</TYPE>
+       <NAME>SCREEN</NAME>
+      </RPY_DYCATT>
+      <RPY_DYCATT>
+       <TYPE>CUST_CTRL</TYPE>
+       <NAME>CONTAINER</NAME>
+       <ELEMENT_OF>SCREEN</ELEMENT_OF>
+       <LINE>001</LINE>
+       <COLUMN>001</COLUMN>
+       <LENGTH>010</LENGTH>
+       <HEIGHT>010</HEIGHT>
+       <C_RESIZE_V>X</C_RESIZE_V>
+       <C_RESIZE_H>X</C_RESIZE_H>
+       <C_LINE_MIN>001</C_LINE_MIN>
+       <C_COLN_MIN>001</C_COLN_MIN>
+      </RPY_DYCATT>
+     </CONTAINERS>
+     <FIELDS>
+      <RPY_DYFATC>
+       <CONT_TYPE>SCREEN</CONT_TYPE>
+       <CONT_NAME>SCREEN</CONT_NAME>
+       <TYPE>OKCODE</TYPE>
+       <NAME>OK_CODE</NAME>
+       <TEXT>____________________</TEXT>
+       <LENGTH>020</LENGTH>
+       <VISLENGTH>020</VISLENGTH>
+       <HEIGHT>001</HEIGHT>
+       <FORMAT>CHAR</FORMAT>
+       <INPUT_FLD>X</INPUT_FLD>
+      </RPY_DYFATC>
+     </FIELDS>
+     <FLOW_LOGIC>
+      <RPY_DYFLOW>
+       <LINE>PROCESS BEFORE OUTPUT.</LINE>
+      </RPY_DYFLOW>
+      <RPY_DYFLOW>
+       <LINE>  MODULE pbo.</LINE>
+      </RPY_DYFLOW>
+      <RPY_DYFLOW/>
+      <RPY_DYFLOW>
+       <LINE>PROCESS AFTER INPUT.</LINE>
+      </RPY_DYFLOW>
+      <RPY_DYFLOW>
+       <LINE>  MODULE exit AT EXIT-COMMAND.</LINE>
+      </RPY_DYFLOW>
+      <RPY_DYFLOW>
+       <LINE>  MODULE pai.</LINE>
+      </RPY_DYFLOW>
+     </FLOW_LOGIC>
+    </item>
+    <item>
+     <HEADER>
+      <PROGRAM>SAPLZUITB_GUI_FRAMEWORK</PROGRAM>
+      <SCREEN>0200</SCREEN>
+      <LANGUAGE>E</LANGUAGE>
+      <DESCRIPT>Template (Modal Dialog)</DESCRIPT>
+      <TYPE>M</TYPE>
+      <NEXTSCREEN>0200</NEXTSCREEN>
       <LINES>200</LINES>
       <COLUMNS>255</COLUMNS>
       <NO_TOOLBAR>X</NO_TOOLBAR>
