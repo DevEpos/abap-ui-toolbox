@@ -45,7 +45,7 @@ CLASS zcx_uitb_nc_exception IMPLEMENTATION.
 
     IF text IS NOT INITIAL.
       lf_fill_t100_from_sy = abap_true.
-      zcl_dutils_message_util=>split_string_to_symsg( text ).
+      zcl_uitb_message_util=>split_string_to_symsg( text ).
     ELSEIF textid IS NOT INITIAL.
       if_t100_message~t100key = textid.
       me->msgv1 = msgv1.
