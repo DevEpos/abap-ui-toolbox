@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<head>
+  <title>CodeMirror</title>
+  <meta charset="utf-8" />
+
+  <script src="lib/codemirror.js"></script>
+  <link rel="stylesheet" href="lib/codemirror.css" />
+  <link rel="stylesheet" href="addon/hint/show-hint.css" />
+  <!-- <script src="mode/javascript/javascript.js"></script> -->
+  <script src="addon/hint/show-hint.js"></script>
+  <script src="mode/abap/abap.min.js"></script>
+  <!-- <script src="mode/xml/xml.js"></script>
+  <script src="mode/css/css.js"></script>
+  <script src="mode/htmlmixed/htmlmixed.js"></script> -->
+  <script src="lib/thirdparty/es6_promise.js"></script>
+  <link rel="stylesheet" href="{{theme-url}}" />
+
+  <style>
+    body,
+    html {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+    }
+    #container {
+      height: 100%;
+    }
+    #editor {
+      height: 100%;
+    }
+    .CodeMirror {
+      height: 100% !important;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div id="editor"></div>
+  </div>
+  <script>
+    var comp = [
+      ["here", "hither"],
+      ["asynchronous", "nonsynchronous"],
+      ["completion", "achievement", "conclusion", "culmination", "expirations"],
+      ["hinting", "advise", "broach", "imply"],
+      ["function", "action"],
+      ["provide", "add", "bring", "give"],
+      ["synonyms", "equivalents"],
+      ["words", "token"],
+      ["each", "every"],
+    ];
+
+    function synonyms(cm, option) {
+      return new Promise(function (accept) {
+        var cursor = cm.getCursor(),
+          line = cm.getLine(cursor.line);
+        var start = cursor.ch,
+          end = cursor.ch;
+        while (start && /\w/.test(line.charAt(start - 1))) --start;
+        while (end < line.length && /\w/.test(line.charAt(end))) ++end;
+        var word = line.slice(start, end).toLowerCase();
+        for (var i = 0; i < comp.length; i++)
+          if (comp[i].indexOf(word) != -1)
+            return accept({
+              list: comp[i],
+              from: CodeMirror.Pos(cursor.line, start),
+              to: CodeMirror.Pos(cursor.line, end),
+            });
+        return accept(null);
+      });
+    }
+
+    var myCodeMirror = CodeMirror(document.querySelector("#editor"), {
+      extraKeys: { "Ctrl-Space": "autocomplete" },
+      mode: "abap",
+      // theme: "abcdef",
+      lineNumbers: true,
+      hintOptions: { hint: synonyms },
+    });
+  </script>
+</body>
