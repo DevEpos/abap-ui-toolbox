@@ -16,14 +16,24 @@ CLASS zcl_uitb_gui_splitter_cont DEFINITION
         cols TYPE i VALUE 1,
       END OF c_mode.
 
+
     "! <p class="shorttext synchronized" lang="en">Creates new GUI Splitter Container</p>
+    "! @parameter io_parent | <p class="shorttext synchronized" lang="en">Parent container</p>
+    "! @parameter iv_elements | <p class="shorttext synchronized" lang="en">Number of elements in the splitter</p>
+    "! @parameter iv_size | <p class="shorttext synchronized" lang="en">String with container sizes, e.g. '50:50'</p>
+    "!    If an asterisk (*) is detected in the size string, absolute sizes will be used, i.e. if a size string
+    "!    of '26:*' is used, the first container will have 26 pixels and the second container will use the remaining space.
+    "! @parameter iv_Mode | <p class="shorttext synchronized" lang="en">Columns or Rows order</p>
+    "! @parameter if_auto_def_progid_dynnr | <p class="shorttext synchronized" lang="en">If 'X' the container will be bound to the current screen</p>
+    "! @parameter if_no_border | <p class="shorttext synchronized" lang="en">If 'X' no border will be painted</p>
     METHODS constructor
       IMPORTING
-        io_parent    TYPE REF TO cl_gui_container
-        iv_elements  TYPE i
-        iv_size      TYPE string DEFAULT c_default_size
-        iv_mode      TYPE i DEFAULT zcl_uitb_gui_splitter_cont=>c_mode-rows
-        if_no_border TYPE abap_bool OPTIONAL.
+        io_parent                TYPE REF TO cl_gui_container
+        iv_elements              TYPE i
+        iv_size                  TYPE string DEFAULT c_default_size
+        iv_mode                  TYPE i DEFAULT zcl_uitb_gui_splitter_cont=>c_mode-rows
+        if_auto_def_progid_dynnr TYPE abap_bool OPTIONAL
+        if_no_border             TYPE abap_bool OPTIONAL.
 
     "! <p class="shorttext synchronized" lang="en">Set size of a given Cell</p>
     METHODS set_element_size
@@ -187,7 +197,7 @@ CLASS zcl_uitb_gui_splitter_cont IMPLEMENTATION.
         parent                  = io_parent
         rows                    = lv_rows
         columns                 = lv_cols
-        no_autodef_progid_dynnr = abap_true
+        no_autodef_progid_dynnr = xsdbool( if_auto_def_progid_dynnr = abap_false )
       EXCEPTIONS
         cntl_error              = 1
         cntl_system_error       = 2
