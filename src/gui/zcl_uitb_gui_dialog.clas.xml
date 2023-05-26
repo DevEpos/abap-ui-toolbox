@@ -13,13 +13,11 @@
    </VSEOCLASS>
    <DESCRIPTIONS>
     <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_GUI_DIALOG</CLSNAME>
      <CMPNAME>CONSTRUCTOR</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Creates new Generic non modal dialog</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_GUI_DIALOG</CLSNAME>
      <CMPNAME>ON_CLOSE</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Close handler for dialog box container</DESCRIPT>

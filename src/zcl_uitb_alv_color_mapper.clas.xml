@@ -13,7 +13,6 @@
    </VSEOCLASS>
    <DESCRIPTIONS>
     <SEOCOMPOTX>
-     <CLSNAME>ZCL_UITB_ALV_COLOR_MAPPER</CLSNAME>
      <CMPNAME>STRING_TO_STRUC</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Maps string color definition into lvc_s_col definition</DESCRIPT>

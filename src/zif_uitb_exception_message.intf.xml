@@ -12,13 +12,11 @@
    </VSEOINTERF>
    <DESCRIPTIONS>
     <SEOCOMPOTX>
-     <CLSNAME>ZIF_UITB_EXCEPTION_MESSAGE</CLSNAME>
      <CMPNAME>GET_MESSAGE</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Retrieve the message from the exception</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
-     <CLSNAME>ZIF_UITB_EXCEPTION_MESSAGE</CLSNAME>
      <CMPNAME>PRINT</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Prints exception message to string or screen</DESCRIPT>
