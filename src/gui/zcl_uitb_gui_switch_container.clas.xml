@@ -38,6 +38,20 @@
      <DESCRIPT>Sets the child with the given id visible/invisible</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>HAS_CHILD</CMPNAME>
+     <SCONAME>IV_ID</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>id for a child element</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>HAS_CHILD</CMPNAME>
+     <SCONAME>RF_HAS_CHILD</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>returns &apos;X&apos; if child exists</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>
 </abapGit>

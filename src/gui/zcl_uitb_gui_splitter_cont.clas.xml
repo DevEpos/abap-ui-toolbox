@@ -68,6 +68,50 @@
      <DESCRIPT>Update cell sizes</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>CONSTRUCTOR</CMPNAME>
+     <SCONAME>IF_AUTO_DEF_PROGID_DYNNR</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>If &apos;X&apos; the container will be bound to the current screen</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CONSTRUCTOR</CMPNAME>
+     <SCONAME>IF_NO_BORDER</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>If &apos;X&apos; no border will be painted</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CONSTRUCTOR</CMPNAME>
+     <SCONAME>IO_PARENT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Parent container</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CONSTRUCTOR</CMPNAME>
+     <SCONAME>IV_ELEMENTS</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Number of elements in the splitter</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CONSTRUCTOR</CMPNAME>
+     <SCONAME>IV_MODE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Columns or Rows order</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CONSTRUCTOR</CMPNAME>
+     <SCONAME>IV_SIZE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>String with container sizes, e.g. &apos;50:50&apos;</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>TOGGLE_VISIBILITY</CMPNAME>
+     <SCONAME>IV_ELEMENT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>the positional number of an element in the splitter</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>
 </abapGit>

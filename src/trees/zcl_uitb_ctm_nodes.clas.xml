@@ -123,6 +123,20 @@
      <DESCRIPT>Updates user data of node</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_ROOT_NODES</CMPNAME>
+     <SCONAME>RT_ROOT_NODES</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>References List of the root nodes</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_ROOT_NODE_KEYS</CMPNAME>
+     <SCONAME>RT_ROOT_NODE_KEYS</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>List of keys of the root nodes</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>
 </abapGit>

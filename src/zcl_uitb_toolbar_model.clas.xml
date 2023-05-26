@@ -109,6 +109,32 @@
      <DESCRIPT>Set button state</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_BUTTON_ICON</CMPNAME>
+     <SCONAME>IV_FUNCTION</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>function code of the button</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_BUTTON_STATE</CMPNAME>
+     <SCONAME>IF_CHECKED</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Set the button to checked?</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_BUTTON_STATE</CMPNAME>
+     <SCONAME>IF_ENABLED</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Enable the button?</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_BUTTON_STATE</CMPNAME>
+     <SCONAME>IV_FUNCTION</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>function code of the button</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>
 </abapGit>

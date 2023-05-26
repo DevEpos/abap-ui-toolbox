@@ -77,6 +77,14 @@
      <DESCRIPT>Count entries</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>EXTEND</CMPNAME>
+     <SCONAME>IT_COMP_EXTEND</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>List of new table components</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>
 </abapGit>

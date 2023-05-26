@@ -178,6 +178,26 @@
      <DESCRIPT>Sets the selected element</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_MARK_FIELD_DESCRIPTION</CMPNAME>
+     <SCONAME>EV_LONG</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>The long text for the mark field</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_MARK_FIELD_DESCRIPTION</CMPNAME>
+     <SCONAME>EV_MEDIUM</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>The medium text for the mark field</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_MARK_FIELD_DESCRIPTION</CMPNAME>
+     <SCONAME>EV_SHORT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>The short text for the markfield</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>
 </abapGit>

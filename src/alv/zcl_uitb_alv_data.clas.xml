@@ -23,6 +23,14 @@
      <DESCRIPT>Sets container for application log</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_CONTAINER_FOR_LOG</CMPNAME>
+     <SCONAME>IO_CONTAINER</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Container reference for log</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>
 </abapGit>

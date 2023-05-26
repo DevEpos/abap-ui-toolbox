@@ -118,6 +118,14 @@
      <DESCRIPT>Updates states of toolbar buttons for tag</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_PROCESS_FUNC_ON_INVINPUT</CMPNAME>
+     <SCONAME>IT_UCOMM</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table of function codes</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>
 </abapGit>

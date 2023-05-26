@@ -48,6 +48,20 @@
      <DESCRIPT>Raises the PAI event</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>CREATE_TEMPLATE_PROGRAM</CMPNAME>
+     <SCONAME>IV_TITLE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Screen Title</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CREATE_TEMPLATE_PROGRAM</CMPNAME>
+     <SCONAME>RR_CALLBACK</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Reference to the created template View</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>
 </abapGit>
