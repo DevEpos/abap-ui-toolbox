@@ -4,6 +4,12 @@
   <asx:values>
    <URL>/SAP/PUBLIC/zuitb/html_editor.html</URL>
    <CLASS>M_APP_L</CLASS>
+   <EXTRA>
+    <FILE_NAME>html_editor.html</FILE_NAME>
+    <MIMETYPE>text/html</MIMETYPE>
+    <DESCRIPTION>html_editor.html</DESCRIPTION>
+    <PARENT_FOLDER_ID>005056B375121ED89ED388A1F0E15AE3</PARENT_FOLDER_ID>
+   </EXTRA>
   </asx:values>
  </asx:abap>
 </abapGit>
