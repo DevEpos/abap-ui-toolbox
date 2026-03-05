@@ -4,6 +4,11 @@
   <asx:values>
    <URL>/SAP/PUBLIC/zuitb</URL>
    <FOLDER>X</FOLDER>
+   <CLASS>M_FOLDER</CLASS>
+   <EXTRA>
+    <DESCRIPTION>zuitb</DESCRIPTION>
+    <PARENT_FOLDER_ID>A1A3B93FE085DD38E10000000A1550A7</PARENT_FOLDER_ID>
+   </EXTRA>
   </asx:values>
  </asx:abap>
 </abapGit>

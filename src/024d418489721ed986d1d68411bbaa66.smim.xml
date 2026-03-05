@@ -4,6 +4,12 @@
   <asx:values>
    <URL>/SAP/PUBLIC/zuitb/prism.css</URL>
    <CLASS>M_TEXT_L</CLASS>
+   <EXTRA>
+    <FILE_NAME>prism.css</FILE_NAME>
+    <MIMETYPE>text/css</MIMETYPE>
+    <DESCRIPTION>prism.css</DESCRIPTION>
+    <PARENT_FOLDER_ID>005056B375121ED89ED388A1F0E15AE3</PARENT_FOLDER_ID>
+   </EXTRA>
   </asx:values>
  </asx:abap>
 </abapGit>
